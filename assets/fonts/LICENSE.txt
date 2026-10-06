@@ -1,0 +1,14 @@
+These variable font files are redistributed from the Google Fonts
+repository (https://github.com/google/fonts), unmodified, under the
+SIL Open Font License, Version 1.1 (https://scripts.sil.org/OFL):
+
+Fredoka-Variable.ttf
+  Copyright 2016 The Fredoka Project Authors (https://github.com/hafontia/Fredoka-One)
+
+Nunito-Variable.ttf
+  Copyright 2014 The Nunito Project Authors (https://github.com/googlefonts/nunito)
+
+JetBrainsMono-Variable.ttf
+  Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
+
+Full license text: https://scripts.sil.org/OFL

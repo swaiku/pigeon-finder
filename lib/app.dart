@@ -1,5 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'core/theme/app_theme.dart';
+import 'core/theme/design_system_page.dart';
 import 'l10n/app_localizations.dart';
 
 class PigeonFinderApp extends StatelessWidget {
@@ -11,7 +14,11 @@ class PigeonFinderApp extends StatelessWidget {
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const _HomePlaceholder(),
+      theme: AppTheme.light,
+      // Screens and navigation are not implemented yet: show the design
+      // system showcase in debug builds so the theme and components can be
+      // checked visually.
+      home: kDebugMode ? const DesignSystemPage() : const _HomePlaceholder(),
     );
   }
 }
