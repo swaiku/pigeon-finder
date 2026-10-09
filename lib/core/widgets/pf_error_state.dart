@@ -22,7 +22,11 @@ class PfErrorState extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Icons.error_outline, color: Theme.of(context).colorScheme.error, size: 32),
+        Icon(
+          Icons.error_outline,
+          color: Theme.of(context).colorScheme.error,
+          size: 32,
+        ),
         const SizedBox(height: AppSpacing.sm),
         Text(message, textAlign: TextAlign.center, style: textTheme.bodyMedium),
         if (actionLabel != null && onAction != null) ...[

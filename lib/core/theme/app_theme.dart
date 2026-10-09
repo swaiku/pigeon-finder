@@ -142,9 +142,7 @@ abstract final class AppTheme {
           borderRadius: BorderRadius.circular(AppSpacing.radiusPanel),
         ),
         titleTextStyle: textTheme.headlineSmall,
-        contentTextStyle: textTheme.bodyMedium?.copyWith(
-          color: AppColors.mist,
-        ),
+        contentTextStyle: textTheme.bodyMedium?.copyWith(color: AppColors.mist),
       ),
 
       bottomSheetTheme: BottomSheetThemeData(

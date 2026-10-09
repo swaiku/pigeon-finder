@@ -25,9 +25,8 @@ class PfEmptyState extends StatelessWidget {
           ],
           Text(
             message,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: AppColors.mutedText),
+            style: Theme.of(context).textTheme.bodyMedium
+                ?.copyWith(color: AppColors.mutedText),
           ),
         ],
       ),

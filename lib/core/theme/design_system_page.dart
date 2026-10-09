@@ -50,10 +50,7 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
           AppSpacing.xxxl,
         ),
         children: [
-          const _Section(
-            title: 'Couleurs',
-            child: _ColorPalette(),
-          ),
+          const _Section(title: 'Couleurs', child: _ColorPalette()),
           const _Section(title: 'Typographie', child: _TypeScale()),
           const _Section(title: 'Rayons & ombres', child: _RadiiAndShadows()),
           _Section(
@@ -98,7 +95,10 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Roucouleur · niv. 7', style: Theme.of(context).textTheme.titleMedium),
+                  Text(
+                    'Roucouleur · niv. 7',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     'Contenu générique affiché dans une PfCard.',
@@ -114,9 +114,18 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
               spacing: AppSpacing.sm,
               runSpacing: AppSpacing.sm,
               children: const [
-                PfStatusChip(label: 'Pigeon biset confirmé · 96 %', tone: PfChipTone.success),
-                PfStatusChip(label: 'Goéland argenté · 82 %', tone: PfChipTone.danger),
-                PfStatusChip(label: '2 signalement(s)', tone: PfChipTone.warning),
+                PfStatusChip(
+                  label: 'Pigeon biset confirmé · 96 %',
+                  tone: PfChipTone.success,
+                ),
+                PfStatusChip(
+                  label: 'Goéland argenté · 82 %',
+                  tone: PfChipTone.danger,
+                ),
+                PfStatusChip(
+                  label: '2 signalement(s)',
+                  tone: PfChipTone.warning,
+                ),
                 PfStatusChip(label: 'Expire dans 18 h', tone: PfChipTone.dark),
                 PfStatusChip(label: 'Badge obtenu', tone: PfChipTone.dark),
                 PfStatusChip(label: 'Badge verrouillé', filled: false),
@@ -179,7 +188,8 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
           const _Section(
             title: 'État vide',
             child: PfEmptyState(
-              message: 'Aucun pigeon actif. Tes photos restent 24 h sur la carte.',
+              message:
+                  'Aucun pigeon actif. Tes photos restent 24 h sur la carte.',
             ),
           ),
           const _Section(
@@ -200,7 +210,10 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
               items: const [
                 PfNavItem(icon: Icons.map_outlined, label: 'Carte'),
                 PfNavItem(icon: Icons.grid_view_outlined, label: 'Pigeondex'),
-                PfNavItem(icon: Icons.emoji_events_outlined, label: 'Classement'),
+                PfNavItem(
+                  icon: Icons.emoji_events_outlined,
+                  label: 'Classement',
+                ),
                 PfNavItem(icon: Icons.person_outline, label: 'Profil'),
               ],
               currentIndex: _navIndex,
@@ -277,7 +290,10 @@ class _ColorPalette extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                Text(swatch.name, style: Theme.of(context).textTheme.labelMedium),
+                Text(
+                  swatch.name,
+                  style: Theme.of(context).textTheme.labelMedium,
+                ),
                 Text(
                   '#${swatch.color.toARGB32().toRadixString(16).substring(2).toUpperCase()}',
                   style: Theme.of(context).textTheme.labelSmall,

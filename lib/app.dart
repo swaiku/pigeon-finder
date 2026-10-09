@@ -34,7 +34,10 @@ class _HomePlaceholder extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(l10n.appTitle, style: Theme.of(context).textTheme.headlineMedium),
+            Text(
+              l10n.appTitle,
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
             const SizedBox(height: 8),
             Text(l10n.tagline, style: Theme.of(context).textTheme.bodyMedium),
           ],
