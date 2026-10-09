@@ -1,0 +1,45 @@
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+
+  - repo: local
+    hooks:
+      - id: dart-format
+        name: dart format
+        entry: dart format --set-exit-if-changed
+        language: system
+        types: [dart]
+        stages: [pre-commit]
+
+      - id: flutter-analyze
+        name: flutter analyze
+        entry: flutter analyze --fatal-infos
+        language: system
+        types: [dart]
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: flutter-test
+        name: flutter test
+        entry: flutter test
+        language: system
+        types: [dart]
+        pass_filenames: false
+        stages: [pre-push]
+
+      # git-cliff groups the changelog by leading gitmoji
+      - id: gitmoji-commit-msg
+        name: commit message starts with a gitmoji
+        entry: '^(Merge |Revert |:\w+:|[^\x00-\x7F])'
+        args: [--negate]
+        language: pygrep
+        stages: [commit-msg]

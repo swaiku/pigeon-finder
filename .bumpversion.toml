@@ -1,0 +1,17 @@
+[tool.bumpversion]
+current_version = "0.0.1"
+commit = true
+# The tag is created by CI when the release reaches main.
+tag = false
+message = "🔖 Bump version {current_version} → {new_version}"
+# Needs git-cliff installed locally (brew install git-cliff).
+pre_commit_hooks = [
+  "git cliff -c .github/cliff.toml --strip header --tag v$BVHOOK_NEW_VERSION -o CHANGELOG.md",
+  "git add CHANGELOG.md",
+]
+
+# Only the semantic part is bumped; the build number (+N) is set by CI.
+[[tool.bumpversion.files]]
+filename = "pubspec.yaml"
+search = "version: {current_version}+"
+replace = "version: {new_version}+"

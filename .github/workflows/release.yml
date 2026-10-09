@@ -1,0 +1,81 @@
+name: Release
+
+# Runs on every push to main. If pubspec.yaml carries a version that has no
+# tag yet (bumped on develop with `bump-my-version bump`), build the APK and
+# publish the GitHub release, which also creates the tag. Uses GITHUB_TOKEN only.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@v5
+
+      - name: Detect version to release
+        id: version
+        run: |
+          tag="v$(uvx bump-my-version show current_version)"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+            echo "$tag already released, nothing to do"
+            echo "new=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "new=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate release notes
+        if: steps.version.outputs.new == 'true'
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: .github/cliff.toml
+          args: --unreleased --strip header --tag ${{ steps.version.outputs.tag }}
+        env:
+          OUTPUT: RELEASE_NOTES.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - if: steps.version.outputs.new == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - if: steps.version.outputs.new == 'true'
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Build release APK
+        if: steps.version.outputs.new == 'true'
+        run: |
+          flutter pub get
+          flutter build apk --release \
+            --build-number=${{ github.run_number }} \
+            --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
+            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+          cp build/app/outputs/flutter-apk/app-release.apk \
+            "pigeon_finder-${{ steps.version.outputs.tag }}.apk"
+
+      - name: Tag & publish GitHub release
+        if: steps.version.outputs.new == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          target_commitish: ${{ github.sha }}
+          body_path: RELEASE_NOTES.md
+          files: pigeon_finder-*.apk
