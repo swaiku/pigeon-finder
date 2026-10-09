@@ -232,8 +232,8 @@ Example: `✨ Add like button on post detail`.
    ```
 4. Open a pull request targeting `develop`
 
-CI (format, analyze, tests, debug APK build) runs on every PR and on pushes to
-`main` and `develop`. Dependabot opens weekly dependency PRs against `develop`
+CI (format, analyze, tests) runs on every PR and on pushes to
+`main` and `develop`; the debug APK build only runs on PRs targeting `main`. Dependabot opens weekly dependency PRs against `develop`
 (minor/patch updates are auto-merged once CI is green).
 
 ### Releasing
@@ -259,7 +259,7 @@ Required repository secrets: `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
 
 | Workflow                   | Trigger                      | What it does                         |
 | -------------------------- | ---------------------------- | ------------------------------------ |
-| `ci.yml`                   | PR, push to `main`/`develop` | format, analyze, test, debug APK     |
+| `ci.yml`                   | PR, push to `main`/`develop` | format, analyze, test (+ debug APK on PRs to `main`) |
 | `release.yml`              | push to `main`               | tag + build + GitHub Release         |
 | `dependency-review.yml`    | PR                           | blocks high-severity vulnerable deps |
 | `dependabot-automerge.yml` | Dependabot PRs               | auto-merge non-major updates         |
