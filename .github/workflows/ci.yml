@@ -44,9 +44,11 @@ jobs:
 
   build-android:
     name: Build Android (debug APK)
-    needs: check
-    # Only worth the time when a release is about to be cut (PR develop -> main).
-    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    # Runs in parallel with `check`. Built on every push to develop and on
+    # release PRs (develop -> main), not on every PR.
+    if: >
+      (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
+      (github.event_name == 'pull_request' && github.base_ref == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -56,6 +58,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+          cache: gradle
 
       - uses: subosito/flutter-action@v2
         with:
@@ -67,5 +70,12 @@ jobs:
       - name: Build APK
         run: >
           flutter build apk --debug
-          --dart-define=SUPABASE_URL=https://example.supabase.co
-          --dart-define=SUPABASE_ANON_KEY=ci-placeholder
+          --target-platform android-arm64
+          --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL || 'https://example.supabase.co' }}
+          --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY || 'ci-placeholder' }}
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: pigeon_finder-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 14
