@@ -32,7 +32,9 @@ class PfRankingRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final foreground = highlighted ? colorScheme.onPrimary : colorScheme.onSurface;
+    final foreground = highlighted
+        ? colorScheme.onPrimary
+        : colorScheme.onSurface;
 
     return Container(
       padding: const EdgeInsets.symmetric(
@@ -74,7 +76,9 @@ class PfRankingRow extends StatelessWidget {
                   Text(
                     subtitle!,
                     style: textTheme.bodySmall?.copyWith(
-                      color: highlighted ? colorScheme.onPrimary : AppColors.mutedText,
+                      color: highlighted
+                          ? colorScheme.onPrimary
+                          : AppColors.mutedText,
                     ),
                   ),
               ],

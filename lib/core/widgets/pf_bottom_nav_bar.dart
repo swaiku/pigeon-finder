@@ -50,7 +50,10 @@ class PfBottomNavBar extends StatelessWidget {
             children: [
               Icon(item.icon, size: 26, color: color),
               const SizedBox(height: 3),
-              Text(item.label, style: textTheme.labelMedium?.copyWith(color: color)),
+              Text(
+                item.label,
+                style: textTheme.labelMedium?.copyWith(color: color),
+              ),
             ],
           ),
         ),
@@ -88,7 +91,11 @@ class PfBottomNavBar extends StatelessWidget {
                       border: Border.all(color: AppColors.paper, width: 5),
                       boxShadow: AppSpacing.shadowFab,
                     ),
-                    child: Icon(centerIcon, color: colorScheme.onPrimary, size: 32),
+                    child: Icon(
+                      centerIcon,
+                      color: colorScheme.onPrimary,
+                      size: 32,
+                    ),
                   ),
                 ),
               ),

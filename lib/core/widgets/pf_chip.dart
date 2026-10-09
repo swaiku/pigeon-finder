@@ -38,7 +38,10 @@ class PfStatusChip extends StatelessWidget {
         colorScheme.errorContainer,
         colorScheme.onErrorContainer,
       ),
-      PfChipTone.warning => (AppColors.warningContainer, AppColors.onWarningContainer),
+      PfChipTone.warning => (
+        AppColors.warningContainer,
+        AppColors.onWarningContainer,
+      ),
       PfChipTone.neutral => (AppColors.segmentTrack, AppColors.mist),
       PfChipTone.dark => (colorScheme.secondary, colorScheme.onSecondary),
     };
@@ -55,9 +58,8 @@ class PfStatusChip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: filled ? foreground : AppColors.mutedText,
-        ),
+        style: Theme.of(context).textTheme.labelMedium
+            ?.copyWith(color: filled ? foreground : AppColors.mutedText),
       ),
     );
   }
@@ -81,9 +83,8 @@ class PfCountBadge extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: Theme.of(
-          context,
-        ).textTheme.labelMedium?.copyWith(color: colorScheme.onSecondary),
+        style: Theme.of(context).textTheme.labelMedium
+            ?.copyWith(color: colorScheme.onSecondary),
       ),
     );
   }

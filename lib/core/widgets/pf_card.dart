@@ -18,6 +18,9 @@ class PfCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(color: color, child: Padding(padding: padding, child: child));
+    return Card(
+      color: color,
+      child: Padding(padding: padding, child: child),
+    );
   }
 }

@@ -36,11 +36,17 @@ class PfSegmentedControl extends StatelessWidget {
                 onTap: () => onChanged(i),
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 150),
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm + 1),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: AppSpacing.sm + 1,
+                  ),
                   decoration: BoxDecoration(
                     color: i == selectedIndex ? colorScheme.surface : null,
-                    borderRadius: BorderRadius.circular(AppSpacing.radiusChip + 2),
-                    boxShadow: i == selectedIndex ? AppSpacing.shadowCard : null,
+                    borderRadius: BorderRadius.circular(
+                      AppSpacing.radiusChip + 2,
+                    ),
+                    boxShadow: i == selectedIndex
+                        ? AppSpacing.shadowCard
+                        : null,
                   ),
                   alignment: Alignment.center,
                   child: Text(
