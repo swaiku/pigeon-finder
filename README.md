@@ -75,17 +75,49 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Pigeon Finder is a Flutter mobile app where users spot pigeons, photograph them,
-pin them on a map and collect them in a personal "Pigeondex". It is built for the
-MSE mobile applications course (MA-AdMoApp).
+Pigeon Finder is a social network about pigeons. You photograph the ones you meet
+in the city and publish the photo on a shared map and the photo earns points. It stays
+on the map for 24 hours, then joins your personal gallery, the **Pigeondex**.
+Other users report photos without a pigeon, and rankings compare scores.
 
-Features:
+Built for the *Advanced Mobile Applications* course (MSE Data Science, 26-27).
 
-* **Map**: browse pigeon sightings around you
-* **Post**: take a photo and publish a sighting at your location
-* **Post detail**: view and like a sighting
-* **Pigeondex**: your collection and rankings
-* **Profile & auth**: accounts and data powered by Supabase
+### How it works
+
+1. **Snap it:** take a photo of a pigeon. Each pigeon in the frame earns points.
+2. **24 hours on the map:** the photo is shown on the shared map for 24 h, then
+   stays in your Pigeondex.
+3. **Moderation:** if a photo without a pigeon gets through, 3 distinct reports
+   hide it and remove its points.
+
+### Features
+
+MVP:
+
+* [ ] Authentication (sign up, login, logout)
+* [ ] Map of the last 24 hours of photos, centered on your position, with a
+  remaining-time ring on each pin
+* [ ] Camera with viewfinder, description and automatic GPS position
+* [ ] Photo detail: author, time, description, likes, "not a pigeon" report
+* [ ] Points (on publication, per like, penalty if invalidated)
+* [ ] Community moderation and 24 h expiration
+* [ ] Pigeondex (validated photos by month) and profile (photos, likes, total score)
+* [ ] French and English
+* [ ] Clear error messages (camera/GPS permission denied, no network, upload failure)
+
+Extensions, if time allows: rankings by district/city/world, levels and badges,
+on-device AI verification (TensorFlow Lite), proximity notifications, dark mode,
+Flutter Web.
+
+Out of scope: chat, friends, dedicated moderators, monetization.
+
+### Sensors and context
+
+| Sensor / context | Usage                                                           |
+| ---------------- | --------------------------------------------------------------- |
+| Camera           | Take the photo, AI analysis                                     |
+| GPS              | Photo location, map centering, district for rankings            |
+| Time             | 24 h expiration, remaining-time ring on pins                    |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -280,7 +312,8 @@ No license has been chosen yet.
 <!-- CONTACT -->
 ## Contact
 
-Jérémy Prin - [@swaiku](https://github.com/swaiku)
+* Jérémy Prin - [@swaiku](https://github.com/swaiku)
+* Michael Strefeler
 
 Project Link: [https://github.com/swaiku/pigeon-finder](https://github.com/swaiku/pigeon-finder)
 
