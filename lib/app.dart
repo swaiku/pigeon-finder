@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
-import 'core/theme/design_system_page.dart';
 import 'l10n/app_localizations.dart';
 
 class PigeonFinderApp extends StatelessWidget {
@@ -10,39 +9,12 @@ class PigeonFinderApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: AppTheme.light,
-      // Screens and navigation are not implemented yet: show the design
-      // system showcase in debug builds so the theme and components can be
-      // checked visually.
-      home: kDebugMode ? const DesignSystemPage() : const _HomePlaceholder(),
-    );
-  }
-}
-
-class _HomePlaceholder extends StatelessWidget {
-  const _HomePlaceholder();
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              l10n.appTitle,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(l10n.tagline, style: Theme.of(context).textTheme.bodyMedium),
-          ],
-        ),
-      ),
+      routerConfig: appRouter,
     );
   }
 }

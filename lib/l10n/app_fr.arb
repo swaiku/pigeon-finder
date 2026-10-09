@@ -1,5 +1,14 @@
 {
   "@@locale": "fr",
   "appTitle": "Pigeon Finder",
-  "tagline": "Repère-le. Photographie-le. Marque des points."
+  "tagline": "Repère-le. Photographie-le. Marque des points.",
+  "navMap": "Carte",
+  "navPigeondex": "Pigeondex",
+  "navRanking": "Classement",
+  "navProfile": "Profil",
+  "mapTitle": "Carte",
+  "pigeondexTitle": "Pigeondex",
+  "rankingTitle": "Classement",
+  "profileTitle": "Profil",
+  "cameraTitle": "Caméra"
 }

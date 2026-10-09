@@ -14,4 +14,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tagline => 'Spot it. Snap it. Score it.';
+
+  @override
+  String get navMap => 'Map';
+
+  @override
+  String get navPigeondex => 'Pigeondex';
+
+  @override
+  String get navRanking => 'Ranking';
+
+  @override
+  String get navProfile => 'Profile';
+
+  @override
+  String get mapTitle => 'Map';
+
+  @override
+  String get pigeondexTitle => 'Pigeondex';
+
+  @override
+  String get rankingTitle => 'Ranking';
+
+  @override
+  String get profileTitle => 'Profile';
+
+  @override
+  String get cameraTitle => 'Camera';
 }

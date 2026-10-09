@@ -109,6 +109,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Spot it. Snap it. Score it.'**
   String get tagline;
+
+  /// No description provided for @navMap.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get navMap;
+
+  /// No description provided for @navPigeondex.
+  ///
+  /// In en, this message translates to:
+  /// **'Pigeondex'**
+  String get navPigeondex;
+
+  /// No description provided for @navRanking.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking'**
+  String get navRanking;
+
+  /// No description provided for @navProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get navProfile;
+
+  /// No description provided for @mapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get mapTitle;
+
+  /// No description provided for @pigeondexTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pigeondex'**
+  String get pigeondexTitle;
+
+  /// No description provided for @rankingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ranking'**
+  String get rankingTitle;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profileTitle;
+
+  /// No description provided for @cameraTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get cameraTitle;
 }
 
 class _AppLocalizationsDelegate

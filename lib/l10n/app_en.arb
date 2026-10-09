@@ -1,5 +1,14 @@
 {
   "@@locale": "en",
   "appTitle": "Pigeon Finder",
-  "tagline": "Spot it. Snap it. Score it."
+  "tagline": "Spot it. Snap it. Score it.",
+  "navMap": "Map",
+  "navPigeondex": "Pigeondex",
+  "navRanking": "Ranking",
+  "navProfile": "Profile",
+  "mapTitle": "Map",
+  "pigeondexTitle": "Pigeondex",
+  "rankingTitle": "Ranking",
+  "profileTitle": "Profile",
+  "cameraTitle": "Camera"
 }

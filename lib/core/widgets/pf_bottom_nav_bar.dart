@@ -45,6 +45,10 @@ class PfBottomNavBar extends StatelessWidget {
       return Expanded(
         child: InkWell(
           onTap: () => onTap(index),
+          splashFactory: NoSplash.splashFactory,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+          hoverColor: Colors.transparent,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -60,48 +64,83 @@ class PfBottomNavBar extends StatelessWidget {
       );
     }
 
-    return Container(
-      height: 96,
-      padding: const EdgeInsets.only(top: AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.paper,
-        borderRadius: const BorderRadius.vertical(
-          top: Radius.circular(AppSpacing.radiusSheet),
-        ),
-        boxShadow: AppSpacing.shadowFloating,
+    const barShape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(AppSpacing.radiusSheet),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    );
+
+    const barHeight = 96.0;
+    const fabSize = 68.0;
+    const fabOverflow = 26.0;
+    const fabRing = 6.0;
+
+    return SizedBox(
+      height: barHeight + fabOverflow,
+      child: Stack(
+        alignment: Alignment.topCenter,
         children: [
-          for (var i = 0; i < left.length; i++) tab(left[i], i),
-          SizedBox(
-            width: 88,
-            child: Transform.translate(
-              offset: const Offset(0, -34),
-              child: Center(
-                child: InkWell(
-                  onTap: onCenterTap,
-                  customBorder: const CircleBorder(),
-                  child: Container(
-                    width: 72,
-                    height: 72,
-                    decoration: BoxDecoration(
-                      color: colorScheme.primary,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.paper, width: 5),
-                      boxShadow: AppSpacing.shadowFab,
-                    ),
-                    child: Icon(
-                      centerIcon,
-                      color: colorScheme.onPrimary,
-                      size: 32,
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: barHeight,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: barShape.borderRadius,
+                boxShadow: AppSpacing.shadowFloating,
+              ),
+              child: Material(
+                color: AppColors.paper,
+                shape: barShape,
+                clipBehavior: Clip.antiAlias,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.md),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (var i = 0; i < left.length; i++) tab(left[i], i),
+                      const SizedBox(width: 96),
+                      for (var i = 0; i < right.length; i++)
+                        tab(right[i], left.length + i),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: AppSpacing.shadowFab,
+            ),
+            child: Material(
+              color: AppColors.paper,
+              shape: const CircleBorder(),
+              child: Padding(
+                padding: const EdgeInsets.all(fabRing),
+                child: Material(
+                  color: colorScheme.primary,
+                  shape: const CircleBorder(),
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: onCenterTap,
+                    splashColor: Colors.white30,
+                    highlightColor: Colors.white24,
+                    child: SizedBox(
+                      width: fabSize,
+                      height: fabSize,
+                      child: Icon(
+                        centerIcon,
+                        color: colorScheme.onPrimary,
+                        size: 32,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
           ),
-          for (var i = 0; i < right.length; i++) tab(right[i], left.length + i),
         ],
       ),
     );
