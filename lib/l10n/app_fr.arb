@@ -10,5 +10,14 @@
   "pigeondexTitle": "Pigeondex",
   "rankingTitle": "Classement",
   "profileTitle": "Profil",
-  "cameraTitle": "Caméra"
+  "cameraTitle": "Caméra",
+  "mapPigeonsSpotted": "{count, plural, =0{Aucun pigeon repéré aujourd'hui} =1{1 pigeon repéré aujourd'hui} other{{count} pigeons repérés aujourd'hui}}",
+  "mapExpiresIn": "Expire dans {hours} h {minutes} min",
+  "mapPigeonCount": "{count, plural, =1{1 pigeon} other{{count} pigeons}}",
+  "mapReports": "{count, plural, =1{1 signalement} other{{count} signalements}}",
+  "mapLoadError": "Impossible de charger la carte",
+  "retry": "Réessayer",
+  "mapRecenter": "Recentrer sur ma position",
+  "mapNorthLock": "Verrouiller le nord",
+  "mapNorthUnlock": "Déverrouiller le nord"
 }

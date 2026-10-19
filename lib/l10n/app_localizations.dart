@@ -163,6 +163,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Camera'**
   String get cameraTitle;
+
+  /// No description provided for @mapPigeonsSpotted.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No pigeons spotted today} =1{1 pigeon spotted today} other{{count} pigeons spotted today}}'**
+  String mapPigeonsSpotted(int count);
+
+  /// No description provided for @mapExpiresIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in {hours} h {minutes} min'**
+  String mapExpiresIn(int hours, int minutes);
+
+  /// No description provided for @mapPigeonCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 pigeon} other{{count} pigeons}}'**
+  String mapPigeonCount(int count);
+
+  /// No description provided for @mapReports.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 report} other{{count} reports}}'**
+  String mapReports(int count);
+
+  /// No description provided for @mapLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the map'**
+  String get mapLoadError;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @mapRecenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Center on my location'**
+  String get mapRecenter;
+
+  /// No description provided for @mapNorthLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock north'**
+  String get mapNorthLock;
+
+  /// No description provided for @mapNorthUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock north'**
+  String get mapNorthUnlock;
 }
 
 class _AppLocalizationsDelegate

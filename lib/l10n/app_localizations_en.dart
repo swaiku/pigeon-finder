@@ -41,4 +41,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cameraTitle => 'Camera';
+
+  @override
+  String mapPigeonsSpotted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons spotted today',
+      one: '1 pigeon spotted today',
+      zero: 'No pigeons spotted today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mapExpiresIn(int hours, int minutes) {
+    return 'Expires in $hours h $minutes min';
+  }
+
+  @override
+  String mapPigeonCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons',
+      one: '1 pigeon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mapReports(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count reports',
+      one: '1 report',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mapLoadError => 'Couldn\'t load the map';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get mapRecenter => 'Center on my location';
+
+  @override
+  String get mapNorthLock => 'Lock north';
+
+  @override
+  String get mapNorthUnlock => 'Unlock north';
 }

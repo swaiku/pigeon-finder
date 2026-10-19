@@ -41,4 +41,58 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cameraTitle => 'Caméra';
+
+  @override
+  String mapPigeonsSpotted(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons repérés aujourd\'hui',
+      one: '1 pigeon repéré aujourd\'hui',
+      zero: 'Aucun pigeon repéré aujourd\'hui',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mapExpiresIn(int hours, int minutes) {
+    return 'Expire dans $hours h $minutes min';
+  }
+
+  @override
+  String mapPigeonCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons',
+      one: '1 pigeon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mapReports(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count signalements',
+      one: '1 signalement',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mapLoadError => 'Impossible de charger la carte';
+
+  @override
+  String get retry => 'Réessayer';
+
+  @override
+  String get mapRecenter => 'Recentrer sur ma position';
+
+  @override
+  String get mapNorthLock => 'Verrouiller le nord';
+
+  @override
+  String get mapNorthUnlock => 'Déverrouiller le nord';
 }
