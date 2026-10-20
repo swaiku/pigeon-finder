@@ -1,12 +1,12 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:pigeon_finder/core/error/failures.dart';
 import 'package:pigeon_finder/features/map/data/datasources/location_data_source.dart';
 import 'package:pigeon_finder/features/map/domain/entities/map_post.dart';
 import 'package:pigeon_finder/features/map/domain/entities/region_level.dart';
 import 'package:pigeon_finder/features/map/domain/repositories/map_repository.dart';
 import 'package:pigeon_finder/features/map/presentation/bloc/map_bloc.dart';
-import 'package:latlong2/latlong.dart';
 
 import '../../support/test_map_repository.dart';
 

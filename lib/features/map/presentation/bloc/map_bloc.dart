@@ -51,7 +51,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   @override
   Future<void> close() {
-    _positionSub?.cancel();
+    unawaited(_positionSub?.cancel());
     return super.close();
   }
 

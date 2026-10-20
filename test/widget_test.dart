@@ -11,7 +11,7 @@ import 'support/test_map_repository.dart';
 void main() {
   setUp(() async {
     await sl.reset();
-    sl.registerLazySingleton<MapRepository>(() => testMapRepository());
+    sl.registerLazySingleton<MapRepository>(testMapRepository);
     sl.registerFactory(() => MapBloc(sl()));
   });
 

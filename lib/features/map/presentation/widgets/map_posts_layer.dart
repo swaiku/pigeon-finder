@@ -151,7 +151,7 @@ class _HeatLayerState extends State<_HeatLayer> {
 
   @override
   void dispose() {
-    _reset.close();
+    unawaited(_reset.close());
     super.dispose();
   }
 

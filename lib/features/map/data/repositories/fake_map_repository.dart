@@ -5,9 +5,9 @@ import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/map_post.dart';
 import '../../domain/entities/region_level.dart';
+import '../../domain/repositories/map_repository.dart';
 import '../datasources/location_data_source.dart';
 import '../datasources/region_data_source.dart';
-import '../../domain/repositories/map_repository.dart';
 
 /// In-memory stand-in for the Supabase-backed repository. Posts are made up
 /// around the requested position: the world is cut into small cells, each one

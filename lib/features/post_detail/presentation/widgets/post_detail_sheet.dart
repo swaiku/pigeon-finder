@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -43,7 +45,7 @@ class _PostDetailSheetState extends State<PostDetailSheet>
     duration: const Duration(milliseconds: 700),
   )..forward();
 
-  // TODO(post_detail): persist coos and reports through a repository.
+  // TODO(post-detail): persist coos and reports through a repository.
   bool _cooed = false;
   bool _reported = false;
 
@@ -76,7 +78,7 @@ class _PostDetailSheetState extends State<PostDetailSheet>
   Future<void> _report() async {
     final reason = await showReportSheet(context);
     if (reason == null || !mounted) return;
-    HapticFeedback.mediumImpact();
+    unawaited(HapticFeedback.mediumImpact());
     setState(() => _reported = true);
     ScaffoldMessenger.maybeOf(context)?.showSnackBar(
       SnackBar(
@@ -231,7 +233,7 @@ class _PostDetailSheetState extends State<PostDetailSheet>
                   label: l10n.postDetailCoo(_post.coos + (_cooed ? 1 : 0)),
                   active: _cooed,
                   onTap: () {
-                    HapticFeedback.lightImpact();
+                    unawaited(HapticFeedback.lightImpact());
                     setState(() => _cooed = !_cooed);
                   },
                 ),

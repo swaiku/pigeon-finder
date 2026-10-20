@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../core/di/injection.dart';
 import '../../../../core/router/app_router.dart';
@@ -19,8 +19,8 @@ import '../../../../l10n/app_localizations.dart';
 import '../../../post_detail/presentation/widgets/post_detail_sheet.dart';
 import '../../domain/entities/map_defaults.dart';
 import '../bloc/map_bloc.dart';
-import '../widgets/map_header.dart';
 import '../widgets/map_floating_button.dart';
+import '../widgets/map_header.dart';
 import '../widgets/map_posts_layer.dart';
 import '../widgets/osm_tile_layer.dart';
 
@@ -111,14 +111,16 @@ class _MapViewState extends State<_MapView>
       ..reset();
     _tick = tick;
     _anim.addListener(tick);
-    _anim
-        .forward()
-        .then((_) {
-          // `forward` never completes when interrupted, so this only runs when
-          // the camera actually reached its target.
-          if (mounted) bloc.add(MapCameraMoved(to.center, to.zoom));
-        })
-        .catchError((_) {});
+    unawaited(
+      _anim
+          .forward()
+          .then((_) {
+            // `forward` never completes when interrupted, so this only runs when
+            // the camera actually reached its target.
+            if (mounted) bloc.add(MapCameraMoved(to.center, to.zoom));
+          })
+          .catchError((_) {}),
+    );
   }
 
   void _toggleNorthLock(MapBloc bloc) {
@@ -154,11 +156,13 @@ class _MapViewState extends State<_MapView>
         listener: (context, state) {
           final post = state.selected!;
           _animateCamera(bloc, center: post.position);
-          showPostDetailSheet(context, post).whenComplete(() {
-            if (bloc.state.selectedId == post.id) {
-              bloc.add(const MapPostSelected(null));
-            }
-          });
+          unawaited(
+            showPostDetailSheet(context, post).whenComplete(() {
+              if (bloc.state.selectedId == post.id) {
+                bloc.add(const MapPostSelected(null));
+              }
+            }),
+          );
         },
         builder: (context, state) {
           // Posts that expired since the last fetch are dropped right away.
@@ -226,7 +230,7 @@ class _MapViewState extends State<_MapView>
                     now: _now,
                     selectedId: state.selectedId,
                     onPostTap: (post) {
-                      HapticFeedback.selectionClick();
+                      unawaited(HapticFeedback.selectionClick());
                       bloc.add(MapPostSelected(post.id));
                     },
                   ),
