@@ -18,6 +18,7 @@ class MapPost extends Equatable {
     required this.id,
     required this.user,
     required this.place,
+    required this.photoUrl,
     required this.position,
     required this.createdAt,
     required this.count,
@@ -37,6 +38,9 @@ class MapPost extends Equatable {
   final String id;
   final String user;
   final String place;
+
+  /// Where the photo taken for this post can be downloaded from.
+  final String photoUrl;
 
   /// Flat `latitude`/`longitude` on the wire, added by hand in [toJson].
   @JsonKey(
@@ -77,6 +81,7 @@ class MapPost extends Equatable {
     id,
     user,
     place,
+    photoUrl,
     position,
     createdAt,
     count,

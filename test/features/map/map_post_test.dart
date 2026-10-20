@@ -7,6 +7,7 @@ void main() {
     'id': '3f2b8c1e-5a4d-4e6f-9b7a-0c1d2e3f4a51',
     'user': 'grisou',
     'place': 'Bastille',
+    'photo_url': 'https://example.com/pigeon.jpg',
     'latitude': 48.8532,
     'longitude': 2.3692,
     'created_at': '2026-10-13T10:00:00.000Z',

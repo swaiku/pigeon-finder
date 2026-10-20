@@ -58,6 +58,22 @@ class FakeMapRepository implements MapRepository {
   static const _reportOdds = 10;
   static const _maxReports = 2;
 
+  /// Public-domain pigeon photos from Wikimedia Commons, sized for the app.
+  static const _photos = [
+    'Feeding_pigeons.jpg',
+    'Feral_Pigeon_OCNJ.jpg',
+    'Feral_pigeon_in_Locarno.jpg',
+    'Columba_livia_Luc_Viatour.jpg',
+    'Feral_pigeon_2024_05_13.jpg',
+    'Feral_Pigeon_Columba_livia,_Bangalore,_Karnataka,_India.jpg',
+  ];
+
+  static const _photoWidth = 600;
+
+  static String _photoUrl(String file) =>
+      'https://commons.wikimedia.org/wiki/Special:FilePath/$file'
+      '?width=$_photoWidth';
+
   static const _uuid = Uuid();
 
   final _cells = <(int, int), List<MapPost>>{};
@@ -75,6 +91,7 @@ class FakeMapRepository implements MapRepository {
             id: _uuid.v4(),
             user: _users[rng.nextInt(_users.length)],
             place: _places[rng.nextInt(_places.length)],
+            photoUrl: _photoUrl(_photos[rng.nextInt(_photos.length)]),
             position: LatLng(
               (cy + rng.nextDouble()) * _cellSize,
               (cx + rng.nextDouble()) * _cellSize,

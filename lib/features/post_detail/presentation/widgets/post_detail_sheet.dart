@@ -7,7 +7,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_motion.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/pf_avatar.dart';
-import '../../../../core/widgets/pf_image_placeholder.dart';
+import '../../../../core/widgets/pf_photo.dart';
 import '../../../../l10n/app_localizations.dart';
 import '../../../map/domain/entities/map_post.dart';
 import 'report_sheet.dart';
@@ -154,7 +154,9 @@ class _PostDetailSheetState extends State<PostDetailSheet>
               ),
               child: SizedBox(
                 height: _photoHeight,
-                child: PfImagePlaceholder(
+                child: PfPhoto(
+                  url: _post.photoUrl,
+                  cacheWidth: MediaQuery.sizeOf(context).width,
                   borderRadius: BorderRadius.circular(AppSpacing.radiusPanel),
                   child: Stack(
                     children: [

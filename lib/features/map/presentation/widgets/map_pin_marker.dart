@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_motion.dart';
 import '../../../../core/theme/app_spacing.dart';
-import '../../../../core/widgets/pf_image_placeholder.dart';
+import '../../../../core/widgets/pf_photo.dart';
 import '../../domain/entities/map_post.dart';
 
 /// Fraction of a post's life left at which the ring is amber.
@@ -113,8 +113,10 @@ class _MapPinMarkerState extends State<MapPinMarker>
                             width: _photoBorder,
                           ),
                         ),
-                        child: const PfImagePlaceholder(
-                          borderRadius: BorderRadius.all(
+                        child: PfPhoto(
+                          url: post.photoUrl,
+                          cacheWidth: MapPinMarker.size,
+                          borderRadius: const BorderRadius.all(
                             Radius.circular(MapPinMarker.size),
                           ),
                         ),
