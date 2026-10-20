@@ -35,8 +35,8 @@ class MapFloatingButton extends StatelessWidget {
         child: IconButton(
           onPressed: onPressed,
           tooltip: tooltip,
-          iconSize: 26,
-          padding: const EdgeInsets.all(12),
+          iconSize: AppSpacing.iconLg,
+          padding: const EdgeInsets.all(AppSpacing.md),
           color: active ? colorScheme.onPrimary : AppColors.night,
           icon: icon,
         ),

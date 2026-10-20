@@ -5,6 +5,8 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/pf_avatar.dart';
 import '../../../../l10n/app_localizations.dart';
 
+const _logoSize = 40.0;
+
 /// Floating top bar: city/24 h summary pill and the points/avatar pill.
 class MapHeader extends StatelessWidget {
   const MapHeader({
@@ -30,24 +32,31 @@ class MapHeader extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            padding: const EdgeInsets.fromLTRB(8, 8, 14, 8),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.sm,
+              AppSpacing.sm,
+              AppSpacing.cozy,
+              AppSpacing.sm,
+            ),
             decoration: BoxDecoration(
-              color: AppColors.paper.withAlpha(0xF0),
+              color: AppColors.paperGlass,
               borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
               boxShadow: AppSpacing.shadowFloating,
             ),
             child: Row(
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(
+                    AppSpacing.radiusThumbnail,
+                  ),
                   child: Image.asset(
                     'assets/icon/icon.png',
-                    width: 40,
-                    height: 40,
+                    width: _logoSize,
+                    height: _logoSize,
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: AppSpacing.snug),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,11 +82,16 @@ class MapHeader extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 10),
+        const SizedBox(width: AppSpacing.snug),
         GestureDetector(
           onTap: onProfileTap,
           child: Container(
-            padding: const EdgeInsets.fromLTRB(14, 6, 6, 6),
+            padding: const EdgeInsets.fromLTRB(
+              AppSpacing.cozy,
+              AppSpacing.compact,
+              AppSpacing.compact,
+              AppSpacing.compact,
+            ),
             decoration: BoxDecoration(
               color: AppColors.night,
               borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
@@ -89,8 +103,8 @@ class MapHeader extends StatelessWidget {
                   points,
                   style: text.titleMedium?.copyWith(color: Colors.white),
                 ),
-                const SizedBox(width: 8),
-                PfAvatar(initial: initial, size: 34),
+                const SizedBox(width: AppSpacing.sm),
+                PfAvatar(initial: initial, size: AppSpacing.avatarSm),
               ],
             ),
           ),

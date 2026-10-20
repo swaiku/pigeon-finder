@@ -3,16 +3,37 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_motion.dart';
+import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/pf_image_placeholder.dart';
 import '../../domain/entities/map_post.dart';
+
+/// Fraction of a post's life left at which the ring is amber.
+const _halfLife = .5;
+
+const _ringStroke = 6.0;
+const _ringInset = 3.0;
+const _photoBorder = 3.0;
+const _badgeBorder = 2.0;
+const _tailSize = 12.0;
+const _tailOverlap = 7.0;
+const _selectedScale = 1.18;
+const _shadowElevation = 6.0;
+
+/// Smallest arc drawn, in degrees, so a nearly expired ring never vanishes.
+const _minSweepDegrees = 4;
 
 /// Color of the expiry ring for a post with [remaining] of its life left:
 /// teal while fresh, amber at half-life, red when about to disappear.
 Color freshnessColor(double remaining) {
   final r = remaining.clamp(0.0, 1.0);
-  return r >= .5
-      ? Color.lerp(AppColors.grain, AppColors.iridescent, (r - .5) * 2)!
-      : Color.lerp(AppColors.pin, AppColors.grain, r * 2)!;
+  return r >= _halfLife
+      ? Color.lerp(
+          AppColors.grain,
+          AppColors.iridescent,
+          (r - _halfLife) / _halfLife,
+        )!
+      : Color.lerp(AppColors.pin, AppColors.grain, r / _halfLife)!;
 }
 
 /// Round photo pin with a 24 h expiry ring, a count badge and a tail.
@@ -46,7 +67,7 @@ class _MapPinMarkerState extends State<MapPinMarker>
     with SingleTickerProviderStateMixin {
   late final _pop = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 520),
+    duration: AppMotion.emphasis,
   )..forward();
 
   @override
@@ -83,11 +104,14 @@ class _MapPinMarkerState extends State<MapPinMarker>
                       showRing: widget.showRing,
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.all(3),
+                      padding: const EdgeInsets.all(_ringInset),
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 3),
+                          border: Border.all(
+                            color: Colors.white,
+                            width: _photoBorder,
+                          ),
                         ),
                         child: const PfImagePlaceholder(
                           borderRadius: BorderRadius.all(
@@ -99,25 +123,27 @@ class _MapPinMarkerState extends State<MapPinMarker>
                   ),
                 ),
                 Positioned(
-                  top: -4,
-                  right: -8,
+                  top: -AppSpacing.xs,
+                  right: -AppSpacing.sm,
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 7,
-                      vertical: 2,
+                      horizontal: AppSpacing.compact,
+                      vertical: AppSpacing.xxs,
                     ),
                     decoration: BoxDecoration(
                       color: badge,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.white, width: 2),
+                      borderRadius: BorderRadius.circular(
+                        AppSpacing.radiusChip,
+                      ),
+                      border: Border.all(
+                        color: Colors.white,
+                        width: _badgeBorder,
+                      ),
                     ),
                     child: Text(
                       '×${post.count}',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                        color: Colors.white,
-                        fontSize: 12,
-                        height: 1.1,
-                      ),
+                      style: Theme.of(context).textTheme.labelMedium
+                          ?.copyWith(color: Colors.white),
                     ),
                   ),
                 ),
@@ -125,10 +151,14 @@ class _MapPinMarkerState extends State<MapPinMarker>
             ),
           ),
           Transform.translate(
-            offset: const Offset(0, -7),
+            offset: const Offset(0, -_tailOverlap),
             child: Transform.rotate(
               angle: math.pi / 4,
-              child: Container(width: 12, height: 12, color: Colors.white),
+              child: Container(
+                width: _tailSize,
+                height: _tailSize,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
@@ -139,8 +169,8 @@ class _MapPinMarkerState extends State<MapPinMarker>
       scale: CurvedAnimation(parent: _pop, curve: Curves.elasticOut),
       alignment: Alignment.bottomCenter,
       child: AnimatedScale(
-        scale: widget.selected ? 1.18 : 1,
-        duration: const Duration(milliseconds: 280),
+        scale: widget.selected ? _selectedScale : 1,
+        duration: AppMotion.medium,
         curve: Curves.easeOutBack,
         alignment: Alignment.bottomCenter,
         child: pin,
@@ -166,13 +196,13 @@ class _RingPainter extends CustomPainter {
     canvas.drawShadow(
       Path()..addOval(rect),
       AppColors.night.withAlpha(0x70),
-      6,
+      _shadowElevation,
       false,
     );
     final base = Paint()..color = mine ? AppColors.night : AppColors.paper;
     canvas.drawOval(rect, base);
     if (mine || !showRing) return;
-    final arc = rect.deflate(3);
+    final arc = rect.deflate(_ringInset);
     // Track under the arc, so the part already elapsed stays visible.
     canvas.drawArc(
       arc,
@@ -182,10 +212,10 @@ class _RingPainter extends CustomPainter {
       Paint()
         ..color = AppColors.trait
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 6,
+        ..strokeWidth = _ringStroke,
     );
     // Remaining time, clockwise from the top (min 4° so it never vanishes).
-    final sweep = math.max(4 / 360, fraction) * 2 * math.pi;
+    final sweep = math.max(_minSweepDegrees / 360, fraction) * 2 * math.pi;
     canvas.drawArc(
       arc,
       -math.pi / 2,
@@ -195,7 +225,7 @@ class _RingPainter extends CustomPainter {
         ..color = freshnessColor(fraction)
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round
-        ..strokeWidth = 6,
+        ..strokeWidth = _ringStroke,
     );
   }
 

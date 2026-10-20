@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_spacing.dart';
+
+const _border = 3.0;
+const _shadowBlur = 6.0;
 
 /// Bubble standing for several nearby pins that would overlap at this zoom.
 /// Tapping it is handled by the cluster layer, which zooms in on its pins.
@@ -17,12 +21,12 @@ class MapClusterMarker extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.night,
         shape: BoxShape.circle,
-        border: Border.all(color: Colors.white, width: 3),
+        border: Border.all(color: Colors.white, width: _border),
         boxShadow: [
           BoxShadow(
             color: AppColors.night.withAlpha(0x70),
-            blurRadius: 6,
-            offset: const Offset(0, 2),
+            blurRadius: _shadowBlur,
+            offset: const Offset(0, AppSpacing.xxs),
           ),
         ],
       ),

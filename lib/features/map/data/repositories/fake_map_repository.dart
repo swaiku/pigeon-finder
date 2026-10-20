@@ -48,6 +48,16 @@ class FakeMapRepository implements MapRepository {
     'Statue',
   ];
 
+  /// One cell in this many holds a post.
+  static const _postDensity = 3;
+  static const _maxPigeons = 8;
+  static const _pointsPerPigeon = 7;
+  static const _maxCoos = 60;
+
+  /// One post in this many is already reported.
+  static const _reportOdds = 10;
+  static const _maxReports = 2;
+
   static const _uuid = Uuid();
 
   final _cells = <(int, int), List<MapPost>>{};
@@ -55,12 +65,12 @@ class FakeMapRepository implements MapRepository {
   List<MapPost> _generateCell(int cx, int cy) {
     final rng = math.Random(cx * 73856093 ^ cy * 19349663);
     // About one cell in three holds a post, a few hold two.
-    final n = rng.nextInt(3) == 0 ? 1 + rng.nextInt(2) : 0;
+    final n = rng.nextInt(_postDensity) == 0 ? 1 + rng.nextInt(2) : 0;
     final now = DateTime.now();
     return [
       for (var i = 0; i < n; i++)
         () {
-          final count = 1 + rng.nextInt(8);
+          final count = 1 + rng.nextInt(_maxPigeons);
           return MapPost(
             id: _uuid.v4(),
             user: _users[rng.nextInt(_users.length)],
@@ -69,11 +79,15 @@ class FakeMapRepository implements MapRepository {
               (cy + rng.nextDouble()) * _cellSize,
               (cx + rng.nextDouble()) * _cellSize,
             ),
-            createdAt: now.subtract(Duration(minutes: rng.nextInt(24 * 60))),
+            createdAt: now.subtract(
+              Duration(minutes: rng.nextInt(MapPost.lifetime.inMinutes)),
+            ),
             count: count,
-            points: count * 7,
-            coos: rng.nextInt(60),
-            reports: rng.nextInt(10) == 0 ? 1 + rng.nextInt(2) : 0,
+            points: count * _pointsPerPigeon,
+            coos: rng.nextInt(_maxCoos),
+            reports: rng.nextInt(_reportOdds) == 0
+                ? 1 + rng.nextInt(_maxReports)
+                : 0,
           );
         }(),
     ];

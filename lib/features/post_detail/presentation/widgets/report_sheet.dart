@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_motion.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../l10n/app_localizations.dart';
+
+const _radioSize = 20.0;
+const _radioDotSize = 10.0;
+const _borderWidth = 2.0;
+
+/// Distance a row travels while sliding in.
+const _slideDistance = 14.0;
 
 enum ReportReason { notPigeon, gull, stolen, inappropriate }
 
@@ -14,7 +22,7 @@ Future<ReportReason?> showReportSheet(BuildContext context) {
     isScrollControlled: true,
     useRootNavigator: true,
     backgroundColor: AppColors.paper,
-    barrierColor: AppColors.scrim.withAlpha(0x73),
+    barrierColor: AppColors.scrimModal,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(AppSpacing.radiusSheet),
@@ -47,16 +55,18 @@ class _ReportSheetState extends State<_ReportSheet> {
     final text = Theme.of(context).textTheme;
     final bottom = MediaQuery.paddingOf(context).bottom;
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 22, 18, bottom + 24),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.roomy,
+        AppSpacing.xl,
+        AppSpacing.roomy,
+        bottom + AppSpacing.xxl,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            l10n.reportTitle,
-            style: text.titleLarge?.copyWith(fontSize: 24),
-          ),
-          const SizedBox(height: 4),
+          Text(l10n.reportTitle, style: text.headlineLarge),
+          const SizedBox(height: AppSpacing.xs),
           Text(
             l10n.reportSubtitle,
             style: text.bodyMedium?.copyWith(color: AppColors.mist),
@@ -65,7 +75,7 @@ class _ReportSheetState extends State<_ReportSheet> {
           for (final (i, r) in ReportReason.values.indexed)
             _ReasonTile(
               // Rows slide in one after the other.
-              delay: i * 60,
+              delay: AppMotion.stagger * i,
               label: _label(l10n, r),
               selected: _reason == r,
               onTap: () => setState(() => _reason = r),
@@ -76,22 +86,17 @@ class _ReportSheetState extends State<_ReportSheet> {
                 ? null
                 : () => Navigator.of(context).pop(_reason),
             child: AnimatedContainer(
-              duration: const Duration(milliseconds: 220),
+              duration: AppMotion.fast,
               curve: Curves.easeOut,
               padding: const EdgeInsets.all(AppSpacing.lg),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: _reason == null
-                    ? const Color(0xFFC9C2B4)
-                    : AppColors.pin,
-                borderRadius: BorderRadius.circular(18),
+                color: _reason == null ? AppColors.mutedText : AppColors.pin,
+                borderRadius: BorderRadius.circular(AppSpacing.radiusCard),
               ),
               child: Text(
                 l10n.reportSubmit,
-                style: text.titleMedium?.copyWith(
-                  color: AppColors.paper,
-                  fontSize: 18,
-                ),
+                style: text.titleLarge?.copyWith(color: AppColors.paper),
               ),
             ),
           ),
@@ -109,7 +114,7 @@ class _ReasonTile extends StatelessWidget {
     required this.onTap,
   });
 
-  final int delay;
+  final Duration delay;
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -119,12 +124,12 @@ class _ReasonTile extends StatelessWidget {
     final border = selected ? AppColors.pin : AppColors.trait;
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
-      duration: Duration(milliseconds: 320 + delay),
+      duration: AppMotion.medium + delay,
       curve: Curves.easeOutCubic,
       builder: (_, t, child) => Opacity(
         opacity: t,
         child: Transform.translate(
-          offset: Offset(0, 14 * (1 - t)),
+          offset: Offset(0, _slideDistance * (1 - t)),
           child: child,
         ),
       ),
@@ -134,31 +139,31 @@ class _ReasonTile extends StatelessWidget {
           behavior: HitTestBehavior.opaque,
           onTap: onTap,
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 180),
-            padding: const EdgeInsets.all(14),
+            duration: AppMotion.fast,
+            padding: const EdgeInsets.all(AppSpacing.cozy),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(AppSpacing.radiusButton),
-              border: Border.all(color: border, width: 2),
+              border: Border.all(color: border, width: _borderWidth),
             ),
             child: Row(
               children: [
                 AnimatedContainer(
-                  duration: const Duration(milliseconds: 180),
-                  width: 20,
-                  height: 20,
+                  duration: AppMotion.fast,
+                  width: _radioSize,
+                  height: _radioSize,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: border, width: 2),
+                    border: Border.all(color: border, width: _borderWidth),
                   ),
                   alignment: Alignment.center,
                   child: AnimatedScale(
                     scale: selected ? 1 : 0,
-                    duration: const Duration(milliseconds: 200),
+                    duration: AppMotion.fast,
                     curve: Curves.easeOutBack,
                     child: Container(
-                      width: 10,
-                      height: 10,
+                      width: _radioDotSize,
+                      height: _radioDotSize,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppColors.pin,

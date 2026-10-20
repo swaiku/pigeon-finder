@@ -40,6 +40,11 @@ class MapPostsLayer extends StatelessWidget {
   /// them apart.
   static const clusterMaxZoom = 17;
 
+  /// Heat level above which the heat map takes over the taps.
+  static const _heatTakesOver = .5;
+
+  static const _clusterRadius = 70;
+
   @override
   Widget build(BuildContext context) {
     final camera = MapCamera.of(context);
@@ -57,7 +62,7 @@ class MapPostsLayer extends StatelessWidget {
           ),
         if (heat < 1)
           IgnorePointer(
-            ignoring: heat > .5,
+            ignoring: heat > _heatTakesOver,
             child: Opacity(
               opacity: 1 - heat,
               child: MarkerClusterLayerWidget(
@@ -67,7 +72,7 @@ class MapPostsLayer extends StatelessWidget {
                       _pinMarker(p, selected: p.id == selectedId),
                   ],
                   size: const Size.square(MapClusterMarker.size),
-                  maxClusterRadius: 70,
+                  maxClusterRadius: _clusterRadius,
                   disableClusteringAtZoom: clusterMaxZoom,
                   // Tapping a bubble zooms in on its pins; the page already
                   // centers on a selected pin, and nothing here needs a
@@ -118,21 +123,28 @@ class _HeatLayerState extends State<_HeatLayer> {
   late final _options = HeatMapOptions(
     // The plugin scales the radius with the zoom, so this is the reach at the
     // closest zoom; far out it shrinks, hence the generous value.
-    radius: 70,
-    minOpacity: .2,
+    radius: _heatRadius,
+    minOpacity: _heatMinOpacity,
     gradient: {
-      .3: _swatch(AppColors.iridescent),
-      .6: _swatch(AppColors.grain),
-      1: _swatch(AppColors.pin),
+      _heatLow: _swatch(AppColors.iridescent),
+      _heatMid: _swatch(AppColors.grain),
+      _heatHigh: _swatch(AppColors.pin),
     },
   );
+
+  static const _heatRadius = 70.0;
+  static const _heatMinOpacity = .2;
+  static const _heatLow = .3;
+  static const _heatMid = .6;
+  static const _heatHigh = 1.0;
 
   late InMemoryHeatMapDataSource _source = _sourceFor(widget.posts);
 
   /// The plugin only takes [MaterialColor]s; every shade is the same color.
+  static const _shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
+
   static MaterialColor _swatch(Color color) => MaterialColor(color.toARGB32(), {
-    for (final shade in [50, 100, 200, 300, 400, 500, 600, 700, 800, 900])
-      shade: color,
+    for (final shade in _shades) shade: color,
   });
 
   static InMemoryHeatMapDataSource _sourceFor(List<MapPost> posts) =>

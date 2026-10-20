@@ -43,6 +43,15 @@ abstract final class AppColors {
   /// Scrim behind modal sheets / full-screen overlays.
   static const Color scrim = Color(0xFF0E1522);
 
+  /// [scrim] dimming the map behind a bottom sheet.
+  static final Color scrimModal = scrim.withAlpha(0x59);
+
+  /// [scrim] under a badge laid over a photo.
+  static final Color scrimBadge = scrim.withAlpha(0x99);
+
+  /// [paper] letting the map show through floating bars.
+  static final Color paperGlass = paper.withAlpha(0xF0);
+
   static final ColorScheme lightScheme = ColorScheme.light(
     primary: pin,
     onPrimary: paper,

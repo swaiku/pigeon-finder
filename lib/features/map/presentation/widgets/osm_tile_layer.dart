@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_spacing.dart';
 
 /// OpenStreetMap standard tile layer, configured to follow
 /// https://operations.osmfoundation.org/policies/tiles/:
@@ -36,14 +37,17 @@ class OsmAttribution extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.paper.withAlpha(0xD9),
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(AppSpacing.compact),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.compact,
+          vertical: AppSpacing.xxs,
+        ),
         child: Text(
           '© OpenStreetMap contributors',
           style: Theme.of(context).textTheme.labelSmall
-              ?.copyWith(color: AppColors.mist, fontSize: 10),
+              ?.copyWith(color: AppColors.mist),
         ),
       ),
     );

@@ -44,6 +44,14 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   /// Where the posts on the map were last fetched around.
   LatLng? _postsAnchor;
 
+  /// Zoom the first region name is looked up at.
+  static const _initialZoom = 14.0;
+
+  /// Latitude limit of the web mercator projection, in degrees.
+  static const _maxLatitude = 85.0;
+
+  static const _halfWorldDegrees = 180;
+
   static const _geocodeDebounce = Duration(milliseconds: 500);
 
   /// Distance walked before the posts are fetched again around the user.
@@ -69,7 +77,11 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       final center = position ?? defaultMapCenter;
       final posts = await _repository.getActivePosts(around: center);
       _postsAnchor = center;
-      final region = await _regionName(center, state.regionLevel, zoom: 14);
+      final region = await _regionName(
+        center,
+        state.regionLevel,
+        zoom: _initialZoom,
+      );
       emit(
         state.copyWith(
           status: MapStatus.success,
@@ -135,12 +147,19 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     required double zoom,
   }) async {
     // About half a map tile, so the points stay inside the visible area.
-    final dLat = 180 / math.pow(2, zoom) * math.cos(center.latitudeInRad);
+    final dLat =
+        _halfWorldDegrees / math.pow(2, zoom) * math.cos(center.latitudeInRad);
     final samples = [
       center,
       // The screen is taller than wide, so spread the points vertically.
-      LatLng((center.latitude + dLat).clamp(-85, 85), center.longitude),
-      LatLng((center.latitude - dLat).clamp(-85, 85), center.longitude),
+      LatLng(
+        (center.latitude + dLat).clamp(-_maxLatitude, _maxLatitude),
+        center.longitude,
+      ),
+      LatLng(
+        (center.latitude - dLat).clamp(-_maxLatitude, _maxLatitude),
+        center.longitude,
+      ),
     ];
     final names = await Future.wait(
       samples.map((p) async {

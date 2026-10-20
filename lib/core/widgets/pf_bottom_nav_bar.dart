@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 
+/// Tabs on each side of the center action.
+const _slotsPerSide = 2;
+
 /// One tab of a [PfBottomNavBar].
 class PfNavItem {
   const PfNavItem({required this.icon, required this.label});
@@ -36,8 +39,8 @@ class PfBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
-    final left = items.take(2).toList();
-    final right = items.skip(2).take(2).toList();
+    final left = items.take(_slotsPerSide).toList();
+    final right = items.skip(_slotsPerSide).take(_slotsPerSide).toList();
 
     Widget tab(PfNavItem item, int index) {
       final selected = index == currentIndex;
@@ -52,8 +55,8 @@ class PfBottomNavBar extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(item.icon, size: 26, color: color),
-              const SizedBox(height: 3),
+              Icon(item.icon, size: AppSpacing.iconLg, color: color),
+              const SizedBox(height: AppSpacing.xs),
               Text(
                 item.label,
                 style: textTheme.labelMedium?.copyWith(color: color),
@@ -73,7 +76,7 @@ class PfBottomNavBar extends StatelessWidget {
     const barHeight = 96.0;
     const fabSize = 68.0;
     const fabOverflow = 26.0;
-    const fabRing = 6.0;
+    const fabRing = AppSpacing.compact;
 
     return SizedBox(
       height: barHeight + fabOverflow,
@@ -100,7 +103,7 @@ class PfBottomNavBar extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       for (var i = 0; i < left.length; i++) tab(left[i], i),
-                      const SizedBox(width: 96),
+                      const SizedBox(width: barHeight),
                       for (var i = 0; i < right.length; i++)
                         tab(right[i], left.length + i),
                     ],
@@ -133,7 +136,7 @@ class PfBottomNavBar extends StatelessWidget {
                       child: Icon(
                         centerIcon,
                         color: colorScheme.onPrimary,
-                        size: 32,
+                        size: AppSpacing.iconXl,
                       ),
                     ),
                   ),

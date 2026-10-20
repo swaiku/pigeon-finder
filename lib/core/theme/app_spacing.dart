@@ -7,13 +7,26 @@ import 'app_colors.dart';
 /// used throughout the screens).
 abstract final class AppSpacing {
   // --- Spacing ----------------------------------------------------------
+  static const double xxs = 2;
   static const double xs = 4;
+  static const double compact = 6;
   static const double sm = 8;
+  static const double snug = 10;
   static const double md = 12;
+  static const double cozy = 14;
   static const double lg = 16;
+  static const double roomy = 18;
   static const double xl = 20;
   static const double xxl = 24;
   static const double xxxl = 32;
+
+  // --- Sizes ----------------------------------------------------------------
+  static const double iconSm = 18;
+  static const double iconMd = 20;
+  static const double iconLg = 26;
+  static const double iconXl = 32;
+  static const double avatarSm = 34;
+  static const double avatarMd = 44;
 
   // --- Radii --------------------------------------------------------------
   // Named directly after the board's own scale: vignette, bouton, carte,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_motion.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/pf_avatar.dart';
 import '../../../../core/widgets/pf_image_placeholder.dart';
@@ -18,7 +19,7 @@ Future<void> showPostDetailSheet(BuildContext context, MapPost post) {
     isScrollControlled: true,
     useRootNavigator: true,
     backgroundColor: AppColors.paper,
-    barrierColor: AppColors.scrim.withAlpha(0x59),
+    barrierColor: AppColors.scrimModal,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(AppSpacing.radiusSheet),
@@ -27,6 +28,22 @@ Future<void> showPostDetailSheet(BuildContext context, MapPost post) {
     builder: (_) => PostDetailSheet(post: post),
   );
 }
+
+const _sheetHandle = Size(40, 5);
+const _photoHeight = 230.0;
+const _badgeInset = 10.0;
+const _pillInset = 12.0;
+
+/// Entrance timeline, as fractions of [AppMotion.entrance].
+const _photoEnd = .55;
+const _authorStart = .2;
+const _authorEnd = .75;
+const _photoStartScale = .94;
+const _staggerLift = Offset(0, .25);
+
+/// Scale reached at the peak of the coo heart's pop.
+const _cooPopScale = 1.5;
+const _cooPressedScale = .97;
 
 /// Photo, author, points and the coo / report actions of one post.
 class PostDetailSheet extends StatefulWidget {
@@ -42,7 +59,7 @@ class _PostDetailSheetState extends State<PostDetailSheet>
     with TickerProviderStateMixin {
   late final _enter = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 700),
+    duration: AppMotion.entrance,
   )..forward();
 
   // TODO(post-detail): persist coos and reports through a repository.
@@ -66,10 +83,7 @@ class _PostDetailSheetState extends State<PostDetailSheet>
     return FadeTransition(
       opacity: curve,
       child: SlideTransition(
-        position: Tween(
-          begin: const Offset(0, .25),
-          end: Offset.zero,
-        ).animate(curve),
+        position: Tween(begin: _staggerLift, end: Offset.zero).animate(curve),
         child: child,
       ),
     );
@@ -102,61 +116,70 @@ class _PostDetailSheetState extends State<PostDetailSheet>
     final left = _post.timeLeft();
     final reports = _post.reports + (_reported ? 1 : 0);
     return Padding(
-      padding: EdgeInsets.fromLTRB(18, 10, 18, bottom + 24),
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.roomy,
+        AppSpacing.snug,
+        AppSpacing.roomy,
+        bottom + AppSpacing.xxl,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Center(
             child: Container(
-              width: 40,
-              height: 5,
+              width: _sheetHandle.width,
+              height: _sheetHandle.height,
               decoration: BoxDecoration(
                 color: AppColors.trait,
-                borderRadius: BorderRadius.circular(3),
+                borderRadius: BorderRadius.circular(AppSpacing.xs),
               ),
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: AppSpacing.cozy),
           _stagger(
             0,
-            .55,
+            _photoEnd,
             ScaleTransition(
               // The photo settles in as the sheet arrives.
-              scale: Tween(begin: .94, end: 1.0).animate(
+              scale: Tween(begin: _photoStartScale, end: 1.0).animate(
                 CurvedAnimation(
                   parent: _enter,
-                  curve: const Interval(0, .55, curve: Curves.easeOutBack),
+                  curve: const Interval(
+                    0,
+                    _photoEnd,
+                    curve: Curves.easeOutBack,
+                  ),
                 ),
               ),
               child: SizedBox(
-                height: 230,
+                height: _photoHeight,
                 child: PfImagePlaceholder(
                   borderRadius: BorderRadius.circular(AppSpacing.radiusPanel),
                   child: Stack(
                     children: [
                       Positioned(
-                        left: 12,
-                        bottom: 12,
+                        left: _pillInset,
+                        bottom: _pillInset,
                         child: _PigeonCountPill(count: _post.count),
                       ),
                       Positioned(
-                        right: 10,
-                        top: 10,
+                        right: _badgeInset,
+                        top: _badgeInset,
                         child: _PhotoBadge(
                           label: l10n.mapExpiresIn(
                             left.inHours,
                             left.inMinutes % 60,
                           ),
-                          background: AppColors.scrim.withAlpha(0x99),
+                          background: AppColors.scrimBadge,
                           foreground: Colors.white,
                         ),
                       ),
                       Positioned(
-                        left: 10,
-                        top: 10,
+                        left: _badgeInset,
+                        top: _badgeInset,
                         child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
+                          duration: AppMotion.medium,
                           transitionBuilder: (child, anim) => ScaleTransition(
                             scale: CurvedAnimation(
                               parent: anim,
@@ -180,15 +203,15 @@ class _PostDetailSheetState extends State<PostDetailSheet>
               ),
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: AppSpacing.cozy),
           _stagger(
-            .2,
-            .75,
+            _authorStart,
+            _authorEnd,
             Row(
               children: [
                 PfAvatar(
                   initial: _post.user[0].toUpperCase(),
-                  size: 44,
+                  size: AppSpacing.avatarMd,
                   backgroundColor: AppColors.feather,
                 ),
                 const SizedBox(width: AppSpacing.md),
@@ -212,20 +235,19 @@ class _PostDetailSheetState extends State<PostDetailSheet>
                 // Points count up while the sheet settles.
                 TweenAnimationBuilder<int>(
                   tween: IntTween(begin: 0, end: _post.points),
-                  duration: const Duration(milliseconds: 900),
+                  duration: AppMotion.countUp,
                   curve: Curves.easeOutCubic,
                   builder: (_, v, _) => Text(
                     '+$v',
-                    style: text.titleMedium?.copyWith(
+                    style: text.titleLarge?.copyWith(
                       color: AppColors.iridescent,
-                      fontSize: 18,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 14),
+          const SizedBox(height: AppSpacing.cozy),
           Row(
             children: [
               Expanded(
@@ -239,9 +261,9 @@ class _PostDetailSheetState extends State<PostDetailSheet>
                 ),
               ),
               if (!_post.mine) ...[
-                const SizedBox(width: 10),
+                const SizedBox(width: AppSpacing.snug),
                 AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
+                  duration: AppMotion.medium,
                   transitionBuilder: (child, anim) => FadeTransition(
                     opacity: anim,
                     child: SizeTransition(
@@ -285,7 +307,10 @@ class _PhotoBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.snug,
+        vertical: AppSpacing.xs,
+      ),
       decoration: BoxDecoration(
         color: background,
         borderRadius: BorderRadius.circular(AppSpacing.radiusChip),
@@ -319,19 +344,19 @@ class _CooButtonState extends State<_CooButton>
     with SingleTickerProviderStateMixin {
   late final _pop = AnimationController(
     vsync: this,
-    duration: const Duration(milliseconds: 420),
+    duration: AppMotion.emphasis,
   );
   late final _scale = TweenSequence<double>([
     TweenSequenceItem(
       tween: Tween(
         begin: 1.0,
-        end: 1.5,
+        end: _cooPopScale,
       ).chain(CurveTween(curve: Curves.easeOut)),
       weight: 35,
     ),
     TweenSequenceItem(
       tween: Tween(
-        begin: 1.5,
+        begin: _cooPopScale,
         end: 1.0,
       ).chain(CurveTween(curve: Curves.elasticOut)),
       weight: 65,
@@ -362,11 +387,11 @@ class _CooButtonState extends State<_CooButton>
       onTapUp: (_) => setState(() => _down = false),
       onTap: widget.onTap,
       child: AnimatedScale(
-        scale: _down ? .97 : 1,
-        duration: const Duration(milliseconds: 100),
+        scale: _down ? _cooPressedScale : 1,
+        duration: AppMotion.press,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(vertical: 14),
+          duration: AppMotion.fast,
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.cozy),
           decoration: BoxDecoration(
             color: bg,
             borderRadius: BorderRadius.circular(AppSpacing.radiusButton),
@@ -376,11 +401,11 @@ class _CooButtonState extends State<_CooButton>
             children: [
               ScaleTransition(
                 scale: _scale,
-                child: Icon(Icons.favorite, size: 20, color: fg),
+                child: Icon(Icons.favorite, size: AppSpacing.iconMd, color: fg),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: AppSpacing.sm),
               AnimatedDefaultTextStyle(
-                duration: const Duration(milliseconds: 200),
+                duration: AppMotion.fast,
                 style: Theme.of(context).textTheme.titleSmall!
                     .copyWith(color: fg),
                 child: Text(widget.label),
@@ -402,7 +427,12 @@ class _PigeonCountPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(8, 5, 12, 5),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.sm,
+        AppSpacing.xs,
+        AppSpacing.md,
+        AppSpacing.xs,
+      ),
       decoration: BoxDecoration(
         color: AppColors.paper,
         borderRadius: BorderRadius.circular(AppSpacing.radiusPill),
@@ -410,11 +440,11 @@ class _PigeonCountPill extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(width: 6),
+          const SizedBox(width: AppSpacing.compact),
           Text(
             '×$count',
-            style: Theme.of(context).textTheme.titleSmall
-                ?.copyWith(color: AppColors.night, fontSize: 16),
+            style: Theme.of(context).textTheme.titleMedium
+                ?.copyWith(color: AppColors.night),
           ),
         ],
       ),
@@ -433,7 +463,10 @@ class _ReportButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.lg,
+          vertical: AppSpacing.cozy,
+        ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(AppSpacing.radiusButton),
@@ -442,8 +475,12 @@ class _ReportButton extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.flag_outlined, size: 18, color: AppColors.night),
-            const SizedBox(width: 6),
+            const Icon(
+              Icons.flag_outlined,
+              size: AppSpacing.iconSm,
+              color: AppColors.night,
+            ),
+            const SizedBox(width: AppSpacing.compact),
             Text(
               label,
               style: Theme.of(context).textTheme.titleSmall
@@ -464,7 +501,10 @@ class _ReportedPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.lg,
+        vertical: AppSpacing.cozy,
+      ),
       decoration: BoxDecoration(
         color: AppColors.warningContainer,
         borderRadius: BorderRadius.circular(AppSpacing.radiusButton),
