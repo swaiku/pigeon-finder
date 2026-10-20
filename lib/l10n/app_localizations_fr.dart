@@ -95,4 +95,50 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get mapNorthUnlock => 'Déverrouiller le nord';
+
+  @override
+  String postDetailAgoMinutes(int minutes) {
+    return 'il y a $minutes min';
+  }
+
+  @override
+  String postDetailAgoHours(int hours) {
+    return 'il y a $hours h';
+  }
+
+  @override
+  String postDetailCoo(int count) {
+    return 'Roucoule · $count';
+  }
+
+  @override
+  String get postDetailReport => 'Signaler';
+
+  @override
+  String get postDetailReported => 'Signalé';
+
+  @override
+  String get postDetailReportThanks => 'Merci ! Signalement envoyé';
+
+  @override
+  String get reportTitle => 'Qu\'est-ce qui cloche ?';
+
+  @override
+  String get reportSubtitle =>
+      'À 3 signalements, l\'IA revérifie et la photo peut disparaître. Un signalement juste te rapporte +2 pts.';
+
+  @override
+  String get reportReasonNotPigeon => 'Ce n\'est pas un pigeon';
+
+  @override
+  String get reportReasonGull => 'C\'est un goéland / une mouette';
+
+  @override
+  String get reportReasonStolen => 'Photo trouvée sur internet';
+
+  @override
+  String get reportReasonInappropriate => 'Contenu inapproprié';
+
+  @override
+  String get reportSubmit => 'Envoyer le signalement';
 }

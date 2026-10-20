@@ -217,6 +217,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unlock north'**
   String get mapNorthUnlock;
+
+  /// No description provided for @postDetailAgoMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min ago'**
+  String postDetailAgoMinutes(int minutes);
+
+  /// No description provided for @postDetailAgoHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h ago'**
+  String postDetailAgoHours(int hours);
+
+  /// No description provided for @postDetailCoo.
+  ///
+  /// In en, this message translates to:
+  /// **'Coo · {count}'**
+  String postDetailCoo(int count);
+
+  /// No description provided for @postDetailReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get postDetailReport;
+
+  /// No description provided for @postDetailReported.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported'**
+  String get postDetailReported;
+
+  /// No description provided for @postDetailReportThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks! Report sent'**
+  String get postDetailReportThanks;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s wrong?'**
+  String get reportTitle;
+
+  /// No description provided for @reportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'At 3 reports, the AI double-checks and the photo may disappear. A valid report earns you +2 pts.'**
+  String get reportSubtitle;
+
+  /// No description provided for @reportReasonNotPigeon.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s not a pigeon'**
+  String get reportReasonNotPigeon;
+
+  /// No description provided for @reportReasonGull.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s a gull / seagull'**
+  String get reportReasonGull;
+
+  /// No description provided for @reportReasonStolen.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo found on the internet'**
+  String get reportReasonStolen;
+
+  /// No description provided for @reportReasonInappropriate.
+  ///
+  /// In en, this message translates to:
+  /// **'Inappropriate content'**
+  String get reportReasonInappropriate;
+
+  /// No description provided for @reportSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send report'**
+  String get reportSubmit;
 }
 
 class _AppLocalizationsDelegate

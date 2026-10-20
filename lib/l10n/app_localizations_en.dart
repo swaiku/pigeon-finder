@@ -95,4 +95,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mapNorthUnlock => 'Unlock north';
+
+  @override
+  String postDetailAgoMinutes(int minutes) {
+    return '$minutes min ago';
+  }
+
+  @override
+  String postDetailAgoHours(int hours) {
+    return '$hours h ago';
+  }
+
+  @override
+  String postDetailCoo(int count) {
+    return 'Coo · $count';
+  }
+
+  @override
+  String get postDetailReport => 'Report';
+
+  @override
+  String get postDetailReported => 'Reported';
+
+  @override
+  String get postDetailReportThanks => 'Thanks! Report sent';
+
+  @override
+  String get reportTitle => 'What\'s wrong?';
+
+  @override
+  String get reportSubtitle =>
+      'At 3 reports, the AI double-checks and the photo may disappear. A valid report earns you +2 pts.';
+
+  @override
+  String get reportReasonNotPigeon => 'It\'s not a pigeon';
+
+  @override
+  String get reportReasonGull => 'It\'s a gull / seagull';
+
+  @override
+  String get reportReasonStolen => 'Photo found on the internet';
+
+  @override
+  String get reportReasonInappropriate => 'Inappropriate content';
+
+  @override
+  String get reportSubmit => 'Send report';
 }

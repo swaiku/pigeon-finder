@@ -19,5 +19,21 @@
   "retry": "Réessayer",
   "mapRecenter": "Recentrer sur ma position",
   "mapNorthLock": "Verrouiller le nord",
-  "mapNorthUnlock": "Déverrouiller le nord"
+  "mapNorthUnlock": "Déverrouiller le nord",
+  "postDetailAgoMinutes": "il y a {minutes} min",
+  "@postDetailAgoMinutes": {"placeholders": {"minutes": {"type": "int"}}},
+  "postDetailAgoHours": "il y a {hours} h",
+  "@postDetailAgoHours": {"placeholders": {"hours": {"type": "int"}}},
+  "postDetailCoo": "Roucoule · {count}",
+  "@postDetailCoo": {"placeholders": {"count": {"type": "int"}}},
+  "postDetailReport": "Signaler",
+  "postDetailReported": "Signalé",
+  "postDetailReportThanks": "Merci ! Signalement envoyé",
+  "reportTitle": "Qu'est-ce qui cloche ?",
+  "reportSubtitle": "À 3 signalements, l'IA revérifie et la photo peut disparaître. Un signalement juste te rapporte +2 pts.",
+  "reportReasonNotPigeon": "Ce n'est pas un pigeon",
+  "reportReasonGull": "C'est un goéland / une mouette",
+  "reportReasonStolen": "Photo trouvée sur internet",
+  "reportReasonInappropriate": "Contenu inapproprié",
+  "reportSubmit": "Envoyer le signalement"
 }

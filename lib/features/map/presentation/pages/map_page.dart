@@ -16,11 +16,11 @@ import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/pf_error_state.dart';
 import '../../../../core/widgets/pf_loading_indicator.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../post_detail/presentation/widgets/post_detail_sheet.dart';
 import '../../domain/entities/map_defaults.dart';
 import '../bloc/map_bloc.dart';
 import '../widgets/map_header.dart';
 import '../widgets/map_floating_button.dart';
-import '../widgets/map_post_card.dart';
 import '../widgets/map_posts_layer.dart';
 import '../widgets/osm_tile_layer.dart';
 
@@ -47,7 +47,6 @@ class _MapViewState extends State<_MapView>
     with SingleTickerProviderStateMixin {
   static const _overlayGap = 32.0;
   static const _recenterZoom = 16.0;
-  static const _cardHeight = 120.0;
 
   final _controller = MapController();
   late final _anim = AnimationController(
@@ -152,15 +151,21 @@ class _MapViewState extends State<_MapView>
       child: BlocConsumer<MapBloc, MapState>(
         listenWhen: (prev, curr) =>
             curr.selectedId != null && prev.selectedId != curr.selectedId,
-        listener: (_, state) =>
-            _animateCamera(bloc, center: state.selected!.position),
+        listener: (context, state) {
+          final post = state.selected!;
+          _animateCamera(bloc, center: post.position);
+          showPostDetailSheet(context, post).whenComplete(() {
+            if (bloc.state.selectedId == post.id) {
+              bloc.add(const MapPostSelected(null));
+            }
+          });
+        },
         builder: (context, state) {
           // Posts that expired since the last fetch are dropped right away.
           final posts = [
             for (final p in state.posts)
               if (p.timeLeft(now: _now) > Duration.zero) p,
           ];
-          final selected = state.selected;
           return Stack(
             children: [
               FlutterMap(
@@ -254,9 +259,7 @@ class _MapViewState extends State<_MapView>
                 ),
               Positioned(
                 right: 14,
-                // Sits above the card when one is open.
-                bottom:
-                    bottom + _overlayGap + (selected != null ? _cardHeight : 0),
+                bottom: bottom + _overlayGap,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -292,16 +295,6 @@ class _MapViewState extends State<_MapView>
                 bottom: bottom + 6,
                 child: const OsmAttribution(),
               ),
-              if (selected != null)
-                Positioned(
-                  left: 14,
-                  right: 14,
-                  bottom: bottom + _overlayGap,
-                  child: MapPostCard(
-                    post: selected,
-                    onClose: () => bloc.add(const MapPostSelected(null)),
-                  ),
-                ),
             ],
           );
         },
