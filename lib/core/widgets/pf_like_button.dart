@@ -45,7 +45,7 @@ class PfLikeButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.favorite, size: 20, color: foreground),
+              Icon(Icons.favorite, size: AppSpacing.iconMd, color: foreground),
               const SizedBox(width: AppSpacing.sm),
               Text(
                 label,

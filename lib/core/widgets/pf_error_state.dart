@@ -25,7 +25,7 @@ class PfErrorState extends StatelessWidget {
         Icon(
           Icons.error_outline,
           color: Theme.of(context).colorScheme.error,
-          size: 32,
+          size: AppSpacing.iconXl,
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(message, textAlign: TextAlign.center, style: textTheme.bodyMedium),

@@ -49,7 +49,7 @@ class PfRankingRow extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            width: 22,
+            width: AppSpacing.xl + AppSpacing.xxs,
             child: Text(
               rank,
               textAlign: TextAlign.right,

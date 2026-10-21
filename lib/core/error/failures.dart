@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 /// Base class for all domain-level failures.
-abstract class Failure extends Equatable {
+abstract class Failure extends Equatable implements Exception {
   final String message;
 
   const Failure(this.message);

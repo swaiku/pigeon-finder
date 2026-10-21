@@ -1,6 +1,14 @@
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../features/map/data/datasources/geocoding_region_data_source.dart';
+import '../../features/map/data/datasources/geolocator_location_data_source.dart';
+import '../../features/map/data/datasources/location_data_source.dart';
+import '../../features/map/data/datasources/region_data_source.dart';
+import '../../features/map/data/repositories/fake_map_repository.dart';
+import '../../features/map/domain/repositories/map_repository.dart';
+import '../../features/map/presentation/bloc/map_bloc.dart';
+
 final sl = GetIt.instance;
 
 /// Registers all app-wide and feature-level dependencies.
@@ -21,14 +29,16 @@ Future<void> initDependencies() async {
   // sl.registerFactory(() => AuthCubit(sl()));
 
   // --- map ---
-  // sl.registerLazySingleton<MapRemoteDataSource>(
-  //   () => MapRemoteDataSourceImpl(sl()),
-  // );
-  // sl.registerLazySingleton<MapRepository>(
-  //   () => MapRepositoryImpl(sl()),
-  // );
-  // sl.registerLazySingleton(() => GetNearbyPostsUseCase(sl()));
-  // sl.registerFactory(() => MapCubit(sl()));
+  // TODO(map): replace the fake with MapRepositoryImpl once the Supabase
+  // data source exists.
+  sl.registerLazySingleton<RegionDataSource>(GeocodingRegionDataSource.new);
+  sl.registerLazySingleton<LocationDataSource>(
+    () => const GeolocatorLocationDataSource(),
+  );
+  sl.registerLazySingleton<MapRepository>(
+    () => FakeMapRepository(regions: sl(), location: sl()),
+  );
+  sl.registerFactory(() => MapBloc(sl()));
 
   // --- post ---
   // sl.registerLazySingleton<PostRemoteDataSource>(
