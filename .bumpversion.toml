@@ -7,6 +7,9 @@ message = "🔖 Bump version {current_version} → {new_version}"
 # Needs git-cliff installed locally (brew install git-cliff).
 pre_commit_hooks = [
   "git cliff -c .github/cliff.toml --strip header --tag v$BVHOOK_NEW_VERSION -o CHANGELOG.md",
+  # git-cliff leaves a blank line at the end, which the end-of-file-fixer
+  # hook would otherwise reject on the bump commit.
+  "pre-commit run end-of-file-fixer --files CHANGELOG.md || true",
   "git add CHANGELOG.md",
 ]
 
