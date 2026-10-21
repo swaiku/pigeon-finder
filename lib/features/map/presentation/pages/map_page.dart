@@ -370,7 +370,7 @@ class _UserDotState extends State<_UserDot>
 
   @override
   Widget build(BuildContext context) {
-    const color = AppColors.night;
+    const color = AppColors.pin;
     return Stack(
       clipBehavior: Clip.none,
       children: [
