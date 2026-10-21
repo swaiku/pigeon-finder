@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_spacing.dart';
 
 /// The thin rounded progress track used for the profile level bar.
 class PfProgressBar extends StatelessWidget {
@@ -20,10 +21,10 @@ class PfProgressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(6),
+      borderRadius: BorderRadius.circular(AppSpacing.compact),
       child: LinearProgressIndicator(
         value: value.clamp(0, 1),
-        minHeight: 10,
+        minHeight: AppSpacing.snug,
         backgroundColor: trackColor ?? AppColors.segmentTrack,
         valueColor: AlwaysStoppedAnimation(valueColor ?? colorScheme.primary),
       ),

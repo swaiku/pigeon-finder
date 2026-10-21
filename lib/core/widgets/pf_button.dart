@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_spacing.dart';
+
 /// Visual style of a [PfButton], matching the three button looks cataloged
 /// in the design system board: filled accent, filled secondary and
 /// outlined.
@@ -30,8 +32,8 @@ class PfButton extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 20),
-              const SizedBox(width: 8),
+              Icon(icon, size: AppSpacing.iconMd),
+              const SizedBox(width: AppSpacing.sm),
               Text(label),
             ],
           );

@@ -41,4 +41,116 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get cameraTitle => 'Caméra';
+
+  @override
+  String mapPigeonsAround(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons autour de toi',
+      one: '1 pigeon autour de toi',
+      zero: 'Aucun pigeon autour de toi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mapPigeonsInArea(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons dans cette zone',
+      one: '1 pigeon dans cette zone',
+      zero: 'Aucun pigeon dans cette zone',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mapExpiresIn(int hours, int minutes) {
+    return 'Expire dans $hours h $minutes min';
+  }
+
+  @override
+  String mapPigeonCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons',
+      one: '1 pigeon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mapReports(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count signalements',
+      one: '1 signalement',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get mapLoadError => 'Impossible de charger la carte';
+
+  @override
+  String get retry => 'Réessayer';
+
+  @override
+  String get mapRecenter => 'Recentrer sur ma position';
+
+  @override
+  String get mapNorthLock => 'Verrouiller le nord';
+
+  @override
+  String get mapNorthUnlock => 'Déverrouiller le nord';
+
+  @override
+  String postDetailAgoMinutes(int minutes) {
+    return 'il y a $minutes min';
+  }
+
+  @override
+  String postDetailAgoHours(int hours) {
+    return 'il y a $hours h';
+  }
+
+  @override
+  String postDetailCoo(int count) {
+    return 'Roucoule · $count';
+  }
+
+  @override
+  String get postDetailReport => 'Signaler';
+
+  @override
+  String get postDetailReported => 'Signalé';
+
+  @override
+  String get postDetailReportThanks => 'Merci ! Signalement envoyé';
+
+  @override
+  String get reportTitle => 'Qu\'est-ce qui cloche ?';
+
+  @override
+  String get reportSubtitle =>
+      'À 3 signalements, l\'IA revérifie et la photo peut disparaître. Un signalement juste te rapporte +2 pts.';
+
+  @override
+  String get reportReasonNotPigeon => 'Ce n\'est pas un pigeon';
+
+  @override
+  String get reportReasonGull => 'C\'est un goéland / une mouette';
+
+  @override
+  String get reportReasonStolen => 'Photo trouvée sur internet';
+
+  @override
+  String get reportReasonInappropriate => 'Contenu inapproprié';
+
+  @override
+  String get reportSubmit => 'Envoyer le signalement';
 }

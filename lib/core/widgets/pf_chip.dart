@@ -49,11 +49,13 @@ class PfStatusChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
-        vertical: 4,
+        vertical: AppSpacing.xs,
       ),
       decoration: BoxDecoration(
         color: filled ? background : null,
-        borderRadius: BorderRadius.circular(AppSpacing.radiusChip + 4),
+        borderRadius: BorderRadius.circular(
+          AppSpacing.radiusChip + AppSpacing.xs,
+        ),
         border: filled ? null : Border.all(color: background, width: 2),
       ),
       child: Text(

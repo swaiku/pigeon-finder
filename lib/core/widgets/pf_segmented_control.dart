@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_motion.dart';
 import '../theme/app_spacing.dart';
 
 /// The pill-shaped scope switcher used for leaderboard scope ("Quartier /
@@ -23,7 +24,7 @@ class PfSegmentedControl extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Container(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.all(AppSpacing.xs),
       decoration: BoxDecoration(
         color: AppColors.segmentTrack,
         borderRadius: BorderRadius.circular(AppSpacing.radiusCard - 2),
@@ -35,10 +36,8 @@ class PfSegmentedControl extends StatelessWidget {
               child: GestureDetector(
                 onTap: () => onChanged(i),
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 150),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: AppSpacing.sm + 1,
-                  ),
+                  duration: AppMotion.fast,
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
                   decoration: BoxDecoration(
                     color: i == selectedIndex ? colorScheme.surface : null,
                     borderRadius: BorderRadius.circular(

@@ -163,6 +163,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Camera'**
   String get cameraTitle;
+
+  /// No description provided for @mapPigeonsAround.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No pigeons around you} =1{1 pigeon around you} other{{count} pigeons around you}}'**
+  String mapPigeonsAround(int count);
+
+  /// No description provided for @mapPigeonsInArea.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No pigeons in this area} =1{1 pigeon in this area} other{{count} pigeons in this area}}'**
+  String mapPigeonsInArea(int count);
+
+  /// No description provided for @mapExpiresIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Expires in {hours} h {minutes} min'**
+  String mapExpiresIn(int hours, int minutes);
+
+  /// No description provided for @mapPigeonCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 pigeon} other{{count} pigeons}}'**
+  String mapPigeonCount(int count);
+
+  /// No description provided for @mapReports.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 report} other{{count} reports}}'**
+  String mapReports(int count);
+
+  /// No description provided for @mapLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the map'**
+  String get mapLoadError;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @mapRecenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Center on my location'**
+  String get mapRecenter;
+
+  /// No description provided for @mapNorthLock.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock north'**
+  String get mapNorthLock;
+
+  /// No description provided for @mapNorthUnlock.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock north'**
+  String get mapNorthUnlock;
+
+  /// No description provided for @postDetailAgoMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min ago'**
+  String postDetailAgoMinutes(int minutes);
+
+  /// No description provided for @postDetailAgoHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} h ago'**
+  String postDetailAgoHours(int hours);
+
+  /// No description provided for @postDetailCoo.
+  ///
+  /// In en, this message translates to:
+  /// **'Coo · {count}'**
+  String postDetailCoo(int count);
+
+  /// No description provided for @postDetailReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get postDetailReport;
+
+  /// No description provided for @postDetailReported.
+  ///
+  /// In en, this message translates to:
+  /// **'Reported'**
+  String get postDetailReported;
+
+  /// No description provided for @postDetailReportThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks! Report sent'**
+  String get postDetailReportThanks;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s wrong?'**
+  String get reportTitle;
+
+  /// No description provided for @reportSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'At 3 reports, the AI double-checks and the photo may disappear. A valid report earns you +2 pts.'**
+  String get reportSubtitle;
+
+  /// No description provided for @reportReasonNotPigeon.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s not a pigeon'**
+  String get reportReasonNotPigeon;
+
+  /// No description provided for @reportReasonGull.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s a gull / seagull'**
+  String get reportReasonGull;
+
+  /// No description provided for @reportReasonStolen.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo found on the internet'**
+  String get reportReasonStolen;
+
+  /// No description provided for @reportReasonInappropriate.
+  ///
+  /// In en, this message translates to:
+  /// **'Inappropriate content'**
+  String get reportReasonInappropriate;
+
+  /// No description provided for @reportSubmit.
+  ///
+  /// In en, this message translates to:
+  /// **'Send report'**
+  String get reportSubmit;
 }
 
 class _AppLocalizationsDelegate

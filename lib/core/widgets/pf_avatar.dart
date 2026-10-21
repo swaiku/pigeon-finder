@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+/// Share of the avatar's size taken by its initial.
+const _initialRatio = .4;
+
 /// A circular avatar showing a single initial, used for users without a
 /// profile photo (leaderboard, profile, podium, map header).
 class PfAvatar extends StatelessWidget {
@@ -31,7 +34,7 @@ class PfAvatar extends StatelessWidget {
         initial,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
           color: foregroundColor ?? colorScheme.onTertiary,
-          fontSize: size * 0.4,
+          fontSize: size * _initialRatio,
         ),
       ),
     );

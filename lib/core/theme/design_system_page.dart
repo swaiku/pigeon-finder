@@ -142,7 +142,7 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
             ),
           ),
           _Section(
-            title: "Barre de progression",
+            title: 'Barre de progression',
             child: const PfProgressBar(value: 0.62),
           ),
           _Section(
