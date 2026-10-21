@@ -43,13 +43,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cameraTitle => 'Caméra';
 
   @override
-  String mapPigeonsSpotted(int count) {
+  String mapPigeonsAround(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      other: '$count pigeons repérés aujourd\'hui',
-      one: '1 pigeon repéré aujourd\'hui',
-      zero: 'Aucun pigeon repéré aujourd\'hui',
+      other: '$count pigeons autour de toi',
+      one: '1 pigeon autour de toi',
+      zero: 'Aucun pigeon autour de toi',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String mapPigeonsInArea(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons dans cette zone',
+      one: '1 pigeon dans cette zone',
+      zero: 'Aucun pigeon dans cette zone',
     );
     return '$_temp0';
   }

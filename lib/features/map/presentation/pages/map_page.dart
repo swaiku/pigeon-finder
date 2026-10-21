@@ -73,6 +73,9 @@ class _MapViewState extends State<_MapView>
   bool _northLocked = false;
   double _rotation = 0;
 
+  /// Part of the map on screen, which the header counts pigeons in.
+  LatLngBounds? _visible;
+
   /// Clock the pins' expiry rings are drawn against; ticks so that they keep
   /// shrinking, and change color, while the map stays open.
   DateTime _now = DateTime.now();
@@ -186,6 +189,12 @@ class _MapViewState extends State<_MapView>
             for (final p in state.posts)
               if (p.timeLeft(now: _now) > Duration.zero) p,
           ];
+          final visible = _visible;
+          final inView = [
+            for (final p in posts)
+              if (visible == null || visible.contains(p.position)) p,
+          ];
+          final user = state.userPosition;
           return Stack(
             children: [
               FlutterMap(
@@ -202,9 +211,17 @@ class _MapViewState extends State<_MapView>
                         : InteractiveFlag.all,
                   ),
                   onTap: (_, _) => bloc.add(const MapPostSelected(null)),
+                  onMapReady: () => setState(
+                    () => _visible = _controller.camera.visibleBounds,
+                  ),
                   onMapEvent: (event) {
-                    if (event.camera.rotation != _rotation) {
-                      setState(() => _rotation = event.camera.rotation);
+                    final visible = event.camera.visibleBounds;
+                    if (event.camera.rotation != _rotation ||
+                        visible != _visible) {
+                      setState(() {
+                        _rotation = event.camera.rotation;
+                        _visible = visible;
+                      });
                     }
                     if (event is MapEventMoveEnd ||
                         event is MapEventFlingAnimationEnd ||
@@ -260,7 +277,8 @@ class _MapViewState extends State<_MapView>
                 right: AppSpacing.cozy,
                 child: MapHeader(
                   city: state.regionName ?? '…',
-                  liveCount: posts.length,
+                  pigeonCount: inView.fold(0, (sum, p) => sum + p.count),
+                  aroundYou: user != null && (visible?.contains(user) ?? true),
                   // TODO(profile): read points/initial from the profile feature.
                   points: NumberFormat.decimalPattern(
                     Localizations.localeOf(context).toString(),

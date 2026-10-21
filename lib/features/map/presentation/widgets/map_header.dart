@@ -12,14 +12,20 @@ class MapHeader extends StatelessWidget {
   const MapHeader({
     super.key,
     required this.city,
-    required this.liveCount,
+    required this.pigeonCount,
+    required this.aroundYou,
     required this.points,
     required this.initial,
     this.onProfileTap,
   });
 
   final String city;
-  final int liveCount;
+
+  /// Pigeons in the part of the map on screen.
+  final int pigeonCount;
+
+  /// Whether the user is in that part, so the count is "around you".
+  final bool aroundYou;
   final String points;
   final String initial;
   final VoidCallback? onProfileTap;
@@ -68,7 +74,9 @@ class MapHeader extends StatelessWidget {
                         style: text.titleMedium,
                       ),
                       Text(
-                        l10n.mapPigeonsSpotted(liveCount),
+                        aroundYou
+                            ? l10n.mapPigeonsAround(pigeonCount)
+                            : l10n.mapPigeonsInArea(pigeonCount),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: text.labelMedium?.copyWith(

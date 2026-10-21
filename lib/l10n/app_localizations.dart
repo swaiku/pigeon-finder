@@ -164,11 +164,17 @@ abstract class AppLocalizations {
   /// **'Camera'**
   String get cameraTitle;
 
-  /// No description provided for @mapPigeonsSpotted.
+  /// No description provided for @mapPigeonsAround.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, =0{No pigeons spotted today} =1{1 pigeon spotted today} other{{count} pigeons spotted today}}'**
-  String mapPigeonsSpotted(int count);
+  /// **'{count, plural, =0{No pigeons around you} =1{1 pigeon around you} other{{count} pigeons around you}}'**
+  String mapPigeonsAround(int count);
+
+  /// No description provided for @mapPigeonsInArea.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{No pigeons in this area} =1{1 pigeon in this area} other{{count} pigeons in this area}}'**
+  String mapPigeonsInArea(int count);
 
   /// No description provided for @mapExpiresIn.
   ///
