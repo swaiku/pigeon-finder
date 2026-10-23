@@ -4,22 +4,14 @@ import 'package:latlong2/latlong.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/map_post.dart';
-import '../../domain/entities/region_level.dart';
-import '../../domain/repositories/map_repository.dart';
-import '../datasources/location_data_source.dart';
-import '../datasources/region_data_source.dart';
+import '../../domain/repositories/posts_repository.dart';
 
 /// In-memory stand-in for the Supabase-backed repository. Posts are made up
 /// around the requested position: the world is cut into small cells, each one
 /// seeded by its coordinates, so a given spot always holds the same posts.
 /// Walking away drops the posts left behind and reveals the ones ahead.
-/// Swap it in `injection.dart` once the real data sources exist.
-class FakeMapRepository implements MapRepository {
-  FakeMapRepository({required this.regions, required this.location});
-
-  final RegionDataSource regions;
-  final LocationDataSource location;
-
+/// Swap it in `injection.dart` once the real data source exists.
+class FakePostsRepository implements PostsRepository {
   /// Size of a cell, in degrees (about 550 m of latitude).
   static const _cellSize = 0.005;
 
@@ -126,14 +118,4 @@ class FakeMapRepository implements MapRepository {
               .where((p) => p.timeLeft(now: now) > Duration.zero),
     ];
   }
-
-  @override
-  Future<LatLng> getUserPosition() => location.getCurrentPosition();
-
-  @override
-  Stream<LatLng> watchUserPosition() => location.watchPosition();
-
-  @override
-  Future<String> getRegionName(LatLng position, RegionLevel level) =>
-      regions.getRegionName(position, level);
 }

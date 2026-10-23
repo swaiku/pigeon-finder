@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:pigeon_finder/features/map/data/models/map_post_model.dart';
 import 'package:pigeon_finder/features/map/domain/entities/map_post.dart';
 
 void main() {
@@ -18,18 +19,23 @@ void main() {
     'mine': false,
   };
 
-  test('MapPost round-trips through JSON', () {
-    expect(MapPost.fromJson(json).toJson(), json);
+  test('MapPostModel round-trips through JSON', () {
+    expect(MapPostModel.fromJson(json).toJson(), json);
   });
 
-  test('fromJson maps the position and the timestamp', () {
-    final post = MapPost.fromJson(json);
+  test('toEntity maps the position and the timestamp', () {
+    final post = MapPostModel.fromJson(json).toEntity();
     expect(post.position, const LatLng(48.8532, 2.3692));
     expect(post.createdAt, DateTime.utc(2026, 10, 13, 10));
   });
 
+  test('the model survives a trip through the entity', () {
+    final post = MapPostModel.fromJson(json).toEntity();
+    expect(MapPostModel.fromEntity(post).toJson(), json);
+  });
+
   test('a post expires 24 h after its creation', () {
-    final post = MapPost.fromJson(json);
+    final post = MapPostModel.fromJson(json).toEntity();
     final now = DateTime.utc(2026, 10, 13, 22);
     expect(post.timeLeft(now: now), const Duration(hours: 12));
     expect(post.remaining(now: now), 0.5);
