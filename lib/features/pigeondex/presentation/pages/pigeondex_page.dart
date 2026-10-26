@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
-class PigeondexPage extends StatelessWidget {
-  const PigeondexPage({super.key});
-
+class const PigeondexPage({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = AppLocalizations.of(context)!.pigeondexTitle;

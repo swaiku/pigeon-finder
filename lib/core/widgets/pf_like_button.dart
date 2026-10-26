@@ -8,18 +8,12 @@ import '../theme/app_spacing.dart';
 ///
 /// Presentational only: the already-formatted [label] (e.g. "Roucoule ·
 /// 57") is supplied by the caller so it stays localizable.
-class PfLikeButton extends StatelessWidget {
-  const PfLikeButton({
-    super.key,
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
+class const PfLikeButton({
+  super.key,
+  required final String label,
+  required final bool selected,
+  required final VoidCallback onTap,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

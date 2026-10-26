@@ -8,22 +8,20 @@ part 'map_post_model.g.dart';
 /// Wire format of a [MapPost]: snake_case keys, flat `latitude`/`longitude`
 /// and a UTC ISO 8601 timestamp.
 @JsonSerializable(fieldRename: FieldRename.snake)
-class MapPostModel {
-  const MapPostModel({
-    required this.id,
-    required this.user,
-    required this.place,
-    required this.photoUrl,
-    required this.latitude,
-    required this.longitude,
-    required this.createdAt,
-    required this.count,
-    required this.points,
-    required this.coos,
-    this.reports = 0,
-    this.mine = false,
-  });
-
+class const MapPostModel({
+  required final String id,
+  required final String user,
+  required final String place,
+  required final String photoUrl,
+  required final double latitude,
+  required final double longitude,
+  required final DateTime createdAt,
+  required final int count,
+  required final int points,
+  required final int coos,
+  final int reports = 0,
+  final bool mine = false,
+}) {
   factory MapPostModel.fromJson(Map<String, dynamic> json) =>
       _$MapPostModelFromJson(json);
 
@@ -41,19 +39,6 @@ class MapPostModel {
     reports: post.reports,
     mine: post.mine,
   );
-
-  final String id;
-  final String user;
-  final String place;
-  final String photoUrl;
-  final double latitude;
-  final double longitude;
-  final DateTime createdAt;
-  final int count;
-  final int points;
-  final int coos;
-  final int reports;
-  final bool mine;
 
   Map<String, dynamic> toJson() => _$MapPostModelToJson(this);
 

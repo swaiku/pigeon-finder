@@ -9,9 +9,7 @@ const _dotBorder = 3.0;
 const _dotShadowBlur = 6.0;
 
 /// Pulsing "you are here" dot.
-class MapUserDot extends StatefulWidget {
-  const MapUserDot({super.key});
-
+class const MapUserDot({super.key}) extends StatefulWidget {
   static const size = 18.0;
 
   @override

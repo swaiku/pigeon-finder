@@ -2,37 +2,23 @@ import 'package:equatable/equatable.dart';
 import 'package:latlong2/latlong.dart';
 
 /// A pigeon photo pinned on the map. It stays visible for [lifetime].
-class MapPost extends Equatable {
-  const MapPost({
-    required this.id,
-    required this.user,
-    required this.place,
-    required this.photoUrl,
-    required this.position,
-    required this.createdAt,
-    required this.count,
-    required this.points,
-    required this.coos,
-    this.reports = 0,
-    this.mine = false,
-  });
-
-  static const lifetime = Duration(hours: 24);
-
+class const MapPost({
   /// UUID of the post.
-  final String id;
-  final String user;
-  final String place;
+  required final String id,
+  required final String user,
+  required final String place,
 
   /// Where the photo taken for this post can be downloaded from.
-  final String photoUrl;
-  final LatLng position;
-  final DateTime createdAt;
-  final int count;
-  final int points;
-  final int coos;
-  final int reports;
-  final bool mine;
+  required final String photoUrl,
+  required final LatLng position,
+  required final DateTime createdAt,
+  required final int count,
+  required final int points,
+  required final int coos,
+  final int reports = 0,
+  final bool mine = false,
+}) extends Equatable {
+  static const lifetime = Duration(hours: 24);
 
   DateTime get expiresAt => createdAt.add(lifetime);
 

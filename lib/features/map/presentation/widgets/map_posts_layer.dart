@@ -15,20 +15,13 @@ import 'map_pin_marker.dart';
 /// - zoomed out: a heat map of where pigeons are;
 /// - zoomed in: pins, with the ones that would overlap folded into bubbles
 ///   (by `flutter_map_marker_cluster`).
-class MapPostsLayer extends StatelessWidget {
-  const MapPostsLayer({
-    super.key,
-    required this.posts,
-    required this.now,
-    required this.selectedId,
-    required this.onPostTap,
-  });
-
-  final List<MapPost> posts;
-  final DateTime now;
-  final String? selectedId;
-  final ValueChanged<MapPost> onPostTap;
-
+class const MapPostsLayer({
+  super.key,
+  required final List<MapPost> posts,
+  required final DateTime now,
+  required final String? selectedId,
+  required final ValueChanged<MapPost> onPostTap,
+}) extends StatelessWidget {
   /// Below this zoom the posts are drawn as a heat map, from it as pins.
   static const pinsMinZoom = 12.0;
 
@@ -79,11 +72,8 @@ class MapPostsLayer extends StatelessWidget {
 
 /// Heat map of the posts, drawn by `flutter_map_heatmap_plus` as a tile layer
 /// from teal (a few pigeons) through amber to red (a lot).
-class _HeatLayer extends StatefulWidget {
-  const _HeatLayer({required this.posts});
-
-  final List<MapPost> posts;
-
+class const _HeatLayer({required final List<MapPost> posts})
+    extends StatefulWidget {
   @override
   State<_HeatLayer> createState() => _HeatLayerState();
 }

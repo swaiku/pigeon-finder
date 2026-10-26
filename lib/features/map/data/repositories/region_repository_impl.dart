@@ -4,11 +4,8 @@ import '../../domain/entities/region_level.dart';
 import '../../domain/repositories/region_repository.dart';
 import '../datasources/region_data_source.dart';
 
-class RegionRepositoryImpl implements RegionRepository {
-  const RegionRepositoryImpl(this._dataSource);
-
-  final RegionDataSource _dataSource;
-
+class const RegionRepositoryImpl(final RegionDataSource _dataSource)
+    implements RegionRepository {
   @override
   Future<String> getRegionName(LatLng position, RegionLevel level) =>
       _dataSource.getRegionName(position, level);

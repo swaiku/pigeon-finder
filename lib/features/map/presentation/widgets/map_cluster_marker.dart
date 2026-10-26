@@ -8,12 +8,9 @@ const _shadowBlur = 6.0;
 
 /// Bubble standing for several nearby pins that would overlap at this zoom.
 /// Tapping it is handled by the cluster layer, which zooms in on its pins.
-class MapClusterMarker extends StatelessWidget {
-  const MapClusterMarker({super.key, required this.count});
-
+class const MapClusterMarker({super.key, required final int count})
+    extends StatelessWidget {
   static const size = 52.0;
-
-  final int count;
 
   @override
   Widget build(BuildContext context) {

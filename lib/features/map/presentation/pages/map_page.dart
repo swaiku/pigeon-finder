@@ -31,9 +31,7 @@ const _captureFillAlpha = 0x22;
 /// Stand-in until the profile feature provides the real score.
 const _placeholderPoints = 1240;
 
-class MapPage extends StatelessWidget {
-  const MapPage({super.key});
-
+class const MapPage({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -43,9 +41,7 @@ class MapPage extends StatelessWidget {
   }
 }
 
-class _MapView extends StatefulWidget {
-  const _MapView();
-
+class const _MapView() extends StatefulWidget {
   @override
   State<_MapView> createState() => _MapViewState();
 }
@@ -245,11 +241,8 @@ class _MapViewState extends State<_MapView>
 }
 
 /// The user's dot and the circle they can post within.
-class _UserLayers extends StatelessWidget {
-  const _UserLayers({required this.position});
-
-  final LatLng position;
-
+class const _UserLayers({required final LatLng position})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
