@@ -14,18 +14,12 @@ enum PfChipTone { success, danger, warning, neutral, dark }
 /// With [filled] set to false it renders as an outline only, which covers
 /// the "locked" badge look (the design uses a dashed border there; Flutter
 /// has no built-in dashed border, so a plain outline is used instead).
-class PfStatusChip extends StatelessWidget {
-  const PfStatusChip({
-    super.key,
-    required this.label,
-    this.tone = PfChipTone.neutral,
-    this.filled = true,
-  });
-
-  final String label;
-  final PfChipTone tone;
-  final bool filled;
-
+class const PfStatusChip({
+  super.key,
+  required final String label,
+  final PfChipTone tone = PfChipTone.neutral,
+  final bool filled = true,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -68,11 +62,8 @@ class PfStatusChip extends StatelessWidget {
 }
 
 /// A tiny counter pill ("×3") overlaid on a photo thumbnail or map pin.
-class PfCountBadge extends StatelessWidget {
-  const PfCountBadge({super.key, required this.label});
-
-  final String label;
-
+class const PfCountBadge({super.key, required final String label})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

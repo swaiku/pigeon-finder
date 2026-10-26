@@ -4,22 +4,15 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 
 /// Round floating map control (recenter, compass...).
-class MapFloatingButton extends StatelessWidget {
-  const MapFloatingButton({
-    super.key,
-    required this.icon,
-    required this.onPressed,
-    this.tooltip,
-    this.active = false,
-  });
-
-  final Widget icon;
-  final VoidCallback? onPressed;
-  final String? tooltip;
+class const MapFloatingButton({
+  super.key,
+  required final Widget icon,
+  required final VoidCallback? onPressed,
+  final String? tooltip,
 
   /// Highlights the button, e.g. while the north is locked.
-  final bool active;
-
+  final bool active = false,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

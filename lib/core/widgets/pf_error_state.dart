@@ -4,18 +4,12 @@ import '../theme/app_spacing.dart';
 import 'pf_button.dart';
 
 /// A centered error message with an optional retry action.
-class PfErrorState extends StatelessWidget {
-  const PfErrorState({
-    super.key,
-    required this.message,
-    this.actionLabel,
-    this.onAction,
-  });
-
-  final String message;
-  final String? actionLabel;
-  final VoidCallback? onAction;
-
+class const PfErrorState({
+  super.key,
+  required final String message,
+  final String? actionLabel,
+  final VoidCallback? onAction,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;

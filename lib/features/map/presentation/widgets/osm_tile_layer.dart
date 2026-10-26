@@ -12,9 +12,7 @@ import '../../../../core/theme/app_spacing.dart';
 ///
 /// The licence attribution is shown by [OsmAttribution], which must always
 /// be visible on the map.
-class OsmTileLayer extends StatelessWidget {
-  const OsmTileLayer({super.key});
-
+class const OsmTileLayer({super.key}) extends StatelessWidget {
   static const urlTemplate = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
   static const userAgent = 'PigeonFinder (ch.jrmy.pigeon_finder)';
 
@@ -29,9 +27,7 @@ class OsmTileLayer extends StatelessWidget {
 }
 
 /// "© OpenStreetMap contributors" licence notice.
-class OsmAttribution extends StatelessWidget {
-  const OsmAttribution({super.key});
-
+class const OsmAttribution({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(

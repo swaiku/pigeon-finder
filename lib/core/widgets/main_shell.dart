@@ -6,11 +6,10 @@ import '../router/app_router.dart';
 import 'pf_bottom_nav_bar.dart';
 
 /// Scaffold hosting the tab branches and the bottom navigation bar.
-class MainShell extends StatelessWidget {
-  const MainShell({super.key, required this.navigationShell});
-
-  final StatefulNavigationShell navigationShell;
-
+class const MainShell({
+  super.key,
+  required final StatefulNavigationShell navigationShell,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

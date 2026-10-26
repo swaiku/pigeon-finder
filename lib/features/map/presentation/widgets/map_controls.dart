@@ -9,23 +9,17 @@ import '../controllers/map_camera_animator.dart';
 import 'map_floating_button.dart';
 
 /// Compass (locks the north up) and recenter buttons stacked on the map.
-class MapControls extends StatelessWidget {
-  const MapControls({
-    super.key,
-    required this.rotation,
-    required this.northLocked,
-    required this.onToggleNorthLock,
-    required this.onRecenter,
-  });
+class const MapControls({
+  super.key,
 
   /// Rotation of the map in degrees, which the compass needle counters.
-  final ValueListenable<double> rotation;
-  final bool northLocked;
-  final VoidCallback onToggleNorthLock;
+  required final ValueListenable<double> rotation,
+  required final bool northLocked,
+  required final VoidCallback onToggleNorthLock,
 
   /// Null while the user position is unknown.
-  final VoidCallback? onRecenter;
-
+  required final VoidCallback? onRecenter,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

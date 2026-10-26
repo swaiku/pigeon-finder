@@ -38,26 +38,18 @@ Color freshnessColor(double remaining) {
 
 /// Round photo pin with a 24 h expiry ring, a count badge and a tail.
 /// It pops in when it appears and swells while [selected].
-class MapPinMarker extends StatefulWidget {
-  const MapPinMarker({
-    super.key,
-    required this.post,
-    required this.onTap,
-    required this.now,
-    this.selected = false,
-    this.showRing = true,
-  });
-
-  static const size = 58.0;
-  static const height = 72.0;
-
-  final MapPost post;
-  final VoidCallback onTap;
+class const MapPinMarker({
+  super.key,
+  required final MapPost post,
+  required final VoidCallback onTap,
 
   /// Clock the ring is drawn against; the map refreshes it as time goes by.
-  final DateTime now;
-  final bool selected;
-  final bool showRing;
+  required final DateTime now,
+  final bool selected = false,
+  final bool showRing = true,
+}) extends StatefulWidget {
+  static const size = 58.0;
+  static const height = 72.0;
 
   @override
   State<MapPinMarker> createState() => _MapPinMarkerState();
@@ -181,17 +173,11 @@ class _MapPinMarkerState extends State<MapPinMarker>
   }
 }
 
-class _RingPainter extends CustomPainter {
-  const _RingPainter({
-    required this.fraction,
-    required this.mine,
-    required this.showRing,
-  });
-
-  final double fraction;
-  final bool mine;
-  final bool showRing;
-
+class const _RingPainter({
+  required final double fraction,
+  required final bool mine,
+  required final bool showRing,
+}) extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;

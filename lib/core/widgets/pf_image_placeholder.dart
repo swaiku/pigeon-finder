@@ -8,18 +8,13 @@ import '../theme/app_spacing.dart';
 ///
 /// The design uses a diagonal striped pattern; this approximates it with a
 /// two-tone diagonal gradient since Flutter has no built-in stripe paint.
-class PfImagePlaceholder extends StatelessWidget {
-  const PfImagePlaceholder({
-    super.key,
-    this.borderRadius = const BorderRadius.all(
-      Radius.circular(AppSpacing.radiusThumbnail),
-    ),
-    this.child,
-  });
-
-  final BorderRadius borderRadius;
-  final Widget? child;
-
+class const PfImagePlaceholder({
+  super.key,
+  final BorderRadius borderRadius = const BorderRadius.all(
+    Radius.circular(AppSpacing.radiusThumbnail),
+  ),
+  final Widget? child,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(

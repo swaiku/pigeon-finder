@@ -10,22 +10,15 @@ import 'pf_image_placeholder.dart';
 /// [child] is drawn on top of the photo. [cacheWidth] is the width, in
 /// logical pixels, the photo is displayed at: it is decoded no larger than
 /// that to spare memory.
-class PfPhoto extends StatelessWidget {
-  const PfPhoto({
-    super.key,
-    required this.url,
-    required this.cacheWidth,
-    this.borderRadius = const BorderRadius.all(
-      Radius.circular(AppSpacing.radiusThumbnail),
-    ),
-    this.child,
-  });
-
-  final String url;
-  final double cacheWidth;
-  final BorderRadius borderRadius;
-  final Widget? child;
-
+class const PfPhoto({
+  super.key,
+  required final String url,
+  required final double cacheWidth,
+  final BorderRadius borderRadius = const BorderRadius.all(
+    Radius.circular(AppSpacing.radiusThumbnail),
+  ),
+  final Widget? child,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pixelRatio = MediaQuery.devicePixelRatioOf(context);

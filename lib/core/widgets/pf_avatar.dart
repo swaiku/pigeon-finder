@@ -5,20 +5,13 @@ const _initialRatio = .4;
 
 /// A circular avatar showing a single initial, used for users without a
 /// profile photo (leaderboard, profile, podium, map header).
-class PfAvatar extends StatelessWidget {
-  const PfAvatar({
-    super.key,
-    required this.initial,
-    this.backgroundColor,
-    this.foregroundColor,
-    this.size = 40,
-  });
-
-  final String initial;
-  final Color? backgroundColor;
-  final Color? foregroundColor;
-  final double size;
-
+class const PfAvatar({
+  super.key,
+  required final String initial,
+  final Color? backgroundColor,
+  final Color? foregroundColor,
+  final double size = 40,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

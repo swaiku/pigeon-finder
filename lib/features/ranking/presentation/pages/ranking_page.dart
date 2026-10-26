@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
-class RankingPage extends StatelessWidget {
-  const RankingPage({super.key});
-
+class const RankingPage({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = AppLocalizations.of(context)!.rankingTitle;

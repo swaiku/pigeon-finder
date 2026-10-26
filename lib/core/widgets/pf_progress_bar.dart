@@ -4,19 +4,14 @@ import '../theme/app_colors.dart';
 import '../theme/app_spacing.dart';
 
 /// The thin rounded progress track used for the profile level bar.
-class PfProgressBar extends StatelessWidget {
-  const PfProgressBar({
-    super.key,
-    required this.value,
-    this.trackColor,
-    this.valueColor,
-  });
+class const PfProgressBar({
+  super.key,
 
   /// Progress from 0.0 to 1.0.
-  final double value;
-  final Color? trackColor;
-  final Color? valueColor;
-
+  required final double value,
+  final Color? trackColor,
+  final Color? valueColor,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
