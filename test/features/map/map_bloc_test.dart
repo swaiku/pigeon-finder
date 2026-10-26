@@ -1,34 +1,38 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pigeon_finder/core/error/failures.dart';
 import 'package:pigeon_finder/features/map/data/datasources/location_data_source.dart';
+import 'package:pigeon_finder/features/map/data/datasources/region_data_source.dart';
+import 'package:pigeon_finder/features/map/data/repositories/fake_posts_repository.dart';
 import 'package:pigeon_finder/features/map/domain/entities/map_post.dart';
 import 'package:pigeon_finder/features/map/domain/entities/region_level.dart';
-import 'package:pigeon_finder/features/map/domain/repositories/map_repository.dart';
+import 'package:pigeon_finder/features/map/domain/repositories/posts_repository.dart';
 import 'package:pigeon_finder/features/map/presentation/bloc/map_bloc.dart';
 
-import '../../support/test_map_repository.dart';
+import '../../support/test_map_bloc.dart';
 
-class _FailingRepository implements MapRepository {
+class _FailingPosts implements PostsRepository {
   @override
   Future<List<MapPost>> getActivePosts({required LatLng around}) async =>
       throw const NetworkFailure('offline');
-
-  @override
-  Future<LatLng> getUserPosition() async => const LatLng(0, 0);
-
-  @override
-  Stream<LatLng> watchUserPosition() => const Stream.empty();
-
-  @override
-  Future<String> getRegionName(LatLng position, RegionLevel level) async => '';
 }
+
+class _FailingRegions implements RegionDataSource {
+  const _FailingRegions();
+
+  @override
+  Future<String> getRegionName(LatLng position, RegionLevel level) async =>
+      throw const NetworkFailure('throttled');
+}
+
+final _bounds = LatLngBounds(const LatLng(46.5, 6.6), const LatLng(46.6, 6.7));
 
 void main() {
   blocTest<MapBloc, MapState>(
     'MapStarted loads posts and user position',
-    build: () => MapBloc(testMapRepository()),
+    build: testMapBloc,
     act: (bloc) => bloc.add(const MapStarted()),
     verify: (bloc) {
       expect(bloc.state.status, MapStatus.success);
@@ -39,7 +43,7 @@ void main() {
 
   blocTest<MapBloc, MapState>(
     'MapStarted emits failure when the repository throws',
-    build: () => MapBloc(_FailingRepository()),
+    build: () => testMapBloc(posts: _FailingPosts()),
     act: (bloc) => bloc.add(const MapStarted()),
     verify: (bloc) {
       expect(bloc.state.status, MapStatus.failure);
@@ -51,7 +55,7 @@ void main() {
 
   blocTest<MapBloc, MapState>(
     'MapPostSelected selects then clears a post',
-    build: () => MapBloc(testMapRepository()),
+    build: testMapBloc,
     act: (bloc) async {
       bloc.add(const MapStarted());
       await Future<void>.delayed(Duration.zero);
@@ -66,9 +70,9 @@ void main() {
 
   blocTest<MapBloc, MapState>(
     'MapCameraMoved updates the region name',
-    build: () => MapBloc(testMapRepository()),
+    build: testMapBloc,
     act: (bloc) async {
-      bloc.add(const MapCameraMoved(LatLng(46.52, 6.63), 14));
+      bloc.add(MapCameraMoved(const LatLng(46.52, 6.63), 14, _bounds));
       await Future<void>.delayed(const Duration(milliseconds: 600));
     },
     verify: (bloc) => expect(bloc.state.regionName, 'Lausanne'),
@@ -76,9 +80,9 @@ void main() {
 
   blocTest<MapBloc, MapState>(
     'zooming out widens the region name',
-    build: () => MapBloc(testMapRepository()),
+    build: testMapBloc,
     act: (bloc) async {
-      bloc.add(const MapCameraMoved(LatLng(46.52, 6.63), 10));
+      bloc.add(MapCameraMoved(const LatLng(46.52, 6.63), 10, _bounds));
       await Future<void>.delayed(const Duration(milliseconds: 600));
     },
     verify: (bloc) {
@@ -98,7 +102,7 @@ void main() {
 
   blocTest<MapBloc, MapState>(
     'MapStarted still loads the posts when the location is denied',
-    build: () => MapBloc(testMapRepository(location: _DeniedLocation())),
+    build: () => testMapBloc(location: const _DeniedLocation()),
     act: (bloc) => bloc.add(const MapStarted()),
     verify: (bloc) {
       expect(bloc.state.status, MapStatus.success);
@@ -109,7 +113,7 @@ void main() {
 
   blocTest<MapBloc, MapState>(
     'walking far away swaps the posts around the user',
-    build: () => MapBloc(testMapRepository(location: const _WalkingLocation())),
+    build: () => testMapBloc(location: const _WalkingLocation()),
     act: (bloc) async {
       bloc.add(const MapStarted());
       await Future<void>.delayed(Duration.zero);
@@ -129,11 +133,85 @@ void main() {
   );
 
   blocTest<MapBloc, MapState>(
+    'the map keeps working when the region name cannot be resolved',
+    build: () => testMapBloc(regions: const _FailingRegions()),
+    act: (bloc) => bloc.add(const MapStarted()),
+    verify: (bloc) {
+      expect(bloc.state.status, MapStatus.success);
+      expect(bloc.state.regionName, isNull);
+    },
+  );
+
+  blocTest<MapBloc, MapState>(
+    'a successful retry clears the error message',
+    build: () => testMapBloc(posts: _FlakyPosts()),
+    act: (bloc) async {
+      bloc.add(const MapStarted());
+      await Future<void>.delayed(Duration.zero);
+      expect(bloc.state.errorMessage, 'offline');
+      bloc.add(const MapStarted());
+    },
+    verify: (bloc) {
+      expect(bloc.state.status, MapStatus.success);
+      expect(bloc.state.errorMessage, isNull);
+    },
+  );
+
+  blocTest<MapBloc, MapState>(
+    'the clock drops the posts that expired',
+    build: testMapBloc,
+    act: (bloc) async {
+      bloc.add(const MapStarted());
+      await Future<void>.delayed(Duration.zero);
+      bloc.add(MapClockTicked(DateTime.now().add(MapPost.lifetime * 2)));
+    },
+    verify: (bloc) {
+      expect(bloc.state.posts, isNotEmpty);
+      expect(bloc.state.activePosts, isEmpty);
+      expect(bloc.state.pigeonsInView, 0);
+    },
+  );
+
+  blocTest<MapBloc, MapState>(
+    'pigeonsInView only counts the posts on screen',
+    build: testMapBloc,
+    act: (bloc) async {
+      bloc.add(const MapStarted());
+      await Future<void>.delayed(Duration.zero);
+      expect(bloc.state.pigeonsInView, greaterThan(0));
+      // Looks at an empty corner of the world.
+      bloc.add(
+        MapCameraMoved(
+          const LatLng(0, 0),
+          14,
+          LatLngBounds(const LatLng(-1, -1), const LatLng(1, 1)),
+        ),
+      );
+      await Future<void>.delayed(const Duration(milliseconds: 600));
+    },
+    verify: (bloc) {
+      expect(bloc.state.pigeonsInView, 0);
+      expect(bloc.state.userInView, isFalse);
+    },
+  );
+
+  blocTest<MapBloc, MapState>(
     'MapUserPositionChanged updates the user position',
-    build: () => MapBloc(testMapRepository()),
+    build: testMapBloc,
     act: (bloc) => bloc.add(const MapUserPositionChanged(LatLng(1, 2))),
     verify: (bloc) => expect(bloc.state.userPosition, const LatLng(1, 2)),
   );
+}
+
+class _FlakyPosts implements PostsRepository {
+  final _real = FakePostsRepository();
+  var _calls = 0;
+
+  @override
+  Future<List<MapPost>> getActivePosts({required LatLng around}) async {
+    if (_calls++ == 0) throw const NetworkFailure('offline');
+    return _real.getActivePosts(around: around);
+  }
 }
 
 class _WalkingLocation implements LocationDataSource {

@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:stream_transform/stream_transform.dart';
 
@@ -11,13 +11,19 @@ import '../../../../core/error/failures.dart';
 import '../../domain/entities/map_defaults.dart';
 import '../../domain/entities/map_post.dart';
 import '../../domain/entities/region_level.dart';
-import '../../domain/repositories/map_repository.dart';
+import '../../domain/repositories/location_repository.dart';
+import '../../domain/repositories/posts_repository.dart';
+import '../../domain/repositories/region_repository.dart';
 
 part 'map_event.dart';
 part 'map_state.dart';
 
 class MapBloc extends Bloc<MapEvent, MapState> {
-  MapBloc(this._repository) : super(const MapState()) {
+  MapBloc({
+    required this._posts,
+    required this._location,
+    required this._regions,
+  }) : super(MapState(now: DateTime.now())) {
     on<MapStarted>(_onStarted);
     // Debounced to spare the platform geocoder while the user keeps panning;
     // restartable drops a lookup still running when the camera moves again.
@@ -36,29 +42,33 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<MapPostSelected>(
       (event, emit) => emit(state.copyWith(selectedId: () => event.postId)),
     );
+    on<MapClockTicked>((event, emit) => emit(state.copyWith(now: event.now)));
+    _clock = Timer.periodic(
+      _clockTick,
+      (_) => add(MapClockTicked(DateTime.now())),
+    );
   }
 
-  final MapRepository _repository;
+  final PostsRepository _posts;
+  final LocationRepository _location;
+  final RegionRepository _regions;
   StreamSubscription<LatLng>? _positionSub;
+  late final Timer _clock;
 
   /// Where the posts on the map were last fetched around.
   LatLng? _postsAnchor;
 
-  /// Zoom the first region name is looked up at.
-  static const _initialZoom = 14.0;
-
-  /// Latitude limit of the web mercator projection, in degrees.
-  static const _maxLatitude = 85.0;
-
-  static const _halfWorldDegrees = 180;
-
   static const _geocodeDebounce = Duration(milliseconds: 500);
+
+  /// How often the expiry of the posts is checked.
+  static const _clockTick = Duration(seconds: 30);
 
   /// Distance walked before the posts are fetched again around the user.
   static const _refreshDistance = 400.0; // meters
 
   @override
   Future<void> close() {
+    _clock.cancel();
     unawaited(_positionSub?.cancel());
     return super.close();
   }
@@ -70,21 +80,18 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       // GPS off): fall back to the default center.
       LatLng? position;
       try {
-        position = await _repository.getUserPosition();
+        position = await _location.getUserPosition();
       } on Failure {
         position = null;
       }
       final center = position ?? defaultMapCenter;
-      final posts = await _repository.getActivePosts(around: center);
+      final posts = await _posts.getActivePosts(around: center);
       _postsAnchor = center;
-      final region = await _regionName(
-        center,
-        state.regionLevel,
-        zoom: _initialZoom,
-      );
+      final region = await _regionName(center, state.regionLevel);
       emit(
         state.copyWith(
           status: MapStatus.success,
+          errorMessage: () => null,
           posts: posts,
           userPosition: position,
           center: center,
@@ -92,11 +99,16 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         ),
       );
     } on Failure catch (f) {
-      emit(state.copyWith(status: MapStatus.failure, errorMessage: f.message));
+      emit(
+        state.copyWith(
+          status: MapStatus.failure,
+          errorMessage: () => f.message,
+        ),
+      );
       return;
     }
     await _positionSub?.cancel();
-    _positionSub = _repository.watchUserPosition().listen(
+    _positionSub = _location.watchUserPosition().listen(
       (p) => add(MapUserPositionChanged(p)),
       onError: (_) {}, // Keep the last known position.
     );
@@ -113,7 +125,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       return;
     }
     try {
-      final posts = await _repository.getActivePosts(around: event.position);
+      final posts = await _posts.getActivePosts(around: event.position);
       _postsAnchor = event.position;
       emit(state.copyWith(posts: posts));
     } on Failure {
@@ -126,56 +138,29 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     Emitter<MapState> emit,
   ) async {
     final level = RegionLevel.fromZoom(event.zoom);
-    emit(state.copyWith(center: event.center, regionLevel: level));
-    try {
-      final region = await _regionName(event.center, level, zoom: event.zoom);
-      // Ignore the answer if the camera moved again in the meantime.
-      if (state.center == event.center && state.regionLevel == level) {
-        emit(state.copyWith(regionName: region));
-      }
-    } on Failure {
-      // Keep showing the previous region name.
+    emit(
+      state.copyWith(
+        center: event.center,
+        regionLevel: level,
+        visibleBounds: event.bounds,
+      ),
+    );
+    final region = await _regionName(event.center, level);
+    // Ignore the answer if the camera moved again in the meantime.
+    if (region != null &&
+        state.center == event.center &&
+        state.regionLevel == level) {
+      emit(state.copyWith(regionName: region));
     }
   }
 
-  /// Name of the zone that covers most of the view rather than the one under
-  /// the exact center, which flips on a border or lands in a lake or the sea.
-  /// The center and a point north and south of it vote; the center wins ties.
-  Future<String> _regionName(
-    LatLng center,
-    RegionLevel level, {
-    required double zoom,
-  }) async {
-    // About half a map tile, so the points stay inside the visible area.
-    final dLat =
-        _halfWorldDegrees / math.pow(2, zoom) * math.cos(center.latitudeInRad);
-    final samples = [
-      center,
-      // The screen is taller than wide, so spread the points vertically.
-      LatLng(
-        (center.latitude + dLat).clamp(-_maxLatitude, _maxLatitude),
-        center.longitude,
-      ),
-      LatLng(
-        (center.latitude - dLat).clamp(-_maxLatitude, _maxLatitude),
-        center.longitude,
-      ),
-    ];
-    final names = await Future.wait(
-      samples.map((p) async {
-        try {
-          return await _repository.getRegionName(p, level);
-        } on Failure {
-          return null;
-        }
-      }),
-    );
-    final votes = <String, int>{};
-    for (final name in names.nonNulls) {
-      votes[name] = (votes[name] ?? 0) + 1;
+  /// The zone is only a label: when it cannot be resolved (offline,
+  /// throttled geocoder) the map keeps working and the previous name stays.
+  Future<String?> _regionName(LatLng position, RegionLevel level) async {
+    try {
+      return await _regions.getRegionName(position, level);
+    } on Failure {
+      return null;
     }
-    if (votes.isEmpty) throw const LocationFailure('No region name');
-    // Map order is insertion order, so ties go to the earliest sample.
-    return votes.entries.reduce((a, b) => b.value > a.value ? b : a).key;
   }
 }

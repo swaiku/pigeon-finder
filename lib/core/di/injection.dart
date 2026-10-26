@@ -5,8 +5,12 @@ import '../../features/map/data/datasources/geocoding_region_data_source.dart';
 import '../../features/map/data/datasources/geolocator_location_data_source.dart';
 import '../../features/map/data/datasources/location_data_source.dart';
 import '../../features/map/data/datasources/region_data_source.dart';
-import '../../features/map/data/repositories/fake_map_repository.dart';
-import '../../features/map/domain/repositories/map_repository.dart';
+import '../../features/map/data/repositories/fake_posts_repository.dart';
+import '../../features/map/data/repositories/location_repository_impl.dart';
+import '../../features/map/data/repositories/region_repository_impl.dart';
+import '../../features/map/domain/repositories/location_repository.dart';
+import '../../features/map/domain/repositories/posts_repository.dart';
+import '../../features/map/domain/repositories/region_repository.dart';
 import '../../features/map/presentation/bloc/map_bloc.dart';
 
 final sl = GetIt.instance;
@@ -29,16 +33,18 @@ Future<void> initDependencies() async {
   // sl.registerFactory(() => AuthCubit(sl()));
 
   // --- map ---
-  // TODO(map): replace the fake with MapRepositoryImpl once the Supabase
-  // data source exists.
+  // TODO(map): replace the fake with a Supabase-backed PostsRepository once
+  // its data source exists.
   sl.registerLazySingleton<RegionDataSource>(GeocodingRegionDataSource.new);
   sl.registerLazySingleton<LocationDataSource>(
     () => const GeolocatorLocationDataSource(),
   );
-  sl.registerLazySingleton<MapRepository>(
-    () => FakeMapRepository(regions: sl(), location: sl()),
+  sl.registerLazySingleton<PostsRepository>(FakePostsRepository.new);
+  sl.registerLazySingleton<LocationRepository>(
+    () => LocationRepositoryImpl(sl()),
   );
-  sl.registerFactory(() => MapBloc(sl()));
+  sl.registerLazySingleton<RegionRepository>(() => RegionRepositoryImpl(sl()));
+  sl.registerFactory(() => MapBloc(posts: sl(), location: sl(), regions: sl()));
 
   // --- post ---
   // sl.registerLazySingleton<PostRemoteDataSource>(
