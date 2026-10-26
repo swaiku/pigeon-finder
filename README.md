@@ -153,6 +153,16 @@ lib/
 
 Dependencies point inward: `presentation` → `domain` ← `data`.
 
+The ViewModel is a `flutter_bloc` class, which exposes an immutable state to
+the view and holds no widget code:
+
+* use a **Cubit** (methods) for simple features: forms, lists, details;
+* use a **Bloc** (events) when the feature needs event transformers such as
+  `debounce` or `restartable`, like the map.
+
+Widgets only render the state and send user actions; business rules live in
+the bloc or the domain.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 

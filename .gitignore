@@ -48,3 +48,14 @@ app.*.map.json
 .widget_preview/
 /android/build/
 android/.kotlin/sessions/
+
+# AI coding agents (skills, local config, instructions)
+.agents/
+.claude/
+.cursor/
+.gemini/
+.codex/
+skills-lock.json
+AGENTS.md
+CLAUDE.md
+GEMINI.md
