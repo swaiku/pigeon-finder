@@ -153,6 +153,16 @@ lib/
 
 Dependencies point inward: `presentation` → `domain` ← `data`.
 
+The ViewModel is a `flutter_bloc` class, which exposes an immutable state to
+the view and holds no widget code:
+
+* use a **Cubit** (methods) for simple features: forms, lists, details;
+* use a **Bloc** (events) when the feature needs event transformers such as
+  `debounce` or `restartable`, like the map.
+
+Widgets only render the state and send user actions; business rules live in
+the bloc or the domain.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -265,7 +275,9 @@ Example: `✨ Add like button on post detail`.
 4. Open a pull request targeting `develop`
 
 CI (format, analyze, tests) runs on every PR and on pushes to
-`main` and `develop`; the debug APK build only runs on PRs targeting `main`. Dependabot opens weekly dependency PRs against `develop`
+`main` and `develop`. The debug APK build runs on pushes to `develop` and on
+PRs targeting `main` that do not come from `develop` (the release PR reuses the
+build of the push). Dependabot opens weekly dependency PRs against `develop`
 (minor/patch updates are auto-merged once CI is green).
 
 ### Releasing
@@ -291,7 +303,7 @@ Required repository secrets: `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
 
 | Workflow                   | Trigger                      | What it does                         |
 | -------------------------- | ---------------------------- | ------------------------------------ |
-| `ci.yml`                   | PR, push to `main`/`develop` | format, analyze, test (+ debug APK on PRs to `main`) |
+| `ci.yml`                   | PR, push to `main`/`develop` | format, analyze, test (+ debug APK on `develop` pushes) |
 | `release.yml`              | push to `main`               | tag + build + GitHub Release         |
 | `dependency-review.yml`    | PR                           | blocks high-severity vulnerable deps |
 | `dependabot-automerge.yml` | Dependabot PRs               | auto-merge non-major updates         |

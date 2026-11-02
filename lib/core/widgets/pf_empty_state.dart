@@ -6,12 +6,11 @@ import 'pf_card.dart';
 
 /// A friendly inline message for an empty list, e.g. "no pigeon posted
 /// yet" on the profile screen.
-class PfEmptyState extends StatelessWidget {
-  const PfEmptyState({super.key, required this.message, this.icon});
-
-  final String message;
-  final IconData? icon;
-
+class const PfEmptyState({
+  super.key,
+  required final String message,
+  final IconData? icon,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PfCard(

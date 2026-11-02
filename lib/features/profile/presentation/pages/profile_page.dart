@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/design_system_page.dart';
 import '../../../../l10n/app_localizations.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
-
+class const ProfilePage({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Temporary: the profile tab hosts the design system showcase in debug

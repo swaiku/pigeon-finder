@@ -1,12 +1,20 @@
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../features/auth/data/datasources/auth_data_source.dart';
+import '../../features/auth/data/repositories/auth_repository_impl.dart';
+import '../../features/auth/domain/repositories/auth_repository.dart';
+import '../../features/auth/presentation/bloc/onboarding_cubit.dart';
 import '../../features/map/data/datasources/geocoding_region_data_source.dart';
 import '../../features/map/data/datasources/geolocator_location_data_source.dart';
 import '../../features/map/data/datasources/location_data_source.dart';
 import '../../features/map/data/datasources/region_data_source.dart';
-import '../../features/map/data/repositories/fake_map_repository.dart';
-import '../../features/map/domain/repositories/map_repository.dart';
+import '../../features/map/data/repositories/fake_posts_repository.dart';
+import '../../features/map/data/repositories/location_repository_impl.dart';
+import '../../features/map/data/repositories/region_repository_impl.dart';
+import '../../features/map/domain/repositories/location_repository.dart';
+import '../../features/map/domain/repositories/posts_repository.dart';
+import '../../features/map/domain/repositories/region_repository.dart';
 import '../../features/map/presentation/bloc/map_bloc.dart';
 
 final sl = GetIt.instance;
@@ -19,26 +27,23 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
   // --- auth ---
-  // sl.registerLazySingleton<AuthRemoteDataSource>(
-  //   () => AuthRemoteDataSourceImpl(sl()),
-  // );
-  // sl.registerLazySingleton<AuthRepository>(
-  //   () => AuthRepositoryImpl(sl()),
-  // );
-  // sl.registerLazySingleton(() => SignInUseCase(sl()));
-  // sl.registerFactory(() => AuthCubit(sl()));
+  sl.registerLazySingleton(() => SupabaseAuthDataSource(sl()));
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
+  sl.registerFactory(() => OnboardingCubit(auth: sl(), location: sl()));
 
   // --- map ---
-  // TODO(map): replace the fake with MapRepositoryImpl once the Supabase
-  // data source exists.
+  // TODO(map): replace the fake with a Supabase-backed PostsRepository once
+  // its data source exists.
   sl.registerLazySingleton<RegionDataSource>(GeocodingRegionDataSource.new);
   sl.registerLazySingleton<LocationDataSource>(
     () => const GeolocatorLocationDataSource(),
   );
-  sl.registerLazySingleton<MapRepository>(
-    () => FakeMapRepository(regions: sl(), location: sl()),
+  sl.registerLazySingleton<PostsRepository>(FakePostsRepository.new);
+  sl.registerLazySingleton<LocationRepository>(
+    () => LocationRepositoryImpl(sl()),
   );
-  sl.registerFactory(() => MapBloc(sl()));
+  sl.registerLazySingleton<RegionRepository>(() => RegionRepositoryImpl(sl()));
+  sl.registerFactory(() => MapBloc(posts: sl(), location: sl(), regions: sl()));
 
   // --- post ---
   // sl.registerLazySingleton<PostRemoteDataSource>(

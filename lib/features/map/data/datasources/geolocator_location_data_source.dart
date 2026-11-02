@@ -5,9 +5,7 @@ import '../../../../core/error/failures.dart';
 import 'location_data_source.dart';
 
 /// Device position through the `geolocator` plugin.
-class GeolocatorLocationDataSource implements LocationDataSource {
-  const GeolocatorLocationDataSource();
-
+class const GeolocatorLocationDataSource() implements LocationDataSource {
   /// Minimum distance (in meters) before the stream emits again.
   static const _distanceFilter = 10;
 
@@ -34,6 +32,16 @@ class GeolocatorLocationDataSource implements LocationDataSource {
     } on Exception catch (e) {
       throw LocationFailure('Could not read the position: $e');
     }
+  }
+
+  @override
+  Future<bool> requestPermission() async {
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    return permission != LocationPermission.denied &&
+        permission != LocationPermission.deniedForever;
   }
 
   @override

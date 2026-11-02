@@ -8,28 +8,19 @@ import '../../../../l10n/app_localizations.dart';
 const _logoSize = 40.0;
 
 /// Floating top bar: city/24 h summary pill and the points/avatar pill.
-class MapHeader extends StatelessWidget {
-  const MapHeader({
-    super.key,
-    required this.city,
-    required this.pigeonCount,
-    required this.aroundYou,
-    required this.points,
-    required this.initial,
-    this.onProfileTap,
-  });
-
-  final String city;
+class const MapHeader({
+  super.key,
+  required final String city,
 
   /// Pigeons in the part of the map on screen.
-  final int pigeonCount;
+  required final int pigeonCount,
 
   /// Whether the user is in that part, so the count is "around you".
-  final bool aroundYou;
-  final String points;
-  final String initial;
-  final VoidCallback? onProfileTap;
-
+  required final bool aroundYou,
+  required final String points,
+  required final String initial,
+  final VoidCallback? onProfileTap,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;

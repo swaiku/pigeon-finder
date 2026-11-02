@@ -737,10 +737,10 @@ packages:
     dependency: "direct dev"
     description:
       name: json_serializable
-      sha256: eb8d06bc95d35ccd26507b493d02321875671e1a7e41c6b4a6ccc76409b541f8
+      sha256: cc7822761b40be9237bcaae62b755ffe5453ceff96a0001f1f5f2439251c66f1
       url: "https://pub.dev"
     source: hosted
-    version: "6.15.0"
+    version: "6.15.2"
   latlong2:
     dependency: "direct main"
     description:

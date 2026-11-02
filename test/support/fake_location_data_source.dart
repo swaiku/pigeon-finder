@@ -12,5 +12,8 @@ class FakeLocationDataSource implements LocationDataSource {
   Future<LatLng> getCurrentPosition() async => position;
 
   @override
+  Future<bool> requestPermission() async => true;
+
+  @override
   Stream<LatLng> watchPosition() => const Stream.empty();
 }

@@ -44,11 +44,12 @@ jobs:
 
   build-android:
     name: Build Android (debug APK)
-    # Runs in parallel with `check`. Built on every push to develop and on
-    # release PRs (develop -> main), not on every PR.
+    # Runs in parallel with `check`. Built on every push to develop, and on
+    # PRs to main unless they come from develop (already built by the push).
     if: >
       (github.event_name == 'push' && github.ref == 'refs/heads/develop') ||
-      (github.event_name == 'pull_request' && github.base_ref == 'main')
+      (github.event_name == 'pull_request' && github.base_ref == 'main' &&
+       github.head_ref != 'develop')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:

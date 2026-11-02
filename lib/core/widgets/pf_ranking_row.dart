@@ -8,26 +8,16 @@ import 'pf_avatar.dart';
 ///
 /// When [highlighted] is true it uses the filled accent look reserved for
 /// the current user's own row ("Toi").
-class PfRankingRow extends StatelessWidget {
-  const PfRankingRow({
-    super.key,
-    required this.rank,
-    required this.avatarInitial,
-    required this.title,
-    required this.trailing,
-    this.subtitle,
-    this.avatarColor,
-    this.highlighted = false,
-  });
-
-  final String rank;
-  final String avatarInitial;
-  final String title;
-  final String? subtitle;
-  final String trailing;
-  final Color? avatarColor;
-  final bool highlighted;
-
+class const PfRankingRow({
+  super.key,
+  required final String rank,
+  required final String avatarInitial,
+  required final String title,
+  required final String trailing,
+  final String? subtitle,
+  final Color? avatarColor,
+  final bool highlighted = false,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

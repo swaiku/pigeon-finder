@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../l10n/app_localizations.dart';
 
-class CameraPage extends StatelessWidget {
-  const CameraPage({super.key});
-
+class const CameraPage({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final title = AppLocalizations.of(context)!.cameraTitle;

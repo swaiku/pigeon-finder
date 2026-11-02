@@ -46,11 +46,8 @@ const _cooPopScale = 1.5;
 const _cooPressedScale = .97;
 
 /// Photo, author, points and the coo / report actions of one post.
-class PostDetailSheet extends StatefulWidget {
-  const PostDetailSheet({super.key, required this.post});
-
-  final MapPost post;
-
+class const PostDetailSheet({super.key, required final MapPost post})
+    extends StatefulWidget {
   @override
   State<PostDetailSheet> createState() => _PostDetailSheetState();
 }
@@ -294,18 +291,12 @@ class _PostDetailSheetState extends State<PostDetailSheet>
   }
 }
 
-class _PhotoBadge extends StatelessWidget {
-  const _PhotoBadge({
-    super.key,
-    required this.label,
-    required this.background,
-    required this.foreground,
-  });
-
-  final String label;
-  final Color background;
-  final Color foreground;
-
+class const _PhotoBadge({
+  super.key,
+  required final String label,
+  required final Color background,
+  required final Color foreground,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -327,17 +318,11 @@ class _PhotoBadge extends StatelessWidget {
 }
 
 /// Heart button: colour cross-fades and the icon pops when toggled on.
-class _CooButton extends StatefulWidget {
-  const _CooButton({
-    required this.label,
-    required this.active,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool active;
-  final VoidCallback onTap;
-
+class const _CooButton({
+  required final String label,
+  required final bool active,
+  required final VoidCallback onTap,
+}) extends StatefulWidget {
   @override
   State<_CooButton> createState() => _CooButtonState();
 }
@@ -421,11 +406,8 @@ class _CooButtonState extends State<_CooButton>
 }
 
 /// Pigeon count shown as a pill on the photo.
-class _PigeonCountPill extends StatelessWidget {
-  const _PigeonCountPill({required this.count});
-
-  final int count;
-
+class const _PigeonCountPill({required final int count})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -454,12 +436,11 @@ class _PigeonCountPill extends StatelessWidget {
   }
 }
 
-class _ReportButton extends StatelessWidget {
-  const _ReportButton({super.key, required this.label, required this.onTap});
-
-  final String label;
-  final VoidCallback onTap;
-
+class const _ReportButton({
+  super.key,
+  required final String label,
+  required final VoidCallback onTap,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -495,11 +476,8 @@ class _ReportButton extends StatelessWidget {
   }
 }
 
-class _ReportedPill extends StatelessWidget {
-  const _ReportedPill({super.key, required this.label});
-
-  final String label;
-
+class const _ReportedPill({super.key, required final String label})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(

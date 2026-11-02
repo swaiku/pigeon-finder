@@ -10,20 +10,13 @@ enum PfButtonVariant { primary, secondary, outline }
 /// A full-width call-to-action button, styled from the app theme.
 ///
 /// Presentational only: label and tap behavior are supplied by the caller.
-class PfButton extends StatelessWidget {
-  const PfButton({
-    super.key,
-    required this.label,
-    required this.onPressed,
-    this.variant = PfButtonVariant.primary,
-    this.icon,
-  });
-
-  final String label;
-  final VoidCallback? onPressed;
-  final PfButtonVariant variant;
-  final IconData? icon;
-
+class const PfButton({
+  super.key,
+  required final String label,
+  required final VoidCallback? onPressed,
+  final PfButtonVariant variant = PfButtonVariant.primary,
+  final IconData? icon,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final child = icon == null

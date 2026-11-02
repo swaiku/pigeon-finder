@@ -4,11 +4,8 @@ import '../theme/app_spacing.dart';
 
 /// A centered spinner with an optional message, used while the AI
 /// verification (or any other async step) is running.
-class PfLoadingIndicator extends StatelessWidget {
-  const PfLoadingIndicator({super.key, this.message});
-
-  final String? message;
-
+class const PfLoadingIndicator({super.key, final String? message})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

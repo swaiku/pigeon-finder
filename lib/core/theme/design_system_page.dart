@@ -19,9 +19,7 @@ import 'app_spacing.dart';
 
 /// Debug-only page showing every design system token and component so the
 /// result can be checked visually. Not part of the app's navigation.
-class DesignSystemPage extends StatefulWidget {
-  const DesignSystemPage({super.key});
-
+class const DesignSystemPage({super.key}) extends StatefulWidget {
   @override
   State<DesignSystemPage> createState() => _DesignSystemPageState();
 }
@@ -228,12 +226,8 @@ class _DesignSystemPageState extends State<DesignSystemPage> {
   }
 }
 
-class _Section extends StatelessWidget {
-  const _Section({required this.title, required this.child});
-
-  final String title;
-  final Widget child;
-
+class const _Section({required final String title, required final Widget child})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -250,9 +244,7 @@ class _Section extends StatelessWidget {
   }
 }
 
-class _ColorPalette extends StatelessWidget {
-  const _ColorPalette();
-
+class const _ColorPalette() extends StatelessWidget {
   static const _swatches = [
     (name: 'Nuit', color: AppColors.night),
     (name: 'Épingle', color: AppColors.pin),
@@ -306,9 +298,7 @@ class _ColorPalette extends StatelessWidget {
   }
 }
 
-class _TypeScale extends StatelessWidget {
-  const _TypeScale();
-
+class const _TypeScale() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -354,9 +344,7 @@ class _TypeScale extends StatelessWidget {
   }
 }
 
-class _RadiiAndShadows extends StatelessWidget {
-  const _RadiiAndShadows();
-
+class const _RadiiAndShadows() extends StatelessWidget {
   static const _radii = [
     (label: 'vignette', value: AppSpacing.radiusThumbnail),
     (label: 'bouton', value: AppSpacing.radiusButton),

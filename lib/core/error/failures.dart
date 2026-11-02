@@ -1,31 +1,25 @@
 import 'package:equatable/equatable.dart';
 
 /// Base class for all domain-level failures.
-abstract class Failure extends Equatable implements Exception {
-  final String message;
-
-  const Failure(this.message);
-
+abstract class const Failure(final String message)
+    extends Equatable
+    implements Exception {
   @override
   List<Object?> get props => [message];
 }
 
-class NetworkFailure extends Failure {
-  const NetworkFailure(super.message);
-}
+class const NetworkFailure(super.message) extends Failure;
 
-class ServerFailure extends Failure {
-  const ServerFailure(super.message);
-}
+class const ServerFailure(super.message) extends Failure;
 
-class AuthFailure extends Failure {
-  const AuthFailure(super.message);
-}
+class const AuthFailure(super.message) extends Failure;
 
-class PermissionFailure extends Failure {
-  const PermissionFailure(super.message);
-}
+class const UsernameTakenFailure(super.message) extends Failure;
 
-class LocationFailure extends Failure {
-  const LocationFailure(super.message);
-}
+/// Too many requests; the caller may retry in [retryAfter].
+class const RateLimitFailure(super.message, final Duration retryAfter)
+    extends Failure;
+
+class const PermissionFailure(super.message) extends Failure;
+
+class const LocationFailure(super.message) extends Failure;

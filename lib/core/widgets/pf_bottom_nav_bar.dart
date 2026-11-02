@@ -7,34 +7,24 @@ import '../theme/app_spacing.dart';
 const _slotsPerSide = 2;
 
 /// One tab of a [PfBottomNavBar].
-class PfNavItem {
-  const PfNavItem({required this.icon, required this.label});
-
-  final IconData icon;
-  final String label;
-}
+class const PfNavItem({
+  required final IconData icon,
+  required final String label,
+});
 
 /// The 5-slot bottom navigation bar with a raised circular camera action in
 /// the middle, used instead of a standard [NavigationBar] because of that
 /// center FAB.
 ///
 /// Expects exactly 4 [items], split two on each side of the center action.
-class PfBottomNavBar extends StatelessWidget {
-  const PfBottomNavBar({
-    super.key,
-    required this.items,
-    required this.currentIndex,
-    required this.onTap,
-    required this.centerIcon,
-    required this.onCenterTap,
-  });
-
-  final List<PfNavItem> items;
-  final int currentIndex;
-  final ValueChanged<int> onTap;
-  final IconData centerIcon;
-  final VoidCallback onCenterTap;
-
+class const PfBottomNavBar({
+  super.key,
+  required final List<PfNavItem> items,
+  required final int currentIndex,
+  required final ValueChanged<int> onTap,
+  required final IconData centerIcon,
+  required final VoidCallback onCenterTap,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

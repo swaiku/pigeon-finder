@@ -13,80 +13,45 @@ import 'map_pin_marker.dart';
 
 /// The posts on the map, drawn according to the zoom:
 /// - zoomed out: a heat map of where pigeons are;
-/// - in between: both, cross-fading;
 /// - zoomed in: pins, with the ones that would overlap folded into bubbles
 ///   (by `flutter_map_marker_cluster`).
-class MapPostsLayer extends StatelessWidget {
-  const MapPostsLayer({
-    super.key,
-    required this.posts,
-    required this.now,
-    required this.selectedId,
-    required this.onPostTap,
-  });
-
-  final List<MapPost> posts;
-  final DateTime now;
-  final String? selectedId;
-  final ValueChanged<MapPost> onPostTap;
-
-  /// Below this zoom only the heat map is drawn...
-  static const heatOnlyZoom = 11.5;
-
-  /// ...and from this one only the pins.
-  static const pinsOnlyZoom = 13.0;
+class const MapPostsLayer({
+  super.key,
+  required final List<MapPost> posts,
+  required final DateTime now,
+  required final String? selectedId,
+  required final ValueChanged<MapPost> onPostTap,
+}) extends StatelessWidget {
+  /// Below this zoom the posts are drawn as a heat map, from it as pins.
+  static const pinsMinZoom = 12.0;
 
   /// Past this zoom pins are never folded: the map is close enough to tell
   /// them apart.
   static const clusterMaxZoom = 17;
 
-  /// Heat level above which the heat map takes over the taps.
-  static const _heatTakesOver = .5;
-
   static const _clusterRadius = 70;
 
   @override
   Widget build(BuildContext context) {
-    final camera = MapCamera.of(context);
-    final heat = ((pinsOnlyZoom - camera.zoom) / (pinsOnlyZoom - heatOnlyZoom))
-        .clamp(0.0, 1.0);
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        if (heat > 0)
-          IgnorePointer(
-            child: Opacity(
-              opacity: heat,
-              child: _HeatLayer(posts: posts),
-            ),
-          ),
-        if (heat < 1)
-          IgnorePointer(
-            ignoring: heat > _heatTakesOver,
-            child: Opacity(
-              opacity: 1 - heat,
-              child: MarkerClusterLayerWidget(
-                options: MarkerClusterLayerOptions(
-                  markers: [
-                    for (final p in posts)
-                      _pinMarker(p, selected: p.id == selectedId),
-                  ],
-                  size: const Size.square(MapClusterMarker.size),
-                  maxClusterRadius: _clusterRadius,
-                  disableClusteringAtZoom: clusterMaxZoom,
-                  // Tapping a bubble zooms in on its pins; the page already
-                  // centers on a selected pin, and nothing here needs a
-                  // polygon or a spiral of pins.
-                  centerMarkerOnClick: false,
-                  spiderfyCluster: false,
-                  showPolygon: false,
-                  builder: (_, markers) =>
-                      MapClusterMarker(count: markers.length),
-                ),
-              ),
-            ),
-          ),
-      ],
+    if (MapCamera.of(context).zoom < pinsMinZoom) {
+      return IgnorePointer(child: _HeatLayer(posts: posts));
+    }
+    return MarkerClusterLayerWidget(
+      options: MarkerClusterLayerOptions(
+        markers: [
+          for (final p in posts) _pinMarker(p, selected: p.id == selectedId),
+        ],
+        size: const Size.square(MapClusterMarker.size),
+        maxClusterRadius: _clusterRadius,
+        disableClusteringAtZoom: clusterMaxZoom,
+        // Tapping a bubble zooms in on its pins; the page already centers on
+        // a selected pin, and nothing here needs a polygon or a spiral of
+        // pins.
+        centerMarkerOnClick: false,
+        spiderfyCluster: false,
+        showPolygon: false,
+        builder: (_, markers) => MapClusterMarker(count: markers.length),
+      ),
     );
   }
 
@@ -107,11 +72,8 @@ class MapPostsLayer extends StatelessWidget {
 
 /// Heat map of the posts, drawn by `flutter_map_heatmap_plus` as a tile layer
 /// from teal (a few pigeons) through amber to red (a lot).
-class _HeatLayer extends StatefulWidget {
-  const _HeatLayer({required this.posts});
-
-  final List<MapPost> posts;
-
+class const _HeatLayer({required final List<MapPost> posts})
+    extends StatefulWidget {
   @override
   State<_HeatLayer> createState() => _HeatLayerState();
 }

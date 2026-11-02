@@ -6,18 +6,12 @@ import '../theme/app_spacing.dart';
 
 /// The pill-shaped scope switcher used for leaderboard scope ("Quartier /
 /// Paris / Monde") and Pigeondex filters.
-class PfSegmentedControl extends StatelessWidget {
-  const PfSegmentedControl({
-    super.key,
-    required this.labels,
-    required this.selectedIndex,
-    required this.onChanged,
-  });
-
-  final List<String> labels;
-  final int selectedIndex;
-  final ValueChanged<int> onChanged;
-
+class const PfSegmentedControl({
+  super.key,
+  required final List<String> labels,
+  required final int selectedIndex,
+  required final ValueChanged<int> onChanged,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;

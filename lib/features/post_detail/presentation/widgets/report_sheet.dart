@@ -32,9 +32,7 @@ Future<ReportReason?> showReportSheet(BuildContext context) {
   );
 }
 
-class _ReportSheet extends StatefulWidget {
-  const _ReportSheet();
-
+class const _ReportSheet() extends StatefulWidget {
   @override
   State<_ReportSheet> createState() => _ReportSheetState();
 }
@@ -106,19 +104,12 @@ class _ReportSheetState extends State<_ReportSheet> {
   }
 }
 
-class _ReasonTile extends StatelessWidget {
-  const _ReasonTile({
-    required this.delay,
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final Duration delay;
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
+class const _ReasonTile({
+  required final Duration delay,
+  required final String label,
+  required final bool selected,
+  required final VoidCallback onTap,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final border = selected ? AppColors.pin : AppColors.trait;
