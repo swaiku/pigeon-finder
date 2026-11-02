@@ -1,6 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../features/auth/data/datasources/auth_data_source.dart';
+import '../../features/auth/data/repositories/auth_repository_impl.dart';
+import '../../features/auth/domain/repositories/auth_repository.dart';
+import '../../features/auth/presentation/bloc/onboarding_cubit.dart';
 import '../../features/map/data/datasources/geocoding_region_data_source.dart';
 import '../../features/map/data/datasources/geolocator_location_data_source.dart';
 import '../../features/map/data/datasources/location_data_source.dart';
@@ -23,14 +27,9 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
 
   // --- auth ---
-  // sl.registerLazySingleton<AuthRemoteDataSource>(
-  //   () => AuthRemoteDataSourceImpl(sl()),
-  // );
-  // sl.registerLazySingleton<AuthRepository>(
-  //   () => AuthRepositoryImpl(sl()),
-  // );
-  // sl.registerLazySingleton(() => SignInUseCase(sl()));
-  // sl.registerFactory(() => AuthCubit(sl()));
+  sl.registerLazySingleton(() => SupabaseAuthDataSource(sl()));
+  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
+  sl.registerFactory(() => OnboardingCubit(auth: sl(), location: sl()));
 
   // --- map ---
   // TODO(map): replace the fake with a Supabase-backed PostsRepository once

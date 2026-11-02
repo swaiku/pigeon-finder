@@ -153,4 +153,116 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportSubmit => 'Send report';
+
+  @override
+  String get authWelcomeSubtitle =>
+      'Photograph the pigeons of your city and climb your neighborhood\'s ranking.';
+
+  @override
+  String get authStep1 => 'Take a photo of a pigeon';
+
+  @override
+  String get authStep2 => 'The AI checks it\'s a real one';
+
+  @override
+  String get authStep3 =>
+      'It stays on the map for 24 h, and in your Pigeondex forever';
+
+  @override
+  String get authContinueWithEmail => 'Continue with my email';
+
+  @override
+  String get authNoPassword => 'No password: a code by email is enough.';
+
+  @override
+  String get authEmailTitle => 'Your email address';
+
+  @override
+  String get authEmailSubtitle =>
+      'We\'ll send you a 6-digit code. No password to remember.';
+
+  @override
+  String get authEmailHint => 'you@example.com';
+
+  @override
+  String get authReceiveCode => 'Get the code';
+
+  @override
+  String get authEmailPrivacy =>
+      'Your email stays private: it never shows on the map or in the ranking.';
+
+  @override
+  String get authError => 'Something went wrong, try again.';
+
+  @override
+  String get authCodeInvalid => 'Wrong or expired code.';
+
+  @override
+  String get authCodeTitle => 'Check your emails';
+
+  @override
+  String authCodeSentTo(String email) {
+    return 'Code sent to $email';
+  }
+
+  @override
+  String get authEdit => 'Edit';
+
+  @override
+  String authResendIn(String time) {
+    return 'Resend the code in $time';
+  }
+
+  @override
+  String get authResend => 'Resend the code';
+
+  @override
+  String get authValidate => 'Confirm';
+
+  @override
+  String get authCodeHelp =>
+      'Nothing received? Check your spam. The code expires after 1 hour.';
+
+  @override
+  String get authEmailVerified => 'Email verified';
+
+  @override
+  String get authPseudoTitle => 'Join the flock';
+
+  @override
+  String get authPseudoSubtitle =>
+      'Your username will show on the map and in the ranking.';
+
+  @override
+  String get authPseudoLabel => 'Username';
+
+  @override
+  String get authPseudoHint => 'camille_coo';
+
+  @override
+  String get authAcceptTerms =>
+      'I accept the terms of use and promise to only post real pigeons.';
+
+  @override
+  String get authTrainingConsent =>
+      'I allow my photos to be used to train the AI (optional).';
+
+  @override
+  String get authLetsGo => 'Let\'s go';
+
+  @override
+  String get locationTitle => 'Where are the pigeons?';
+
+  @override
+  String get locationSubtitle =>
+      'We use your location to center the map on you and place your photos. It is never shown to others.';
+
+  @override
+  String get locationAllow => 'Allow location';
+
+  @override
+  String get locationLater => 'Later';
+
+  @override
+  String get authUsernameTaken => 'This username is already taken.';
 }

@@ -301,6 +301,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send report'**
   String get reportSubmit;
+
+  /// No description provided for @authWelcomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Photograph the pigeons of your city and climb your neighborhood\'s ranking.'**
+  String get authWelcomeSubtitle;
+
+  /// No description provided for @authStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo of a pigeon'**
+  String get authStep1;
+
+  /// No description provided for @authStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'The AI checks it\'s a real one'**
+  String get authStep2;
+
+  /// No description provided for @authStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'It stays on the map for 24 h, and in your Pigeondex forever'**
+  String get authStep3;
+
+  /// No description provided for @authContinueWithEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with my email'**
+  String get authContinueWithEmail;
+
+  /// No description provided for @authNoPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'No password: a code by email is enough.'**
+  String get authNoPassword;
+
+  /// No description provided for @authEmailTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email address'**
+  String get authEmailTitle;
+
+  /// No description provided for @authEmailSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send you a 6-digit code. No password to remember.'**
+  String get authEmailSubtitle;
+
+  /// No description provided for @authEmailHint.
+  ///
+  /// In en, this message translates to:
+  /// **'you@example.com'**
+  String get authEmailHint;
+
+  /// No description provided for @authReceiveCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Get the code'**
+  String get authReceiveCode;
+
+  /// No description provided for @authEmailPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email stays private: it never shows on the map or in the ranking.'**
+  String get authEmailPrivacy;
+
+  /// No description provided for @authError.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong, try again.'**
+  String get authError;
+
+  /// No description provided for @authCodeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Wrong or expired code.'**
+  String get authCodeInvalid;
+
+  /// No description provided for @authCodeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your emails'**
+  String get authCodeTitle;
+
+  /// No description provided for @authCodeSentTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Code sent to {email}'**
+  String authCodeSentTo(String email);
+
+  /// No description provided for @authEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get authEdit;
+
+  /// No description provided for @authResendIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend the code in {time}'**
+  String authResendIn(String time);
+
+  /// No description provided for @authResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend the code'**
+  String get authResend;
+
+  /// No description provided for @authValidate.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get authValidate;
+
+  /// No description provided for @authCodeHelp.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing received? Check your spam. The code expires after 1 hour.'**
+  String get authCodeHelp;
+
+  /// No description provided for @authEmailVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verified'**
+  String get authEmailVerified;
+
+  /// No description provided for @authPseudoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the flock'**
+  String get authPseudoTitle;
+
+  /// No description provided for @authPseudoSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your username will show on the map and in the ranking.'**
+  String get authPseudoSubtitle;
+
+  /// No description provided for @authPseudoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get authPseudoLabel;
+
+  /// No description provided for @authPseudoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'camille_coo'**
+  String get authPseudoHint;
+
+  /// No description provided for @authAcceptTerms.
+  ///
+  /// In en, this message translates to:
+  /// **'I accept the terms of use and promise to only post real pigeons.'**
+  String get authAcceptTerms;
+
+  /// No description provided for @authTrainingConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'I allow my photos to be used to train the AI (optional).'**
+  String get authTrainingConsent;
+
+  /// No description provided for @authLetsGo.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s go'**
+  String get authLetsGo;
+
+  /// No description provided for @locationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where are the pigeons?'**
+  String get locationTitle;
+
+  /// No description provided for @locationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We use your location to center the map on you and place your photos. It is never shown to others.'**
+  String get locationSubtitle;
+
+  /// No description provided for @locationAllow.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow location'**
+  String get locationAllow;
+
+  /// No description provided for @locationLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Later'**
+  String get locationLater;
+
+  /// No description provided for @authUsernameTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'This username is already taken.'**
+  String get authUsernameTaken;
 }
 
 class _AppLocalizationsDelegate
