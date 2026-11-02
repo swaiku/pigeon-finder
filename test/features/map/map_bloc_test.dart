@@ -225,6 +225,9 @@ class _WalkingLocation implements LocationDataSource {
   Future<LatLng> getCurrentPosition() async => start;
 
   @override
+  Future<bool> requestPermission() async => true;
+
+  @override
   Stream<LatLng> watchPosition() => Stream.value(end);
 }
 
@@ -234,6 +237,9 @@ class _DeniedLocation implements LocationDataSource {
   @override
   Future<LatLng> getCurrentPosition() async =>
       throw const PermissionFailure('denied');
+
+  @override
+  Future<bool> requestPermission() async => false;
 
   @override
   Stream<LatLng> watchPosition() => const Stream.empty();

@@ -9,5 +9,8 @@ class const LocationRepositoryImpl(final LocationDataSource _dataSource)
   Future<LatLng> getUserPosition() => _dataSource.getCurrentPosition();
 
   @override
+  Future<bool> requestPermission() => _dataSource.requestPermission();
+
+  @override
   Stream<LatLng> watchUserPosition() => _dataSource.watchPosition();
 }
