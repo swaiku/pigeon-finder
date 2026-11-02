@@ -14,6 +14,8 @@ Deno.serve(async (req) => {
 
   try {
     // 1. Terminer les copies dataset en attente (sinon les photos seraient perdues)
+    // TODO(RGPD) : les copies dataset survivent à la suppression du compte ;
+    // le texte de consentement doit le dire explicitement.
     const { data: pending, error: pendingErr } = await admin
       .from('training_samples')
       .select('id, posts!inner(user_id)')
@@ -22,7 +24,18 @@ Deno.serve(async (req) => {
     if (pendingErr) throw pendingErr;
     for (const s of pending ?? []) await copySample(admin, s.id);
 
-    // 2. Supprimer toutes les photos de l'utilisateur (la cascade SQL ne touche pas au Storage)
+    // 2. Supprimer le compte : cascade profiles/posts/likes/reports,
+    //    training_samples.post_id passe à null. Seule étape irréversible côté données.
+    const { error: delErr } = await admin.auth.admin.deleteUser(user.id);
+    if (delErr) throw delErr;
+  } catch (e) {
+    console.error(e);
+    return json({ error: 'deletion_failed' }, 500); // rien n'a été supprimé, le client peut réessayer
+  }
+
+  // 3. Supprimer les photos (la cascade SQL ne touche pas au Storage). Après l'étape 2,
+  //    plus aucune policy ne les rend lisibles : un échec ici laisse des orphelins à nettoyer, pas une fuite.
+  try {
     for (let i = 0; i < 1000; i++) {
       const { data: files, error: listErr } = await admin.storage
         .from('photos').list(user.id, { limit: 100 });
@@ -32,15 +45,9 @@ Deno.serve(async (req) => {
         .from('photos').remove(files.map((f) => `${user.id}/${f.name}`));
       if (rmErr) throw rmErr;
     }
-
-    // 3. Supprimer le compte : cascade profiles/posts/likes/reports,
-    //    training_samples.post_id passe à null
-    const { error: delErr } = await admin.auth.admin.deleteUser(user.id);
-    if (delErr) throw delErr;
-
-    return json({ ok: true });
   } catch (e) {
-    console.error(e);
-    return json({ error: 'deletion_failed' }, 500); // rien d'irréversible n'a été fait avant l'étape 3
+    console.error(`photos orphelines pour ${user.id}`, e);
   }
+
+  return json({ ok: true });
 });
