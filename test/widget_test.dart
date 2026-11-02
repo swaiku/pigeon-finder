@@ -3,14 +3,17 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pigeon_finder/app.dart';
 import 'package:pigeon_finder/core/di/injection.dart';
+import 'package:pigeon_finder/features/auth/domain/repositories/auth_repository.dart';
 import 'package:pigeon_finder/features/map/presentation/bloc/map_bloc.dart';
 
+import 'support/fake_auth_repository.dart';
 import 'support/test_map_bloc.dart';
 
 void main() {
   setUp(() async {
     await sl.reset();
     sl.registerFactory<MapBloc>(testMapBloc);
+    sl.registerSingleton<AuthRepository>(FakeAuthRepository());
   });
 
   testWidgets('navigates between tabs and opens the camera page', (

@@ -35,6 +35,16 @@ class const GeolocatorLocationDataSource() implements LocationDataSource {
   }
 
   @override
+  Future<bool> requestPermission() async {
+    var permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    return permission != LocationPermission.denied &&
+        permission != LocationPermission.deniedForever;
+  }
+
+  @override
   Stream<LatLng> watchPosition() async* {
     await _ensureAccess();
     yield* Geolocator.getPositionStream(locationSettings: _settings)

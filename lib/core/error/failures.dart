@@ -14,6 +14,12 @@ class const ServerFailure(super.message) extends Failure;
 
 class const AuthFailure(super.message) extends Failure;
 
+class const UsernameTakenFailure(super.message) extends Failure;
+
+/// Too many requests; the caller may retry in [retryAfter].
+class const RateLimitFailure(super.message, final Duration retryAfter)
+    extends Failure;
+
 class const PermissionFailure(super.message) extends Failure;
 
 class const LocationFailure(super.message) extends Failure;
