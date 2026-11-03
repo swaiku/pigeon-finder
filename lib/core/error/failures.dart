@@ -23,3 +23,6 @@ class const RateLimitFailure(super.message, final Duration retryAfter)
 class const PermissionFailure(super.message) extends Failure;
 
 class const LocationFailure(super.message) extends Failure;
+
+/// The photo is above the storage limit.
+class const PhotoTooLargeFailure(super.message) extends Failure;

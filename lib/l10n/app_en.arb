@@ -76,5 +76,19 @@
   "locationSubtitle": "We use your location to center the map on you and place your photos. It is never shown to others.",
   "locationAllow": "Allow location",
   "locationLater": "Later",
-  "authUsernameTaken": "This username is already taken."
+  "authUsernameTaken": "This username is already taken.",
+  "cameraDenied": "Camera access denied. Allow it in your phone's settings to photograph pigeons.",
+  "cameraUnavailable": "No camera available on this device.",
+  "cameraShutter": "Take the photo",
+  "cameraCaptureFailed": "Couldn't take the photo, try again.",
+  "postDescriptionHint": "Add a description (optional)",
+  "postPublish": "Publish",
+  "postRetake": "Retake",
+  "postPublished": "Published! Your pigeon is on the map for 24 h.",
+  "postErrorLocationDenied": "Location access denied: we need it to place your photo on the map.",
+  "postErrorLocation": "Couldn't find your position. Check that location is on.",
+  "postErrorNetwork": "No connection. Check your network and try again.",
+  "postErrorRateLimited": "You've posted a lot in the last hour. Try again later.",
+  "postErrorTooLarge": "The photo is too large (5 MB max).",
+  "postErrorUnknown": "Publishing failed, try again."
 }

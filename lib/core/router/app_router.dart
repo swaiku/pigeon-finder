@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +13,7 @@ import '../../features/auth/presentation/pages/pseudo_page.dart';
 import '../../features/auth/presentation/pages/welcome_page.dart';
 import '../../features/map/presentation/pages/map_page.dart';
 import '../../features/pigeondex/presentation/pages/pigeondex_page.dart';
+import '../../features/post/presentation/bloc/post_cubit.dart';
 import '../../features/post/presentation/pages/camera_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/ranking/presentation/pages/ranking_page.dart';
@@ -106,7 +109,17 @@ final appRouter = GoRouter(
     GoRoute(
       path: AppRoutes.camera,
       parentNavigatorKey: _rootNavigatorKey,
-      builder: (_, _) => const CameraPage(),
+      builder: (_, _) => BlocProvider(
+        // Not lazy: the page only reads the cubit after the shot, but the
+        // position should be looked up while the user frames it.
+        lazy: false,
+        create: (_) {
+          final cubit = sl<PostCubit>();
+          unawaited(cubit.prepare());
+          return cubit;
+        },
+        child: const CameraPage(),
+      ),
     ),
   ],
 );
