@@ -9,10 +9,17 @@ import '../../domain/repositories/posts_repository.dart';
 import '../datasources/posts_remote_data_source.dart';
 
 /// Posts of the last 24 h, read from Supabase.
-class const SupabasePostsRepository(final PostsRemoteDataSource _dataSource)
+class SupabasePostsRepository(final PostsRemoteDataSource _dataSource)
     implements PostsRepository {
   /// Search radius around the user, in meters.
   static const radiusMeters = 5000;
+
+  /// Re-sign before the 1 h URL lifetime runs out.
+  static const _urlMaxAge = Duration(minutes: 50);
+
+  /// photo_path → signed URL. Reusing the same URL lets the image cache
+  /// (keyed by URL) skip re-downloading photos on every fetch.
+  final _signedUrls = <String, ({String url, DateTime signedAt})>{};
 
   @override
   Future<List<MapPost>> getActivePosts({required LatLng around}) async {
@@ -22,12 +29,24 @@ class const SupabasePostsRepository(final PostsRemoteDataSource _dataSource)
         longitude: around.longitude,
         radiusMeters: radiusMeters,
       );
-      final urls = await _dataSource.signPhotoUrls([
-        for (final row in rows) row['photo_path'] as String,
+      final now = DateTime.now();
+      bool needsSigning(String path) {
+        final cached = _signedUrls[path];
+        return cached == null || now.difference(cached.signedAt) > _urlMaxAge;
+      }
+
+      final fresh = await _dataSource.signPhotoUrls([
+        for (final row in rows)
+          if (needsSigning(row['photo_path'] as String))
+            row['photo_path'] as String,
       ]);
+      for (final MapEntry(:key, :value) in fresh.entries) {
+        _signedUrls[key] = (url: value, signedAt: now);
+      }
       return [
         for (final row in rows)
-          if (urls[row['photo_path']] case final url?) fromRow(row, url),
+          if (_signedUrls[row['photo_path']]?.url case final url?)
+            fromRow(row, url),
       ];
     } on SocketException catch (e) {
       throw NetworkFailure(e.message);

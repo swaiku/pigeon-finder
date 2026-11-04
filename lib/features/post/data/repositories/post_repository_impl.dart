@@ -10,7 +10,7 @@ import '../../domain/entities/new_post.dart';
 import '../../domain/repositories/post_repository.dart';
 import '../datasources/post_remote_data_source.dart';
 
-class const PostRepositoryImpl(
+class PostRepositoryImpl(
   final SupabasePostDataSource _dataSource,
   final RegionRepository _regions,
   final PostsChanges _changes,
@@ -20,6 +20,10 @@ class const PostRepositoryImpl(
 
   /// Window of the `max_posts_per_hour` limit.
   static const _rateLimitWindow = Duration(hours: 1);
+
+  /// Local photo path → bucket path of photos uploaded but not yet linked to
+  /// a post, so a retry reuses the upload instead of orphaning a new one.
+  final _uploadedPaths = <String, String>{};
 
   @override
   Future<void> publish(NewPost post) async {
@@ -33,10 +37,19 @@ class const PostRepositoryImpl(
         _regionName(post, RegionLevel.region),
         _regionName(post, RegionLevel.country),
       ).wait;
-      final description = post.description?.trim();
-      final path = await _dataSource.uploadPhoto(file);
-      // Known limitation: if the insert fails, the uploaded photo stays
-      // orphaned, since clients cannot delete from the bucket.
+      // The field counts graphemes but Postgres' char_length counts code
+      // points (an emoji family is 1 vs 5), so cap on code points here.
+      final trimmed = post.description?.trim();
+      final description = trimmed == null
+          ? null
+          : String.fromCharCodes(
+              trimmed.runes.take(NewPost.maxDescriptionLength),
+            );
+      final path = _uploadedPaths[post.photoPath] ??=
+          await _dataSource.uploadPhoto(file);
+      // If the insert fails, the upload is kept for the next retry. It stays
+      // orphaned only if the user gives up, since clients cannot delete from
+      // the bucket.
       await _dataSource.insertPost(
         photoPath: path,
         latitude: post.position.latitude,
@@ -47,6 +60,7 @@ class const PostRepositoryImpl(
         region: region,
         country: country,
       );
+      _uploadedPaths.remove(post.photoPath);
     } on SocketException catch (e) {
       throw NetworkFailure(e.message);
     } on StorageException catch (e) {

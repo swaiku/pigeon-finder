@@ -1,5 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../../post/data/datasources/post_remote_data_source.dart';
+
 /// Source of the posts shown on the map. Throws `PostgrestException` or
 /// `StorageException` when a call is rejected.
 abstract interface class PostsRemoteDataSource {
@@ -17,9 +19,7 @@ abstract interface class PostsRemoteDataSource {
 
 class const SupabasePostsDataSource(final SupabaseClient _client)
     implements PostsRemoteDataSource {
-  static const _bucket = 'photos';
-
-  /// Longer than a session on the map; URLs are re-signed on each fetch.
+  /// The repository caches URLs and re-signs them before this runs out.
   static const _urlLifetime = Duration(hours: 1);
 
   @override
@@ -39,7 +39,7 @@ class const SupabasePostsDataSource(final SupabaseClient _client)
   Future<Map<String, String>> signPhotoUrls(List<String> paths) async {
     if (paths.isEmpty) return const {};
     final results = await _client.storage
-        .from(_bucket)
+        .from(SupabasePostDataSource.bucket)
         .createSignedUrlsResult(paths, _urlLifetime.inSeconds);
     return {
       for (final r in results)
