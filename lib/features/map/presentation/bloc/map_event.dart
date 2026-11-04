@@ -39,3 +39,6 @@ final class const MapClockTicked(final DateTime now) extends MapEvent {
   @override
   List<Object?> get props => [now];
 }
+
+/// The posts changed (e.g. the user published one): fetch them again.
+final class const MapPostsRefreshRequested() extends MapEvent;

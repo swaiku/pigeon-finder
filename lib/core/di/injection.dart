@@ -8,14 +8,20 @@ import '../../features/auth/presentation/bloc/onboarding_cubit.dart';
 import '../../features/map/data/datasources/geocoding_region_data_source.dart';
 import '../../features/map/data/datasources/geolocator_location_data_source.dart';
 import '../../features/map/data/datasources/location_data_source.dart';
+import '../../features/map/data/datasources/posts_remote_data_source.dart';
 import '../../features/map/data/datasources/region_data_source.dart';
-import '../../features/map/data/repositories/fake_posts_repository.dart';
 import '../../features/map/data/repositories/location_repository_impl.dart';
 import '../../features/map/data/repositories/region_repository_impl.dart';
+import '../../features/map/data/repositories/supabase_posts_repository.dart';
 import '../../features/map/domain/repositories/location_repository.dart';
 import '../../features/map/domain/repositories/posts_repository.dart';
 import '../../features/map/domain/repositories/region_repository.dart';
 import '../../features/map/presentation/bloc/map_bloc.dart';
+import '../../features/post/data/datasources/post_remote_data_source.dart';
+import '../../features/post/data/repositories/post_repository_impl.dart';
+import '../../features/post/domain/repositories/post_repository.dart';
+import '../../features/post/presentation/bloc/post_cubit.dart';
+import '../events/posts_changes.dart';
 
 final sl = GetIt.instance;
 
@@ -25,6 +31,7 @@ final sl = GetIt.instance;
 /// datasource -> repository -> use cases -> bloc.
 Future<void> initDependencies() async {
   sl.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
+  sl.registerLazySingleton(PostsChanges.new);
 
   // --- auth ---
   sl.registerLazySingleton(() => SupabaseAuthDataSource(sl()));
@@ -32,28 +39,30 @@ Future<void> initDependencies() async {
   sl.registerFactory(() => OnboardingCubit(auth: sl(), location: sl()));
 
   // --- map ---
-  // TODO(map): replace the fake with a Supabase-backed PostsRepository once
-  // its data source exists.
   sl.registerLazySingleton<RegionDataSource>(GeocodingRegionDataSource.new);
   sl.registerLazySingleton<LocationDataSource>(
     () => const GeolocatorLocationDataSource(),
   );
-  sl.registerLazySingleton<PostsRepository>(FakePostsRepository.new);
+  sl.registerLazySingleton<PostsRemoteDataSource>(
+    () => SupabasePostsDataSource(sl()),
+  );
+  sl.registerLazySingleton<PostsRepository>(
+    () => SupabasePostsRepository(sl()),
+  );
   sl.registerLazySingleton<LocationRepository>(
     () => LocationRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<RegionRepository>(() => RegionRepositoryImpl(sl()));
-  sl.registerFactory(() => MapBloc(posts: sl(), location: sl(), regions: sl()));
+  sl.registerFactory(
+    () => MapBloc(posts: sl(), location: sl(), regions: sl(), changes: sl()),
+  );
 
   // --- post ---
-  // sl.registerLazySingleton<PostRemoteDataSource>(
-  //   () => PostRemoteDataSourceImpl(sl()),
-  // );
-  // sl.registerLazySingleton<PostRepository>(
-  //   () => PostRepositoryImpl(sl()),
-  // );
-  // sl.registerLazySingleton(() => CreatePostUseCase(sl()));
-  // sl.registerFactory(() => PostCubit(sl()));
+  sl.registerLazySingleton(() => SupabasePostDataSource(sl()));
+  sl.registerLazySingleton<PostRepository>(
+    () => PostRepositoryImpl(sl(), sl(), sl()),
+  );
+  sl.registerFactory(() => PostCubit(posts: sl(), location: sl()));
 
   // --- post_detail ---
   // sl.registerLazySingleton<PostDetailRemoteDataSource>(

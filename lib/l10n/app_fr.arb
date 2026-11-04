@@ -71,5 +71,19 @@
   "locationSubtitle": "On utilise ta position pour centrer la carte sur toi et placer tes photos. Elle n'est jamais affichée aux autres.",
   "locationAllow": "Autoriser la localisation",
   "locationLater": "Plus tard",
-  "authUsernameTaken": "Ce pseudo est déjà pris."
+  "authUsernameTaken": "Ce pseudo est déjà pris.",
+  "cameraDenied": "Accès à la caméra refusé. Autorise-le dans les réglages du téléphone pour photographier des pigeons.",
+  "cameraUnavailable": "Aucune caméra disponible sur cet appareil.",
+  "cameraShutter": "Prendre la photo",
+  "cameraCaptureFailed": "Impossible de prendre la photo, réessaie.",
+  "postDescriptionHint": "Ajoute une description (facultatif)",
+  "postPublish": "Publier",
+  "postRetake": "Reprendre",
+  "postPublished": "Publié ! Ton pigeon est sur la carte pendant 24 h.",
+  "postErrorLocationDenied": "Accès à la position refusé : on en a besoin pour placer ta photo sur la carte.",
+  "postErrorLocation": "Impossible de trouver ta position. Vérifie que la localisation est activée.",
+  "postErrorNetwork": "Pas de connexion. Vérifie ton réseau et réessaie.",
+  "postErrorRateLimited": "Tu as beaucoup publié cette dernière heure. Réessaie plus tard.",
+  "postErrorTooLarge": "La photo est trop lourde (5 Mo max).",
+  "postErrorUnknown": "La publication a échoué, réessaie."
 }

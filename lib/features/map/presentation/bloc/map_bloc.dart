@@ -8,6 +8,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:stream_transform/stream_transform.dart';
 
 import '../../../../core/error/failures.dart';
+import '../../../../core/events/posts_changes.dart';
 import '../../domain/entities/map_defaults.dart';
 import '../../domain/entities/map_post.dart';
 import '../../domain/entities/region_level.dart';
@@ -23,6 +24,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     required this._posts,
     required this._location,
     required this._regions,
+    PostsChanges? changes,
   }) : super(MapState(now: DateTime.now())) {
     on<MapStarted>(_onStarted);
     // Debounced to spare the platform geocoder while the user keeps panning;
@@ -43,6 +45,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       (event, emit) => emit(state.copyWith(selectedId: () => event.postId)),
     );
     on<MapClockTicked>((event, emit) => emit(state.copyWith(now: event.now)));
+    on<MapPostsRefreshRequested>(_onRefresh, transformer: restartable());
+    _changesSub = changes?.stream.listen(
+      (_) => add(const MapPostsRefreshRequested()),
+    );
     _clock = Timer.periodic(
       _clockTick,
       (_) => add(MapClockTicked(DateTime.now())),
@@ -53,10 +59,14 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   final LocationRepository _location;
   final RegionRepository _regions;
   StreamSubscription<LatLng>? _positionSub;
+  StreamSubscription<void>? _changesSub;
   late final Timer _clock;
 
   /// Where the posts on the map were last fetched around.
   LatLng? _postsAnchor;
+
+  /// Id of the latest posts fetch; older ones are dropped when they finish.
+  int _fetchId = 0;
 
   static const _geocodeDebounce = Duration(milliseconds: 500);
 
@@ -70,6 +80,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   Future<void> close() {
     _clock.cancel();
     unawaited(_positionSub?.cancel());
+    unawaited(_changesSub?.cancel());
     return super.close();
   }
 
@@ -85,14 +96,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         position = null;
       }
       final center = position ?? defaultMapCenter;
-      final posts = await _posts.getActivePosts(around: center);
-      _postsAnchor = center;
+      final posts = await _fetchPosts(center);
       final region = await _regionName(center, state.regionLevel);
       emit(
         state.copyWith(
           status: MapStatus.success,
           errorMessage: () => null,
-          posts: posts,
+          posts: posts ?? state.posts,
           userPosition: position,
           center: center,
           regionName: region,
@@ -125,12 +135,36 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       return;
     }
     try {
-      final posts = await _posts.getActivePosts(around: event.position);
-      _postsAnchor = event.position;
-      emit(state.copyWith(posts: posts));
+      final posts = await _fetchPosts(event.position);
+      if (posts != null) emit(state.copyWith(posts: posts));
     } on Failure {
       // Keep the posts already on the map.
     }
+  }
+
+  /// Refetches the posts around the user, e.g. after publishing.
+  Future<void> _onRefresh(
+    MapPostsRefreshRequested event,
+    Emitter<MapState> emit,
+  ) async {
+    final anchor = state.userPosition ?? _postsAnchor;
+    if (anchor == null) return; // Not started yet: MapStarted will fetch.
+    try {
+      final posts = await _fetchPosts(anchor);
+      if (posts != null) emit(state.copyWith(posts: posts));
+    } on Failure {
+      // Keep the posts already on the map.
+    }
+  }
+
+  /// Posts around [anchor], or null when a newer fetch started meanwhile:
+  /// several handlers fetch concurrently, and the latest request wins.
+  Future<List<MapPost>?> _fetchPosts(LatLng anchor) async {
+    final id = ++_fetchId;
+    final posts = await _posts.getActivePosts(around: anchor);
+    if (id != _fetchId) return null;
+    _postsAnchor = anchor;
+    return posts;
   }
 
   Future<void> _onCameraMoved(

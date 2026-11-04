@@ -266,4 +266,52 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get authUsernameTaken => 'Ce pseudo est déjà pris.';
+
+  @override
+  String get cameraDenied =>
+      'Accès à la caméra refusé. Autorise-le dans les réglages du téléphone pour photographier des pigeons.';
+
+  @override
+  String get cameraUnavailable => 'Aucune caméra disponible sur cet appareil.';
+
+  @override
+  String get cameraShutter => 'Prendre la photo';
+
+  @override
+  String get cameraCaptureFailed => 'Impossible de prendre la photo, réessaie.';
+
+  @override
+  String get postDescriptionHint => 'Ajoute une description (facultatif)';
+
+  @override
+  String get postPublish => 'Publier';
+
+  @override
+  String get postRetake => 'Reprendre';
+
+  @override
+  String get postPublished =>
+      'Publié ! Ton pigeon est sur la carte pendant 24 h.';
+
+  @override
+  String get postErrorLocationDenied =>
+      'Accès à la position refusé : on en a besoin pour placer ta photo sur la carte.';
+
+  @override
+  String get postErrorLocation =>
+      'Impossible de trouver ta position. Vérifie que la localisation est activée.';
+
+  @override
+  String get postErrorNetwork =>
+      'Pas de connexion. Vérifie ton réseau et réessaie.';
+
+  @override
+  String get postErrorRateLimited =>
+      'Tu as beaucoup publié cette dernière heure. Réessaie plus tard.';
+
+  @override
+  String get postErrorTooLarge => 'La photo est trop lourde (5 Mo max).';
+
+  @override
+  String get postErrorUnknown => 'La publication a échoué, réessaie.';
 }

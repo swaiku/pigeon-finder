@@ -29,7 +29,11 @@ class const MainShell({
           initialLocation: i == navigationShell.currentIndex,
         ),
         centerIcon: Icons.camera_alt_outlined,
-        onCenterTap: () => context.push(AppRoutes.camera),
+        onCenterTap: () async {
+          final published = await context.push<bool>(AppRoutes.camera);
+          // Show the new pin on the map.
+          if (published ?? false) navigationShell.goBranch(0);
+        },
       ),
     );
   }
