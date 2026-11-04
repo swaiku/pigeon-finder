@@ -1,3 +1,11 @@
+## v0.3.2 (04-11-2026)
+
+### 🐛 Bug Fixes
+
+- Fix release builds hanging at startup
+
+shared_preferences_android 2.5.0 calls Kotlin methods through JNI by name, and R8 renamed them in release builds: Supabase.initialize failed with NoSuchMethodError and the app never got past the splash screen. 2.5.2 ships the R8 keep rules; bump to 2.5.4. ([5e91ce7](https://github.com/swaiku/pigeon-finder/commit/5e91ce7f723662780a8d38808b2f0a4f1d0d781a))
+
 ## v0.3.1 (04-11-2026)
 
 ### 👷 CI
