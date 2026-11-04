@@ -22,6 +22,7 @@ Map<String, dynamic> _row(String id, {String? city}) => {
 /// Two rows from `posts_around`; only the first photo can be signed.
 class _FakeRemote implements PostsRemoteDataSource {
   ({double lat, double lng, int radius})? lastQuery;
+  final signedBatches = <List<String>>[];
 
   @override
   Future<List<Map<String, dynamic>>> postsAround({
@@ -34,9 +35,12 @@ class _FakeRemote implements PostsRemoteDataSource {
   }
 
   @override
-  Future<Map<String, String>> signPhotoUrls(List<String> paths) async => {
-    'u1/a1.jpg': 'https://signed/a1',
-  };
+  Future<Map<String, String>> signPhotoUrls(List<String> paths) async {
+    signedBatches.add(paths);
+    return {
+      if (paths.contains('u1/a1.jpg')) 'u1/a1.jpg': 'https://signed/a1',
+    };
+  }
 }
 
 void main() {
@@ -66,6 +70,22 @@ void main() {
       expect(post.mine, isTrue);
     },
   );
+
+  test('a refetch reuses signed URLs so photos stay cached', () async {
+    final remote = _FakeRemote();
+    final repo = SupabasePostsRepository(remote);
+    const around = LatLng(46.5, 6.6);
+
+    await repo.getActivePosts(around: around);
+    final posts = await repo.getActivePosts(around: around);
+
+    // Only b2, which could not be signed, is retried.
+    expect(remote.signedBatches, [
+      ['u1/a1.jpg', 'u1/b2.jpg'],
+      ['u1/b2.jpg'],
+    ]);
+    expect(posts.single.photoUrl, 'https://signed/a1');
+  });
 
   test('a missing city becomes an empty place', () {
     final post = SupabasePostsRepository.fromRow(_row('b2'), 'url');
