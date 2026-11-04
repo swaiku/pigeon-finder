@@ -37,9 +37,7 @@ class _FakeRemote implements PostsRemoteDataSource {
   @override
   Future<Map<String, String>> signPhotoUrls(List<String> paths) async {
     signedBatches.add(paths);
-    return {
-      if (paths.contains('u1/a1.jpg')) 'u1/a1.jpg': 'https://signed/a1',
-    };
+    return {if (paths.contains('u1/a1.jpg')) 'u1/a1.jpg': 'https://signed/a1'};
   }
 }
 

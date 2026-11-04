@@ -45,8 +45,8 @@ class PostRepositoryImpl(
           : String.fromCharCodes(
               trimmed.runes.take(NewPost.maxDescriptionLength),
             );
-      final path = _uploadedPaths[post.photoPath] ??=
-          await _dataSource.uploadPhoto(file);
+      final path = _uploadedPaths[post.photoPath] ??= await _dataSource
+          .uploadPhoto(file);
       // If the insert fails, the upload is kept for the next retry. It stays
       // orphaned only if the user gives up, since clients cannot delete from
       // the bucket.
