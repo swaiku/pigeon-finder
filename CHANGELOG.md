@@ -1,3 +1,11 @@
+## v0.3.1 (04-11-2026)
+
+### 👷 CI
+
+- Sign release APKs with a stable key
+
+Release APKs were signed with the CI runner's debug key, which is new on every run, so Android refused to install a release over the previous one. The release workflow now writes the key from the repo secrets and fails if they are missing; local builds without key.properties keep the debug key. ([a22fa2c](https://github.com/swaiku/pigeon-finder/commit/a22fa2cc63b31608373aefaf62786078b2609868))
+
 ## v0.3.0 (04-11-2026)
 
 ### ♻️ Refactoring
