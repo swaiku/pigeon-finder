@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -8,10 +6,9 @@ plugins {
 
 // Release signing key, written by the release workflow from the repo secrets.
 // Android only updates an app signed with the same key as the installed one.
-val keystorePropertiesFile = rootProject.file("key.properties")
-val keystoreProperties = Properties().apply {
-    if (keystorePropertiesFile.exists()) keystorePropertiesFile.inputStream().use { load(it) }
-}
+// The password comes from the environment: a properties file would mangle
+// accents and backslashes.
+val releaseKeystore = file("upload-keystore.jks")
 
 android {
     namespace = "ch.jrmy.pigeon_finder"
@@ -40,19 +37,19 @@ android {
 
     signingConfigs {
         create("release") {
-            keyAlias = keystoreProperties.getProperty("keyAlias")
-            keyPassword = keystoreProperties.getProperty("keyPassword")
-            storeFile = keystoreProperties.getProperty("storeFile")?.let(::file)
-            storePassword = keystoreProperties.getProperty("storePassword")
+            storeFile = releaseKeystore
+            storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            keyPassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+            keyAlias = System.getenv("ANDROID_KEY_ALIAS")
         }
     }
 
     buildTypes {
         release {
-            // Without key.properties (local builds), fall back to the debug key
+            // Without the keystore (local builds), fall back to the debug key
             // so `flutter run --release` still works.
             signingConfig = signingConfigs.getByName(
-                if (keystorePropertiesFile.exists()) "release" else "debug",
+                if (releaseKeystore.exists()) "release" else "debug",
             )
         }
     }
