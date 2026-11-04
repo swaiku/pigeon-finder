@@ -1,3 +1,44 @@
+## v0.3.0 (04-11-2026)
+
+### ♻️ Refactoring
+
+- format code
+
+CI/CD wasn't happy maybe it will be now ([c929f11](https://github.com/swaiku/pigeon-finder/commit/c929f111f84841c27291fae3dcc13ce4604b8749))
+
+### ✅ Tests
+
+- new test for map ([34ac879](https://github.com/swaiku/pigeon-finder/commit/34ac87938c6c9df6779ab6f504817eb09e4f42d4))
+
+### ✨ Features
+
+- fully working camera that allows posts
+
+The posts get added to the supabase db and storage. Tested with emulator ([21cb1da](https://github.com/swaiku/pigeon-finder/commit/21cb1da489118bc1dd38ab0ac670c2829b3f9ee1))
+
+### 🐛 Bug Fixes
+
+- implement fixes from PR comments ([6aa9a1a](https://github.com/swaiku/pigeon-finder/commit/6aa9a1a3ef78fcc123769dbdc0f89fa8644870c5))
+
+### 👷 CI
+
+- Add a Prepare release workflow and fix the changelog bump
+
+- add a manual "Prepare release" workflow: bumps the version and the
+  changelog on develop through an auto-merged PR, then opens the release PR
+  develop → main
+- prepend only the new section in the bump hook: release tags sit on main's
+  merge commits, so regenerating from develop merged past releases into the
+  new one (v0.1.0 had already disappeared)
+- restore the v0.1.0 section, regenerated from main's history
+- allow shell hooks, now required by bump-my-version 1.8 for $BVHOOK_* ([2c70125](https://github.com/swaiku/pigeon-finder/commit/2c70125a9a6beb2786611b1209d28dd133e5d4c6))
+
+### 🔧 Configuration
+
+- Leave merge commits out of the changelog
+
+GitHub may title a merge commit after its PR, gitmoji included, so the PR's commit was listed twice. ([c0f87d6](https://github.com/swaiku/pigeon-finder/commit/c0f87d6c51c93730d7a151d1b4f61d867a486cc4))
+
 ## v0.2.0 (02-11-2026)
 
 ### ♻️ Refactoring
