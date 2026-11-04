@@ -2,7 +2,6 @@
 
 ### ♻️ Refactoring
 
-- Replace magic numbers with theme tokens and named constants ([1ca21f4](https://github.com/swaiku/pigeon-finder/commit/1ca21f4726aeb604456a8ff27337b720b9527a7a))
 - Refactor the map feature towards clean architecture and lighter MVVM
 
 - split MapRepository into posts, location and region repositories
@@ -20,6 +19,111 @@
 
 ### ✨ Features
 
+- supabase setup done ([1999679](https://github.com/swaiku/pigeon-finder/commit/1999679f8b5f13ea4a905e4bc28ce54755550680))
+- Add explicit location permission request ([098bf89](https://github.com/swaiku/pigeon-finder/commit/098bf89eb4dbd4232bd463777756f816ec223224))
+- Add passwordless sign-up and login flow ([1d0e6f8](https://github.com/swaiku/pigeon-finder/commit/1d0e6f815242dfb297dbe8121406d097f0095e58))
+
+### 👷 CI
+
+- Skip the duplicate APK build on release PRs ([75ba5c6](https://github.com/swaiku/pigeon-finder/commit/75ba5c6d6585e03a8565f5f57f0b0ce2b0348210))
+
+### 📦 Build & Dependencies
+
+- Bump gradle-wrapper in /android in the gradle group (#11)
+
+Bumps the gradle group in /android with 1 update: [gradle-wrapper](https://github.com/gradle/gradle).
+
+
+Updates `gradle-wrapper` from 9.8.1 to 9.8.2
+- [Release notes](https://github.com/gradle/gradle/releases)
+- [Commits](https://github.com/gradle/gradle/compare/v9.8.1...v9.8.2)
+
+---
+updated-dependencies:
+- dependency-name: gradle-wrapper
+  dependency-version: 9.8.2
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: gradle
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([20434ec](https://github.com/swaiku/pigeon-finder/commit/20434ece1d73081ef07b45dd765dba751b4cf1b3))
+- Bump com.android.application in /android in the gradle group (#15)
+
+Bumps the gradle group in /android with 1 update: com.android.application.
+
+
+Updates `com.android.application` from 9.4.1 to 9.5.0
+
+---
+updated-dependencies:
+- dependency-name: com.android.application
+  dependency-version: 9.5.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: gradle
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([de60c02](https://github.com/swaiku/pigeon-finder/commit/de60c026969cc77e5df18f9ddc56b3ccbf56b347))
+- Bump json_serializable (#16)
+
+Bumps the pub-minor-patch group with 1 update: [json_serializable](https://github.com/google/json_serializable.dart).
+
+
+Updates `json_serializable` from 6.15.0 to 6.15.2
+- [Release notes](https://github.com/google/json_serializable.dart/releases)
+- [Commits](https://github.com/google/json_serializable.dart/compare/json_serializable-v6.15.0...json_serializable-v6.15.2)
+
+---
+updated-dependencies:
+- dependency-name: json_serializable
+  dependency-version: 6.15.2
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: pub-minor-patch
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([2021734](https://github.com/swaiku/pigeon-finder/commit/20217349d346ffc75b345acee126b0e79e7aabe0))
+
+### 🔀 Other
+
+- Ignore AI agent files and document the ViewModel convention
+
+- ignore .agents/, .claude/, .cursor/, .gemini/, .codex/, skills-lock.json,
+  AGENTS.md, CLAUDE.md and GEMINI.md
+- explain in the README when to use a Cubit and when to use a Bloc ([2923bf0](https://github.com/swaiku/pigeon-finder/commit/2923bf074e38bee19f89739ff9b845ed47a333e3))
+- Merge develop into refactor/primary-constructors ([3c07852](https://github.com/swaiku/pigeon-finder/commit/3c07852b564fed647e71cf5b19f63fe75252c151))
+- Harden Supabase signup, post photos, avatars and account deletion
+
+- Generate a username when the signup one is missing, invalid or taken
+- Restrict post photo_path to the author's own storage folder
+- Allow only the user's own visible post photos as avatar
+- Delete the account before its photos in delete-account ([9b190d6](https://github.com/swaiku/pigeon-finder/commit/9b190d6a34aa72c94ff7a9fc1fbf1f6b758b5ecd))
+- Add Supabase migration files
+
+Feat/supabase ([8df3bc1](https://github.com/swaiku/pigeon-finder/commit/8df3bc1ce59e5178f95693a6219afe0bddd083d8))
+- Grant authenticated users base table access ([a9bf8d1](https://github.com/swaiku/pigeon-finder/commit/a9bf8d1008bfb15b3300e751fa05ea60b15d1419))
+- Add MJML login code email template with logo ([50add2a](https://github.com/swaiku/pigeon-finder/commit/50add2a918fb006baa3587e7c38f0bf03be95bc0))
+- Merge pull request #18 from swaiku/feat/auth-onboarding
+
+✨ Add passwordless sign-up and login flow ([c5610b7](https://github.com/swaiku/pigeon-finder/commit/c5610b78da2208d4add32c009d79db885f15354f))
+
+### 🔧 Configuration
+
+- Fix changelog end of file before the bump commit ([f6fa97b](https://github.com/swaiku/pigeon-finder/commit/f6fa97bb4fd2c990cbb2097303b64c6eb542343d))
+- Load Supabase credentials from a local .env file ([0a04475](https://github.com/swaiku/pigeon-finder/commit/0a044753ee4e4d5eec4a11fd1512734a9b1d304d))
+
+## v0.1.0 (21-10-2026)
+
+### ♻️ Refactoring
+
+- Replace magic numbers with theme tokens and named constants ([1ca21f4](https://github.com/swaiku/pigeon-finder/commit/1ca21f4726aeb604456a8ff27337b720b9527a7a))
+
+### ✨ Features
+
 - Add routing to the app to test it ([5bb7cda](https://github.com/swaiku/pigeon-finder/commit/5bb7cdaad3d0967fe2262442360d93752bc862df))
 - Add map domain: posts, region levels, repository contract ([06a05b8](https://github.com/swaiku/pigeon-finder/commit/06a05b8123ec0b6e7749183874f54aca5f1a23fe))
 - Add location and region data sources with a fake repository ([d90a0b8](https://github.com/swaiku/pigeon-finder/commit/d90a0b8bad5142d1bc74fd9523ece7a83be943a1))
@@ -30,9 +134,6 @@
 - Add animated post detail sheet with report popup ([39ae922](https://github.com/swaiku/pigeon-finder/commit/39ae922697a4d8e9de66cc76ada4008e7276e667))
 - Show the post photo in map pins and the detail sheet ([2e628d1](https://github.com/swaiku/pigeon-finder/commit/2e628d118b34738e60e8af5310e2e4f4d1696e0c))
 - Count pigeons in the visible map area in the header ([676dd5c](https://github.com/swaiku/pigeon-finder/commit/676dd5c073310c0363c348989550f8db29725417))
-- supabase setup done ([1999679](https://github.com/swaiku/pigeon-finder/commit/1999679f8b5f13ea4a905e4bc28ce54755550680))
-- Add explicit location permission request ([098bf89](https://github.com/swaiku/pigeon-finder/commit/098bf89eb4dbd4232bd463777756f816ec223224))
-- Add passwordless sign-up and login flow ([1d0e6f8](https://github.com/swaiku/pigeon-finder/commit/1d0e6f815242dfb297dbe8121406d097f0095e58))
 
 ### 👷 CI
 
@@ -56,7 +157,6 @@ updated-dependencies:
 ...
 
 Signed-off-by: dependabot[bot] <support@github.com> ([ddfeb50](https://github.com/swaiku/pigeon-finder/commit/ddfeb50dd7e1940e552fd48011b31bb49602f11f))
-- Skip the duplicate APK build on release PRs ([75ba5c6](https://github.com/swaiku/pigeon-finder/commit/75ba5c6d6585e03a8565f5f57f0b0ce2b0348210))
 
 ### 💄 UI & Style
 
@@ -121,64 +221,6 @@ updated-dependencies:
 
 Signed-off-by: dependabot[bot] <support@github.com>
 Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([b12310d](https://github.com/swaiku/pigeon-finder/commit/b12310db99de34608579ec79c46db6de5fefd997))
-- Bump gradle-wrapper in /android in the gradle group (#11)
-
-Bumps the gradle group in /android with 1 update: [gradle-wrapper](https://github.com/gradle/gradle).
-
-
-Updates `gradle-wrapper` from 9.8.1 to 9.8.2
-- [Release notes](https://github.com/gradle/gradle/releases)
-- [Commits](https://github.com/gradle/gradle/compare/v9.8.1...v9.8.2)
-
----
-updated-dependencies:
-- dependency-name: gradle-wrapper
-  dependency-version: 9.8.2
-  dependency-type: direct:production
-  update-type: version-update:semver-patch
-  dependency-group: gradle
-...
-
-Signed-off-by: dependabot[bot] <support@github.com>
-Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([20434ec](https://github.com/swaiku/pigeon-finder/commit/20434ece1d73081ef07b45dd765dba751b4cf1b3))
-- Bump com.android.application in /android in the gradle group (#15)
-
-Bumps the gradle group in /android with 1 update: com.android.application.
-
-
-Updates `com.android.application` from 9.4.1 to 9.5.0
-
----
-updated-dependencies:
-- dependency-name: com.android.application
-  dependency-version: 9.5.0
-  dependency-type: direct:production
-  update-type: version-update:semver-minor
-  dependency-group: gradle
-...
-
-Signed-off-by: dependabot[bot] <support@github.com>
-Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([de60c02](https://github.com/swaiku/pigeon-finder/commit/de60c026969cc77e5df18f9ddc56b3ccbf56b347))
-- Bump json_serializable (#16)
-
-Bumps the pub-minor-patch group with 1 update: [json_serializable](https://github.com/google/json_serializable.dart).
-
-
-Updates `json_serializable` from 6.15.0 to 6.15.2
-- [Release notes](https://github.com/google/json_serializable.dart/releases)
-- [Commits](https://github.com/google/json_serializable.dart/compare/json_serializable-v6.15.0...json_serializable-v6.15.2)
-
----
-updated-dependencies:
-- dependency-name: json_serializable
-  dependency-version: 6.15.2
-  dependency-type: direct:production
-  update-type: version-update:semver-patch
-  dependency-group: pub-minor-patch
-...
-
-Signed-off-by: dependabot[bot] <support@github.com>
-Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([2021734](https://github.com/swaiku/pigeon-finder/commit/20217349d346ffc75b345acee126b0e79e7aabe0))
 
 ### 🔀 Other
 
@@ -188,32 +230,10 @@ Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.c
 # Conflicts:
 #	pubspec.lock ([248436f](https://github.com/swaiku/pigeon-finder/commit/248436f93fd95cb55359475d733cf686cf8fac98))
 - Tighten analyzer rules and fix unhandled futures ([8602655](https://github.com/swaiku/pigeon-finder/commit/8602655dbb7f4c63ec2302c8f02cb9946ee1ba57))
-- Ignore AI agent files and document the ViewModel convention
-
-- ignore .agents/, .claude/, .cursor/, .gemini/, .codex/, skills-lock.json,
-  AGENTS.md, CLAUDE.md and GEMINI.md
-- explain in the README when to use a Cubit and when to use a Bloc ([2923bf0](https://github.com/swaiku/pigeon-finder/commit/2923bf074e38bee19f89739ff9b845ed47a333e3))
-- Merge develop into refactor/primary-constructors ([3c07852](https://github.com/swaiku/pigeon-finder/commit/3c07852b564fed647e71cf5b19f63fe75252c151))
-- Harden Supabase signup, post photos, avatars and account deletion
-
-- Generate a username when the signup one is missing, invalid or taken
-- Restrict post photo_path to the author's own storage folder
-- Allow only the user's own visible post photos as avatar
-- Delete the account before its photos in delete-account ([9b190d6](https://github.com/swaiku/pigeon-finder/commit/9b190d6a34aa72c94ff7a9fc1fbf1f6b758b5ecd))
-- Add Supabase migration files
-
-Feat/supabase ([8df3bc1](https://github.com/swaiku/pigeon-finder/commit/8df3bc1ce59e5178f95693a6219afe0bddd083d8))
-- Grant authenticated users base table access ([a9bf8d1](https://github.com/swaiku/pigeon-finder/commit/a9bf8d1008bfb15b3300e751fa05ea60b15d1419))
-- Add MJML login code email template with logo ([50add2a](https://github.com/swaiku/pigeon-finder/commit/50add2a918fb006baa3587e7c38f0bf03be95bc0))
-- Merge pull request #18 from swaiku/feat/auth-onboarding
-
-✨ Add passwordless sign-up and login flow ([c5610b7](https://github.com/swaiku/pigeon-finder/commit/c5610b78da2208d4add32c009d79db885f15354f))
 
 ### 🔧 Configuration
 
 - Regenerate pubspec.lock ([eb7d367](https://github.com/swaiku/pigeon-finder/commit/eb7d367da0bc0617f66ce6916c4182a4dd6eb793))
-- Fix changelog end of file before the bump commit ([f6fa97b](https://github.com/swaiku/pigeon-finder/commit/f6fa97bb4fd2c990cbb2097303b64c6eb542343d))
-- Load Supabase credentials from a local .env file ([0a04475](https://github.com/swaiku/pigeon-finder/commit/0a044753ee4e4d5eec4a11fd1512734a9b1d304d))
 
 ## v0.0.1 (09-10-2026)
 

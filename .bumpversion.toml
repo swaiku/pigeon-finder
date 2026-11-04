@@ -4,12 +4,13 @@ commit = true
 # The tag is created by CI when the release reaches main.
 tag = false
 message = "🔖 Bump version {current_version} → {new_version}"
-# Needs git-cliff installed locally (brew install git-cliff).
+# Run by the "Prepare release" workflow; locally it needs git-cliff installed.
+# Prepend only the new section: release tags sit on main's merge commits, which
+# develop does not contain, so regenerating the whole file from develop would
+# merge every past release into the new one.
+allow_shell_hooks = true # the hook reads $BVHOOK_NEW_VERSION
 pre_commit_hooks = [
-  "git cliff -c .github/cliff.toml --strip header --tag v$BVHOOK_NEW_VERSION -o CHANGELOG.md",
-  # git-cliff leaves a blank line at the end, which the end-of-file-fixer
-  # hook would otherwise reject on the bump commit.
-  "pre-commit run end-of-file-fixer --files CHANGELOG.md || true",
+  "git cliff -c .github/cliff.toml --strip header --unreleased --tag v$BVHOOK_NEW_VERSION --prepend CHANGELOG.md",
   "git add CHANGELOG.md",
 ]
 
