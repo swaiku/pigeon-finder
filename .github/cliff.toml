@@ -4,9 +4,11 @@ header = "# Changelog\n\n"
 # the message (the group heading already carries the emoji). It is done here
 # rather than in commit_preprocessors, which run before commit_parsers and
 # would stop the parsers from matching the gitmoji.
+# Merge commits are dropped: GitHub may title them after the PR, gitmoji
+# included, which would list the PR's commit twice.
 body = """
 {% if version %}## {{ version }} ({{ timestamp | date(format="%d-%m-%Y") }})\n{% endif %}\
-{% for group, commits in commits | group_by(attribute="group") %}
+{% for group, commits in commits | filter(attribute="merge_commit", value=false) | group_by(attribute="group") %}
 ### {{ group }}
 {% for commit in commits %}
 - {{ commit.message | split(pat=" ") | slice(start=1) | join(sep=" ") | trim }} ([{{ commit.id | truncate(length=7, end="") }}](https://github.com/swaiku/pigeon-finder/commit/{{ commit.id }}))\

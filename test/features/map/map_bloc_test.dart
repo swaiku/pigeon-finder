@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pigeon_finder/core/error/failures.dart';
+import 'package:pigeon_finder/core/events/posts_changes.dart';
 import 'package:pigeon_finder/features/map/data/datasources/location_data_source.dart';
 import 'package:pigeon_finder/features/map/data/datasources/region_data_source.dart';
 import 'package:pigeon_finder/features/map/data/repositories/fake_posts_repository.dart';
@@ -29,7 +32,82 @@ class _FailingRegions implements RegionDataSource {
 
 final _bounds = LatLngBounds(const LatLng(46.5, 6.6), const LatLng(46.6, 6.7));
 
+/// Counts the fetches.
+class _CountingPosts extends FakePostsRepository {
+  int calls = 0;
+
+  @override
+  Future<List<MapPost>> getActivePosts({required LatLng around}) {
+    calls++;
+    return super.getActivePosts(around: around);
+  }
+}
+
+/// Answers each fetch with one post named after the call; the second call
+/// only answers once [releaseSecond] completes.
+class _GatedPosts implements PostsRepository {
+  final releaseSecond = Completer<void>();
+  int calls = 0;
+
+  @override
+  Future<List<MapPost>> getActivePosts({required LatLng around}) async {
+    final call = ++calls;
+    if (call == 2) await releaseSecond.future;
+    return [
+      MapPost(
+        id: 'call$call',
+        user: 'u',
+        place: '',
+        photoUrl: '',
+        position: around,
+        createdAt: DateTime.now(),
+        count: 1,
+        points: 10,
+        coos: 0,
+      ),
+    ];
+  }
+}
+
 void main() {
+  final changes = PostsChanges();
+  final counting = _CountingPosts();
+
+  final gated = _GatedPosts();
+  blocTest<MapBloc, MapState>(
+    'a slow refresh does not overwrite the posts of a newer fetch',
+    build: () => testMapBloc(posts: gated, changes: changes),
+    act: (bloc) async {
+      bloc.add(const MapStarted());
+      await Future<void>.delayed(Duration.zero);
+      changes.notify(); // call 2, held back
+      await Future<void>.delayed(Duration.zero);
+      // Far away from the first fetch: call 3, answers right away.
+      bloc.add(const MapUserPositionChanged(LatLng(46.52, 6.63)));
+      await Future<void>.delayed(Duration.zero);
+      expect(bloc.state.posts.single.id, 'call3');
+      gated.releaseSecond.complete();
+      await Future<void>.delayed(Duration.zero);
+    },
+    verify: (bloc) {
+      expect(gated.calls, 3);
+      expect(bloc.state.posts.single.id, 'call3');
+    },
+  );
+
+  blocTest<MapBloc, MapState>(
+    'a published post refetches the posts',
+    build: () => testMapBloc(posts: counting, changes: changes),
+    act: (bloc) async {
+      bloc.add(const MapStarted());
+      await Future<void>.delayed(Duration.zero);
+      expect(counting.calls, 1);
+      changes.notify();
+      await Future<void>.delayed(Duration.zero);
+    },
+    verify: (_) => expect(counting.calls, 2),
+  );
+
   blocTest<MapBloc, MapState>(
     'MapStarted loads posts and user position',
     build: testMapBloc,

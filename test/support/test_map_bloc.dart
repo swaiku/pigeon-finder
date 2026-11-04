@@ -1,3 +1,4 @@
+import 'package:pigeon_finder/core/events/posts_changes.dart';
 import 'package:pigeon_finder/features/map/data/datasources/location_data_source.dart';
 import 'package:pigeon_finder/features/map/data/datasources/region_data_source.dart';
 import 'package:pigeon_finder/features/map/data/repositories/fake_posts_repository.dart';
@@ -14,8 +15,10 @@ MapBloc testMapBloc({
   PostsRepository? posts,
   RegionDataSource regions = const FakeRegionDataSource(),
   LocationDataSource location = const FakeLocationDataSource(),
+  PostsChanges? changes,
 }) => MapBloc(
   posts: posts ?? FakePostsRepository(),
   location: LocationRepositoryImpl(location),
   regions: RegionRepositoryImpl(regions),
+  changes: changes,
 );

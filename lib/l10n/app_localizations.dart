@@ -499,6 +499,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This username is already taken.'**
   String get authUsernameTaken;
+
+  /// No description provided for @cameraDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera access denied. Allow it in your phone\'s settings to photograph pigeons.'**
+  String get cameraDenied;
+
+  /// No description provided for @cameraUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No camera available on this device.'**
+  String get cameraUnavailable;
+
+  /// No description provided for @cameraShutter.
+  ///
+  /// In en, this message translates to:
+  /// **'Take the photo'**
+  String get cameraShutter;
+
+  /// No description provided for @cameraCaptureFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t take the photo, try again.'**
+  String get cameraCaptureFailed;
+
+  /// No description provided for @postDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a description (optional)'**
+  String get postDescriptionHint;
+
+  /// No description provided for @postPublish.
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get postPublish;
+
+  /// No description provided for @postRetake.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake'**
+  String get postRetake;
+
+  /// No description provided for @postPublished.
+  ///
+  /// In en, this message translates to:
+  /// **'Published! Your pigeon is on the map for 24 h.'**
+  String get postPublished;
+
+  /// No description provided for @postErrorLocationDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Location access denied: we need it to place your photo on the map.'**
+  String get postErrorLocationDenied;
+
+  /// No description provided for @postErrorLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t find your position. Check that location is on.'**
+  String get postErrorLocation;
+
+  /// No description provided for @postErrorNetwork.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection. Check your network and try again.'**
+  String get postErrorNetwork;
+
+  /// No description provided for @postErrorRateLimited.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve posted a lot in the last hour. Try again later.'**
+  String get postErrorRateLimited;
+
+  /// No description provided for @postErrorTooLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'The photo is too large (5 MB max).'**
+  String get postErrorTooLarge;
+
+  /// No description provided for @postErrorUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Publishing failed, try again.'**
+  String get postErrorUnknown;
 }
 
 class _AppLocalizationsDelegate
