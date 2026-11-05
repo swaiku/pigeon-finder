@@ -455,9 +455,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Frame your pigeon. The more of them in the photo, the more points you earn.';
 
   @override
-  String get cameraFlip => 'Switch camera';
-
-  @override
   String get cameraCaptureFailed => 'Couldn\'t take the photo, try again.';
 
   @override

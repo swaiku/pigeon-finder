@@ -746,12 +746,6 @@ abstract class AppLocalizations {
   /// **'Frame your pigeon. The more of them in the photo, the more points you earn.'**
   String get cameraHint;
 
-  /// No description provided for @cameraFlip.
-  ///
-  /// In en, this message translates to:
-  /// **'Switch camera'**
-  String get cameraFlip;
-
   /// No description provided for @cameraCaptureFailed.
   ///
   /// In en, this message translates to:

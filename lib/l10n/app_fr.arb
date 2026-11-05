@@ -113,7 +113,6 @@
   "cameraUnavailable": "Aucune caméra disponible sur cet appareil.",
   "cameraShutter": "Prendre la photo",
   "cameraHint": "Cadre ton pigeon. Plus il y en a dans la photo, plus tu gagnes de points.",
-  "cameraFlip": "Changer de caméra",
   "cameraCaptureFailed": "Impossible de prendre la photo, réessaie.",
   "postDescriptionHint": "Ajoute une description (facultatif)",
   "postPublish": "Publier",

@@ -129,7 +129,6 @@
   "cameraUnavailable": "No camera available on this device.",
   "cameraShutter": "Take the photo",
   "cameraHint": "Frame your pigeon. The more of them in the photo, the more points you earn.",
-  "cameraFlip": "Switch camera",
   "cameraCaptureFailed": "Couldn't take the photo, try again.",
   "postDescriptionHint": "Add a description (optional)",
   "postPublish": "Publish",

@@ -40,7 +40,6 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
   CameraController? _controller;
   _CameraIssue? _issue;
   XFile? _photo;
-  CameraLensDirection _lens = CameraLensDirection.back;
   bool _capturing = false;
 
   /// The camera being opened, so that only one open runs at a time.
@@ -124,7 +123,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
         return;
       }
       final camera = cameras.firstWhere(
-        (c) => c.lensDirection == _lens,
+        (c) => c.lensDirection == CameraLensDirection.back,
         orElse: () => cameras.first,
       );
       final controller = CameraController(
@@ -184,17 +183,6 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
         _releaseCamera();
       }
     }
-  }
-
-  Future<void> _flip() async {
-    final controller = _controller;
-    if (controller == null || _capturing) return;
-    setState(() => _controller = null);
-    await controller.dispose();
-    _lens = _lens == CameraLensDirection.back
-        ? CameraLensDirection.front
-        : CameraLensDirection.back;
-    await _initCamera();
   }
 
   Future<void> _retake() async {
@@ -267,7 +255,6 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
       controller: _controller,
       capturing: _capturing,
       onShutter: _takePhoto,
-      onFlip: _flip,
     );
   }
 }
@@ -276,7 +263,6 @@ class const _ViewfinderView({
   required final CameraController? controller,
   required final bool capturing,
   required final VoidCallback onShutter,
-  required final VoidCallback onFlip,
 }) extends StatelessWidget {
   static const _shutterSize = 82.0;
   static const _shutterRing = 5.0;
@@ -399,12 +385,7 @@ class const _ViewfinderView({
                             ),
                           ),
                         ),
-                        _GlassButton(
-                          icon: Icons.sync_rounded,
-                          tooltip: l10n.cameraFlip,
-                          size: _sideSize,
-                          onPressed: ready && !capturing ? onFlip : null,
-                        ),
+                        const SizedBox(width: _sideSize),
                       ],
                     ),
                   ],
