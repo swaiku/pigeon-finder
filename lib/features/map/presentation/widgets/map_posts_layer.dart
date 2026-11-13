@@ -109,10 +109,10 @@ class _HeatLayerState extends State<_HeatLayer> {
   /// The plugin only takes [MaterialColor]s; every shade is the same color.
   static const _shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
-  static legacy.MaterialColor _swatch(Color color) =>
-    legacy.MaterialColor(color.toARGB32(), {
-      for (final shade in _shades) shade: color,
-    });
+  static legacy.MaterialColor _swatch(Color color) => legacy.MaterialColor(
+    color.toARGB32(),
+    {for (final shade in _shades) shade: color},
+  );
 
   static InMemoryHeatMapDataSource _sourceFor(List<MapPost> posts) =>
       InMemoryHeatMapDataSource(
