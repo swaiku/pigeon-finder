@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A text input styled from [InputDecorationTheme] (rounded, bordered,
 /// filled — see `app_theme.dart`). Used for the email and pseudo fields in

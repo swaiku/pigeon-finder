@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Share of the avatar's size taken by its initial.
 const _initialRatio = .4;
