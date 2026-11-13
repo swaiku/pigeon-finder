@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+// The heatmap plugin still takes the framework's MaterialColor, not
+// material_ui's. Drop this once the plugin migrates.
+// ignore: deprecated_member_use
+import 'package:flutter/material.dart' as legacy show MaterialColor;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_heatmap_plus/flutter_map_heatmap.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../domain/entities/map_post.dart';
@@ -105,9 +109,10 @@ class _HeatLayerState extends State<_HeatLayer> {
   /// The plugin only takes [MaterialColor]s; every shade is the same color.
   static const _shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900];
 
-  static MaterialColor _swatch(Color color) => MaterialColor(color.toARGB32(), {
-    for (final shade in _shades) shade: color,
-  });
+  static legacy.MaterialColor _swatch(Color color) =>
+    legacy.MaterialColor(color.toARGB32(), {
+      for (final shade in _shades) shade: color,
+    });
 
   static InMemoryHeatMapDataSource _sourceFor(List<MapPost> posts) =>
       InMemoryHeatMapDataSource(

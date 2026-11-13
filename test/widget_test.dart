@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:latlong2/latlong.dart';
-
+import 'package:material_ui/material_ui.dart';
 import 'package:pigeon_finder/app.dart';
 import 'package:pigeon_finder/core/di/injection.dart';
 import 'package:pigeon_finder/features/auth/domain/repositories/auth_repository.dart';
@@ -57,6 +56,8 @@ void main() {
     expect(find.text('Ranking'), findsNWidgets(3));
 
     await tester.tap(find.byIcon(Icons.camera_alt_outlined));
+    // The route needs one frame to be pushed and a second to build its page.
+    await tester.pump();
     // The viewfinder spinner animates while the camera opens (never, without
     // the plugin), so pumpAndSettle would never return.
     await tester.pump(const Duration(milliseconds: 500));
