@@ -146,6 +146,48 @@ abstract class AppLocalizations {
   /// **'Pigeondex'**
   String get pigeondexTitle;
 
+  /// No description provided for @pigeondexSortDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get pigeondexSortDate;
+
+  /// No description provided for @pigeondexSortPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Place'**
+  String get pigeondexSortPlace;
+
+  /// No description provided for @pigeondexSortTop.
+  ///
+  /// In en, this message translates to:
+  /// **'Top'**
+  String get pigeondexSortTop;
+
+  /// No description provided for @pigeondexOnMap.
+  ///
+  /// In en, this message translates to:
+  /// **'On the map'**
+  String get pigeondexOnMap;
+
+  /// No description provided for @pigeondexEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos yet. Snap your first pigeon!'**
+  String get pigeondexEmpty;
+
+  /// No description provided for @pigeondexUnknownPlace.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown place'**
+  String get pigeondexUnknownPlace;
+
+  /// No description provided for @pigeondexLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your Pigeondex'**
+  String get pigeondexLoadError;
+
   /// No description provided for @rankingTitle.
   ///
   /// In en, this message translates to:

@@ -17,6 +17,9 @@ class const MapPost({
   required final int coos,
   final int reports = 0,
   final bool mine = false,
+
+  /// What the author wrote about the photo, if anything.
+  final String? description,
 }) extends Equatable {
   static const lifetime = Duration(hours: 24);
 
@@ -47,5 +50,6 @@ class const MapPost({
     coos,
     reports,
     mine,
+    description,
   ];
 }
