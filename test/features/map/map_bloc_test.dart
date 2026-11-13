@@ -20,6 +20,9 @@ class _FailingPosts implements PostsRepository {
   @override
   Future<List<MapPost>> getActivePosts({required LatLng around}) async =>
       throw const NetworkFailure('offline');
+
+  @override
+  Future<List<MapPost>> getMyPosts() async => const [];
 }
 
 class _FailingRegions implements RegionDataSource {
@@ -48,6 +51,9 @@ class _CountingPosts extends FakePostsRepository {
 class _GatedPosts implements PostsRepository {
   final releaseSecond = Completer<void>();
   int calls = 0;
+
+  @override
+  Future<List<MapPost>> getMyPosts() async => const [];
 
   @override
   Future<List<MapPost>> getActivePosts({required LatLng around}) async {
@@ -284,6 +290,9 @@ void main() {
 class _FlakyPosts implements PostsRepository {
   final _real = FakePostsRepository();
   var _calls = 0;
+
+  @override
+  Future<List<MapPost>> getMyPosts() async => const [];
 
   @override
   Future<List<MapPost>> getActivePosts({required LatLng around}) async {

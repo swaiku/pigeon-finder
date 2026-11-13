@@ -7,4 +7,8 @@ import '../entities/map_post.dart';
 abstract interface class PostsRepository {
   /// Photos (less than 24 h old) in the surroundings of [around].
   Future<List<MapPost>> getActivePosts({required LatLng around});
+
+  /// All of the user's own photos not hidden by reports, of any age, newest
+  /// first (the Pigeondex).
+  Future<List<MapPost>> getMyPosts();
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_motion.dart';
@@ -100,6 +101,11 @@ class _PostDetailSheetState extends State<PostDetailSheet>
 
   String _ago(AppLocalizations l10n) {
     final age = DateTime.now().difference(_post.createdAt);
+    // Old Pigeondex photos read better with a date than "720 h ago".
+    if (age >= MapPost.lifetime) {
+      return DateFormat.yMMMd(l10n.localeName)
+          .format(_post.createdAt.toLocal());
+    }
     return age.inHours >= 1
         ? l10n.postDetailAgoHours(age.inHours)
         : l10n.postDetailAgoMinutes(age.inMinutes);
@@ -162,18 +168,20 @@ class _PostDetailSheetState extends State<PostDetailSheet>
                         bottom: _pillInset,
                         child: _PigeonCountPill(count: _post.count),
                       ),
-                      Positioned(
-                        right: _badgeInset,
-                        top: _badgeInset,
-                        child: _PhotoBadge(
-                          label: l10n.mapExpiresIn(
-                            left.inHours,
-                            left.inMinutes % 60,
+                      // Pigeondex photos outlive their time on the map.
+                      if (left > Duration.zero)
+                        Positioned(
+                          right: _badgeInset,
+                          top: _badgeInset,
+                          child: _PhotoBadge(
+                            label: l10n.mapExpiresIn(
+                              left.inHours,
+                              left.inMinutes % 60,
+                            ),
+                            background: AppColors.scrimBadge,
+                            foreground: Colors.white,
                           ),
-                          background: AppColors.scrimBadge,
-                          foreground: Colors.white,
                         ),
-                      ),
                       Positioned(
                         left: _badgeInset,
                         top: _badgeInset,
@@ -246,6 +254,14 @@ class _PostDetailSheetState extends State<PostDetailSheet>
               ],
             ),
           ),
+          if (_post.description case final description?) ...[
+            const SizedBox(height: AppSpacing.md),
+            _stagger(
+              _authorStart,
+              _authorEnd,
+              Text(description, style: text.bodyMedium),
+            ),
+          ],
           const SizedBox(height: AppSpacing.cozy),
           Row(
             children: [

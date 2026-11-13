@@ -34,6 +34,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pigeondexTitle => 'Pigeondex';
 
   @override
+  String get pigeondexSortDate => 'Date';
+
+  @override
+  String get pigeondexSortPlace => 'Place';
+
+  @override
+  String get pigeondexSortTop => 'Top';
+
+  @override
+  String get pigeondexOnMap => 'On the map';
+
+  @override
+  String get pigeondexEmpty => 'No photos yet. Snap your first pigeon!';
+
+  @override
+  String get pigeondexUnknownPlace => 'Unknown place';
+
+  @override
+  String get pigeondexLoadError => 'Couldn\'t load your Pigeondex';
+
+  @override
   String get rankingTitle => 'Ranking';
 
   @override
