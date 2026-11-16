@@ -22,7 +22,8 @@ repos:
 
       - id: flutter-analyze
         name: flutter analyze
-        entry: flutter analyze --fatal-infos
+        # git hooks export GIT_DIR, which makes flutter report its version as 0.0.0-unknown
+        entry: env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE flutter analyze --fatal-infos
         language: system
         types: [dart]
         pass_filenames: false
@@ -30,7 +31,7 @@ repos:
 
       - id: flutter-test
         name: flutter test
-        entry: flutter test
+        entry: env -u GIT_DIR -u GIT_WORK_TREE -u GIT_INDEX_FILE flutter test
         language: system
         types: [dart]
         pass_filenames: false
