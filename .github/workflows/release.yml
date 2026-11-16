@@ -58,6 +58,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          # Pinned so CI and releases use the version we develop on. Bump it in a
+          # dedicated PR, together with any fixes the new version needs.
+          flutter-version: 3.50.0
           cache: true
 
       # A stable key, so a new release installs over the previous one.

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/presentation/bloc/onboarding_cubit.dart';
@@ -12,6 +12,7 @@ import '../../features/auth/presentation/pages/location_page.dart';
 import '../../features/auth/presentation/pages/pseudo_page.dart';
 import '../../features/auth/presentation/pages/welcome_page.dart';
 import '../../features/map/presentation/pages/map_page.dart';
+import '../../features/pigeondex/presentation/bloc/pigeondex_cubit.dart';
 import '../../features/pigeondex/presentation/pages/pigeondex_page.dart';
 import '../../features/post/presentation/bloc/post_cubit.dart';
 import '../../features/post/presentation/pages/camera_page.dart';
@@ -83,7 +84,14 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.pigeondex,
-              builder: (_, _) => const PigeondexPage(),
+              builder: (_, _) => BlocProvider(
+                create: (_) {
+                  final cubit = sl<PigeondexCubit>();
+                  unawaited(cubit.load());
+                  return cubit;
+                },
+                child: const PigeondexPage(),
+              ),
             ),
           ],
         ),

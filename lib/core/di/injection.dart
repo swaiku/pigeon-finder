@@ -17,6 +17,7 @@ import '../../features/map/domain/repositories/location_repository.dart';
 import '../../features/map/domain/repositories/posts_repository.dart';
 import '../../features/map/domain/repositories/region_repository.dart';
 import '../../features/map/presentation/bloc/map_bloc.dart';
+import '../../features/pigeondex/presentation/bloc/pigeondex_cubit.dart';
 import '../../features/post/data/datasources/post_remote_data_source.dart';
 import '../../features/post/data/repositories/post_repository_impl.dart';
 import '../../features/post/domain/repositories/post_repository.dart';
@@ -75,14 +76,8 @@ Future<void> initDependencies() async {
   // sl.registerFactory(() => PostDetailCubit(sl()));
 
   // --- pigeondex ---
-  // sl.registerLazySingleton<PigeondexRemoteDataSource>(
-  //   () => PigeondexRemoteDataSourceImpl(sl()),
-  // );
-  // sl.registerLazySingleton<PigeondexRepository>(
-  //   () => PigeondexRepositoryImpl(sl()),
-  // );
-  // sl.registerLazySingleton(() => GetPigeondexUseCase(sl()));
-  // sl.registerFactory(() => PigeondexCubit(sl()));
+  // Reads through the map's PostsRepository to share its signed-URL cache.
+  sl.registerFactory(() => PigeondexCubit(posts: sl(), changes: sl()));
 
   // --- profile ---
   // sl.registerLazySingleton<ProfileRemoteDataSource>(

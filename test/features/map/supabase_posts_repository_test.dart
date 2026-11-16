@@ -17,12 +17,26 @@ Map<String, dynamic> _row(String id, {String? city}) => {
   'reports': 1,
   'mine': true,
   'liked_by_me': false,
+  'description': city == null ? null : 'Seen in $city',
 };
 
 /// Two rows from `posts_around`; only the first photo can be signed.
 class _FakeRemote implements PostsRemoteDataSource {
   ({double lat, double lng, int radius})? lastQuery;
   final signedBatches = <List<String>>[];
+
+  /// Pages `my_posts` hands out, in order, and the cursors it was asked for.
+  var myPostsPages = <List<Map<String, dynamic>>>[];
+  final myPostsCursors = <DateTime?>[];
+
+  @override
+  Future<List<Map<String, dynamic>>> myPosts({
+    DateTime? before,
+    required int limit,
+  }) async {
+    myPostsCursors.add(before);
+    return myPostsPages.removeAt(0);
+  }
 
   @override
   Future<List<Map<String, dynamic>>> postsAround({
@@ -66,6 +80,7 @@ void main() {
       expect(post.coos, 4);
       expect(post.reports, 1);
       expect(post.mine, isTrue);
+      expect(post.description, 'Seen in Lausanne');
     },
   );
 
@@ -85,8 +100,28 @@ void main() {
     expect(posts.single.photoUrl, 'https://signed/a1');
   });
 
+  test('getMyPosts pages through my_posts until a short page', () async {
+    final remote = _FakeRemote()
+      ..myPostsPages = [
+        List.filled(
+          SupabasePostsRepository.myPostsPageSize,
+          _row('a1', city: 'Lausanne'),
+        ),
+        [_row('a1')],
+      ];
+
+    final posts = await SupabasePostsRepository(remote).getMyPosts();
+
+    expect(posts, hasLength(SupabasePostsRepository.myPostsPageSize + 1));
+    // The first page leaves "now" to the server's clock; the second starts
+    // before the last row of the first one.
+    expect(remote.myPostsCursors, [null, DateTime.utc(2026, 11, 3, 10)]);
+    expect(remote.myPostsPages, isEmpty);
+  });
+
   test('a missing city becomes an empty place', () {
     final post = SupabasePostsRepository.fromRow(_row('b2'), 'url');
     expect(post.place, '');
+    expect(post.description, isNull);
   });
 }
