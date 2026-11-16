@@ -1,3 +1,102 @@
+## v0.4.1 (16-11-2026)
+
+### ♻️ Refactoring
+
+- correct formatting ([6ac7a08](https://github.com/swaiku/pigeon-finder/commit/6ac7a083a921d973133d84b327f0cda6fe6ad0cf))
+
+### ✨ Features
+
+- Add the Pigeondex and show post descriptions ([76c9301](https://github.com/swaiku/pigeon-finder/commit/76c9301e5a6df43d98a254fd4b2482c070572ac6))
+
+### 🐛 Bug Fixes
+
+- Fix ambiguous material imports in pigeondex ([3d7927b](https://github.com/swaiku/pigeon-finder/commit/3d7927baa85b4c7ebf9efc49dd0b1a2055bec4f9))
+
+### 👷 CI
+
+- pinned flutter version ([49b3b6c](https://github.com/swaiku/pigeon-finder/commit/49b3b6c1acfaa6408f4944b0ab18d02be73fa81a))
+
+### 📦 Build & Dependencies
+
+- Bump the gradle group across 1 directory with 2 updates (#34)
+
+Bumps the gradle group with 2 updates in the /android directory: com.android.application and [gradle-wrapper](https://github.com/gradle/gradle).
+
+
+Updates `com.android.application` from 9.5.0 to 9.5.1
+
+Updates `gradle-wrapper` from 9.8.2 to 9.9.0
+- [Release notes](https://github.com/gradle/gradle/releases)
+- [Commits](https://github.com/gradle/gradle/compare/v9.8.2...v9.9.0)
+
+---
+updated-dependencies:
+- dependency-name: com.android.application
+  dependency-version: 9.5.1
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: gradle
+- dependency-name: gradle-wrapper
+  dependency-version: 9.9.0
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: gradle
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([58dff47](https://github.com/swaiku/pigeon-finder/commit/58dff477bbb61f0846f065da5c1ef4b974f101c4))
+- Bump the pub-minor-patch group across 1 directory with 4 updates (#35)
+
+Bumps the pub-minor-patch group with 4 updates in the / directory: [build_runner](https://github.com/dart-lang/build), [camera](https://github.com/flutter/packages/tree/main/packages/camera), [geocoding](https://github.com/baseflow/flutter-geocoding) and [go_router](https://github.com/flutter/packages/tree/main/packages).
+
+
+Updates `build_runner` from 2.16.1 to 2.17.1
+- [Release notes](https://github.com/dart-lang/build/releases)
+- [Commits](https://github.com/dart-lang/build/compare/build_runner-v2.16.1...build_runner-v2.17.1)
+
+Updates `camera` from 0.12.1 to 0.12.2
+- [Release notes](https://github.com/flutter/packages/releases)
+- [Commits](https://github.com/flutter/packages/commits/camera-v0.12.2/packages/camera)
+
+Updates `geocoding` from 5.0.0 to 5.0.1
+- [Commits](https://github.com/baseflow/flutter-geocoding/compare/geocoding_v5.0.0...geocoding_v5.0.1)
+
+Updates `go_router` from 18.1.0 to 18.1.4
+- [Release notes](https://github.com/flutter/packages/releases)
+- [Commits](https://github.com/flutter/packages/commits/go_router-v18.1.4/packages)
+
+---
+updated-dependencies:
+- dependency-name: build_runner
+  dependency-version: 2.17.1
+  dependency-type: direct:production
+  update-type: version-update:semver-minor
+  dependency-group: pub-minor-patch
+- dependency-name: camera
+  dependency-version: 0.12.2
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: pub-minor-patch
+- dependency-name: geocoding
+  dependency-version: 5.0.1
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: pub-minor-patch
+- dependency-name: go_router
+  dependency-version: 18.1.4
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: pub-minor-patch
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([d1bb428](https://github.com/swaiku/pigeon-finder/commit/d1bb428aff995905cdb3e83df4973af41dc27226))
+- Upgrade to Flutter 3.50.0 and migrate to material_ui ([fda1248](https://github.com/swaiku/pigeon-finder/commit/fda12482b200666f9bd796af5d2f211592af35d9))
+
+### 🔧 Configuration
+
+- Unset git env vars in flutter pre-push hooks ([b5cd599](https://github.com/swaiku/pigeon-finder/commit/b5cd59982e2ceb63b2f06f3826472092adbda841))
+
 ## v0.4.0 (16-11-2026)
 
 ### ♻️ Refactoring
