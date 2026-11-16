@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:pigeon_finder/app.dart';
 import 'package:pigeon_finder/core/error/failures.dart';
 import 'package:pigeon_finder/core/events/posts_changes.dart';
 import 'package:pigeon_finder/core/widgets/pf_chip.dart';
@@ -175,7 +176,7 @@ void main() {
     final cubit = PigeondexCubit(posts: _FakePosts([fresh, sep]));
     await tester.pumpWidget(
       MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        localizationsDelegates: PigeonFinderApp.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         // Not `.value`: the provider must close the cubit, and its refresh
         // timer, when the test's widget tree goes away.

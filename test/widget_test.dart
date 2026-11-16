@@ -10,6 +10,7 @@ import 'package:pigeon_finder/features/map/presentation/bloc/map_bloc.dart';
 import 'package:pigeon_finder/features/pigeondex/presentation/bloc/pigeondex_cubit.dart';
 import 'package:pigeon_finder/features/post/presentation/bloc/post_cubit.dart';
 import 'package:pigeon_finder/features/post/presentation/pages/camera_page.dart';
+import 'package:pigeon_finder/l10n/app_localizations.dart';
 
 import 'support/fake_auth_repository.dart';
 import 'support/fake_location_data_source.dart';
@@ -42,6 +43,21 @@ void main() {
         location: LocationRepositoryImpl(postLocation),
       ),
     );
+  });
+
+  // English falls back to built-in strings, so only another locale catches a
+  // missing material_ui delegate (it crashed every PfBackButton in French).
+  testWidgets('resolves Material localizations in French', (tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        locale: Locale('fr'),
+        localizationsDelegates: PigeonFinderApp.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: SizedBox(),
+      ),
+    );
+    final context = tester.element(find.byType(SizedBox));
+    expect(MaterialLocalizations.of(context).backButtonTooltip, 'Retour');
   });
 
   testWidgets('navigates between tabs and opens the camera page', (
