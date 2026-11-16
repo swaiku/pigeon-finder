@@ -7,11 +7,18 @@ import 'l10n/app_localizations.dart';
 class PigeonFinderApp extends StatelessWidget {
   const PigeonFinderApp({super.key});
 
+  /// Not `AppLocalizations.localizationsDelegates`: gen-l10n adds
+  /// flutter_localizations' delegates, which material_ui widgets can't read.
+  static const localizationsDelegates = <LocalizationsDelegate<dynamic>>[
+    AppLocalizations.delegate,
+    ...GlobalMaterialLocalizations.delegates,
+  ];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      localizationsDelegates: localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       theme: AppTheme.light,
       routerConfig: appRouter,
