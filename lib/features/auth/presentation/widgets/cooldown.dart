@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Rebuilds every second until [until], giving [builder] the time left as
 /// `m:ss`, or null once it has passed (or when [until] is null).
