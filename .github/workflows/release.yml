@@ -58,6 +58,9 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          # Pinned to the version used locally: unpinned stable broke the analyzer
+          # when a new release deprecated package:flutter/material.dart.
+          flutter-version: 3.47.8
           cache: true
 
       # A stable key, so a new release installs over the previous one.

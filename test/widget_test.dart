@@ -5,8 +5,10 @@ import 'package:latlong2/latlong.dart';
 import 'package:pigeon_finder/app.dart';
 import 'package:pigeon_finder/core/di/injection.dart';
 import 'package:pigeon_finder/features/auth/domain/repositories/auth_repository.dart';
+import 'package:pigeon_finder/features/map/data/repositories/fake_posts_repository.dart';
 import 'package:pigeon_finder/features/map/data/repositories/location_repository_impl.dart';
 import 'package:pigeon_finder/features/map/presentation/bloc/map_bloc.dart';
+import 'package:pigeon_finder/features/pigeondex/presentation/bloc/pigeondex_cubit.dart';
 import 'package:pigeon_finder/features/post/presentation/bloc/post_cubit.dart';
 import 'package:pigeon_finder/features/post/presentation/pages/camera_page.dart';
 
@@ -34,6 +36,7 @@ void main() {
     postLocation = _CountingLocation();
     sl.registerFactory<MapBloc>(testMapBloc);
     sl.registerSingleton<AuthRepository>(FakeAuthRepository());
+    sl.registerFactory(() => PigeondexCubit(posts: FakePostsRepository()));
     sl.registerFactory(
       () => PostCubit(
         posts: FakePostRepository(),
@@ -55,6 +58,11 @@ void main() {
     await tester.tap(find.text('Ranking'));
     await tester.pumpAndSettle();
     expect(find.text('Ranking'), findsNWidgets(3));
+
+    // The fake repository holds none of the user's photos.
+    await tester.tap(find.text('Pigeondex'));
+    await tester.pumpAndSettle();
+    expect(find.text('No photos yet. Snap your first pigeon!'), findsOne);
 
     await tester.tap(find.byIcon(Icons.camera_alt_outlined));
     // The viewfinder spinner animates while the camera opens (never, without
