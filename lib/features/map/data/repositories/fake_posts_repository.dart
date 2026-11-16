@@ -103,6 +103,9 @@ class FakePostsRepository implements PostsRepository {
   }
 
   @override
+  Future<List<MapPost>> getMyPosts() async => const [];
+
+  @override
   Future<List<MapPost>> getActivePosts({required LatLng around}) async {
     final cx = (around.longitude / _cellSize).floor();
     final cy = (around.latitude / _cellSize).floor();
