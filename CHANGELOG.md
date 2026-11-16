@@ -1,3 +1,9 @@
+## v0.4.2 (16-11-2026)
+
+### 🐛 Bug Fixes
+
+- Fix blank login pages in French with material_ui localizations ([c354e10](https://github.com/swaiku/pigeon-finder/commit/c354e10a8d931a5d5bb4c136e31e87eb6108c7ef))
+
 ## v0.4.1 (16-11-2026)
 
 ### ♻️ Refactoring
