@@ -33,7 +33,7 @@ Color _avatarColor(String username) =>
 String _initial(String username) =>
     username.isEmpty ? '?' : username.characters.first.toUpperCase();
 
-/// Leaderboard of the user's city, country or the world: a podium for the
+/// Leaderboard around the user, of their country or the world: a podium for the
 /// three best, the rest in a list, and the user's own row pinned at the
 /// bottom.
 class const RankingPage({super.key}) extends StatelessWidget {
@@ -46,10 +46,6 @@ class const RankingPage({super.key}) extends StatelessWidget {
         bottom: false,
         child: BlocBuilder<RankingCubit, RankingState>(
           builder: (context, state) {
-            final scopes = [
-              for (final s in RankingScope.values)
-                if (s == RankingScope.world || state.zones?[s] != null) s,
-            ];
             final me = state.me;
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -80,18 +76,23 @@ class const RankingPage({super.key}) extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (state.zones != null)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: _margin),
-                    child: PfSegmentedControl(
-                      labels: [
-                        for (final s in scopes)
-                          state.zones?[s] ?? l10n.rankingScopeWorld,
-                      ],
-                      selectedIndex: scopes.indexOf(state.scope),
-                      onChanged: (i) => cubit.setScope(scopes[i]),
-                    ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: _margin),
+                  child: PfSegmentedControl(
+                    labels: [
+                      for (final s in RankingScope.values)
+                        state.labels?[s] ??
+                            switch (s) {
+                              RankingScope.nearby => l10n.rankingScopeNearby,
+                              RankingScope.city => l10n.rankingScopeCity,
+                              RankingScope.country => l10n.rankingScopeCountry,
+                              RankingScope.world => l10n.rankingScopeWorld,
+                            },
+                    ],
+                    selectedIndex: state.scope.index,
+                    onChanged: (i) => cubit.setScope(RankingScope.values[i]),
                   ),
+                ),
                 Expanded(
                   child: switch (state.status) {
                     RankingStatus.loading => const Center(

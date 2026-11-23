@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:latlong2/latlong.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../core/error/failures.dart';
@@ -15,12 +16,15 @@ class const SupabaseRankingRepository(final RankingRemoteDataSource _dataSource)
   @override
   Future<List<RankingEntry>> getLeaderboard(
     RankingScope scope, {
-    String? zone,
+    LatLng? around,
+    String? countryCode,
   }) async {
     try {
       final rows = await _dataSource.leaderboard(
         scope: scope.name,
-        zone: scope == RankingScope.world ? null : zone,
+        latitude: around?.latitude,
+        longitude: around?.longitude,
+        countryCode: countryCode,
         limit: limit,
       );
       return [for (final row in rows) fromRow(row)];

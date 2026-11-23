@@ -63,15 +63,17 @@ void main() {
     _entry(4, 'grisou', 990, me: true),
   ];
 
-  test('load opens on the city of the user, named like the posts', () async {
-    final ranking = FakeRankingRepository({RankingScope.city: paris});
+  test('load opens around the user, with the place names as labels', () async {
+    final ranking = FakeRankingRepository({RankingScope.nearby: paris});
     final cubit = _cubit(ranking);
 
     expect(await cubit.load(), isTrue);
 
-    expect(ranking.calls, [(RankingScope.city, 'Paris')]);
+    expect(ranking.calls, [
+      (RankingScope.nearby, FakeLocationDataSource.position, 'FR'),
+    ]);
     expect(cubit.state.status, RankingStatus.ready);
-    expect(cubit.state.zones, {
+    expect(cubit.state.labels, {
       RankingScope.city: 'Paris',
       RankingScope.country: 'France',
     });
@@ -84,20 +86,20 @@ void main() {
     expect(cubit.state.me?.username, 'grisou');
   });
 
-  test('without a position, falls back on the world', () async {
+  test('without a position, lets the server use the latest post', () async {
     final ranking = FakeRankingRepository();
     final cubit = _cubit(ranking, location: _NoLocation());
 
     await cubit.load();
 
-    expect(cubit.state.scope, RankingScope.world);
-    expect(cubit.state.zones, isEmpty);
-    expect(ranking.calls, [(RankingScope.world, null)]);
+    expect(cubit.state.scope, RankingScope.nearby);
+    expect(cubit.state.labels, isEmpty);
+    expect(ranking.calls, [(RankingScope.nearby, null, null)]);
   });
 
-  test('setScope loads the country', () async {
+  test('setScope loads the country by its ISO code', () async {
     final ranking = FakeRankingRepository({
-      RankingScope.city: paris,
+      RankingScope.nearby: paris,
       RankingScope.country: [_entry(1, 'grisou', 990, me: true)],
     });
     final cubit = _cubit(ranking);
@@ -105,14 +107,18 @@ void main() {
 
     await cubit.setScope(RankingScope.country);
 
-    expect(ranking.calls.last, (RankingScope.country, 'France'));
+    expect(ranking.calls.last, (
+      RankingScope.country,
+      FakeLocationDataSource.position,
+      'FR',
+    ));
     expect(cubit.state.entries.single.rank, 1);
   });
 
   test(
     'a failed first load shows the error, a failed refresh keeps rows',
     () async {
-      final ranking = FakeRankingRepository({RankingScope.city: paris})
+      final ranking = FakeRankingRepository({RankingScope.nearby: paris})
         ..failure = const NetworkFailure('offline');
       final cubit = _cubit(ranking);
 
@@ -169,7 +175,7 @@ void main() {
   ) async {
     final cubit = RankingCubit(
       ranking: FakeRankingRepository({
-        RankingScope.city: [
+        RankingScope.nearby: [
           ...paris.take(3),
           _entry(4, 'le_pigeonnier', 1180),
           const RankingEntry(
@@ -196,7 +202,9 @@ void main() {
     await tester.runAsync(cubit.load);
     await tester.pump();
 
+    expect(find.text('Nearby'), findsOne);
     expect(find.text('Paris'), findsOne);
+    expect(find.text('France'), findsOne);
     expect(find.text('World'), findsOne);
     expect(find.text('biset_boss'), findsOne);
     expect(find.text('2,140 pts'), findsOne);

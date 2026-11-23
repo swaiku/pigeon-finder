@@ -58,6 +58,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rankingTitle => 'Ranking';
 
   @override
+  String get rankingScopeNearby => 'Nearby';
+
+  @override
+  String get rankingScopeCity => 'City';
+
+  @override
+  String get rankingScopeCountry => 'Country';
+
+  @override
   String get rankingScopeWorld => 'World';
 
   @override

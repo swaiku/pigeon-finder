@@ -194,6 +194,24 @@ abstract class AppLocalizations {
   /// **'Ranking'**
   String get rankingTitle;
 
+  /// No description provided for @rankingScopeNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby'**
+  String get rankingScopeNearby;
+
+  /// No description provided for @rankingScopeCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get rankingScopeCity;
+
+  /// No description provided for @rankingScopeCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get rankingScopeCountry;
+
   /// No description provided for @rankingScopeWorld.
   ///
   /// In en, this message translates to:

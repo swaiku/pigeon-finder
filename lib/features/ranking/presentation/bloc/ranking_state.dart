@@ -4,10 +4,13 @@ enum RankingStatus { loading, ready, failure }
 
 final class const RankingState({
   final RankingStatus status = RankingStatus.loading,
-  final RankingScope scope = RankingScope.city,
+  final RankingScope scope = RankingScope.nearby,
   final List<RankingEntry> entries = const [],
-  final Map<RankingScope, String>? zones,
+  final Map<RankingScope, String>? labels,
 }) extends Equatable {
+  // [labels]: city and country names of the user's position, shown on the
+  // scopes; null until the user was located.
+
   /// Up to three best players, best first.
   List<RankingEntry> get podium => entries.take(3).toList();
 
@@ -21,14 +24,14 @@ final class const RankingState({
     RankingStatus? status,
     RankingScope? scope,
     List<RankingEntry>? entries,
-    Map<RankingScope, String>? zones,
+    Map<RankingScope, String>? labels,
   }) => RankingState(
     status: status ?? this.status,
     scope: scope ?? this.scope,
     entries: entries ?? this.entries,
-    zones: zones ?? this.zones,
+    labels: labels ?? this.labels,
   );
 
   @override
-  List<Object?> get props => [status, scope, entries, zones];
+  List<Object?> get props => [status, scope, entries, labels];
 }

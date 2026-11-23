@@ -1,7 +1,8 @@
 import 'package:equatable/equatable.dart';
 
-/// How wide the leaderboard is: the user's city, their country, or everyone.
-enum RankingScope { city, country, world }
+/// How wide the leaderboard is: posts within 2 km or 20 km of the user,
+/// their country, or everyone.
+enum RankingScope { nearby, city, country, world }
 
 /// One player of the leaderboard. Ties share the same [rank].
 ///

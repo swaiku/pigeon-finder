@@ -44,6 +44,8 @@ class const PfSegmentedControl({
                   alignment: Alignment.center,
                   child: Text(
                     labels[i],
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: textTheme.labelLarge?.copyWith(
                       color: i == selectedIndex
                           ? colorScheme.onSurface
