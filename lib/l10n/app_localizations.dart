@@ -194,6 +194,48 @@ abstract class AppLocalizations {
   /// **'Ranking'**
   String get rankingTitle;
 
+  /// No description provided for @rankingScopeWorld.
+  ///
+  /// In en, this message translates to:
+  /// **'World'**
+  String get rankingScopeWorld;
+
+  /// No description provided for @rankingPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String rankingPoints(int points);
+
+  /// No description provided for @rankingMe.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get rankingMe;
+
+  /// No description provided for @rankingToNext.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts to pass #{rank}'**
+  String rankingToNext(int points, int rank);
+
+  /// No description provided for @rankingLeader.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re in the lead!'**
+  String get rankingLeader;
+
+  /// No description provided for @rankingEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has scored here yet. Be the first!'**
+  String get rankingEmpty;
+
+  /// No description provided for @rankingLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the ranking'**
+  String get rankingLoadError;
+
   /// No description provided for @profileTitle.
   ///
   /// In en, this message translates to:

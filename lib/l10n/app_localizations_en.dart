@@ -58,6 +58,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rankingTitle => 'Ranking';
 
   @override
+  String get rankingScopeWorld => 'World';
+
+  @override
+  String rankingPoints(int points) {
+    final intl.NumberFormat pointsNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String pointsString = pointsNumberFormat.format(points);
+
+    return '$pointsString pts';
+  }
+
+  @override
+  String get rankingMe => 'You';
+
+  @override
+  String rankingToNext(int points, int rank) {
+    final intl.NumberFormat pointsNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String pointsString = pointsNumberFormat.format(points);
+
+    return '$pointsString pts to pass #$rank';
+  }
+
+  @override
+  String get rankingLeader => 'You\'re in the lead!';
+
+  @override
+  String get rankingEmpty => 'Nobody has scored here yet. Be the first!';
+
+  @override
+  String get rankingLoadError => 'Couldn\'t load the ranking';
+
+  @override
   String get profileTitle => 'Profile';
 
   @override
