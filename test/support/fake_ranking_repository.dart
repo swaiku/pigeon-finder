@@ -1,4 +1,3 @@
-import 'package:latlong2/latlong.dart';
 import 'package:pigeon_finder/core/error/failures.dart';
 import 'package:pigeon_finder/features/ranking/domain/entities/ranking_entry.dart';
 import 'package:pigeon_finder/features/ranking/domain/repositories/ranking_repository.dart';
@@ -9,15 +8,14 @@ class FakeRankingRepository implements RankingRepository {
 
   Map<RankingScope, List<RankingEntry>> byScope;
   Failure? failure;
-  final calls = <(RankingScope, LatLng?, String?)>[];
+  final calls = <(RankingScope, String?)>[];
 
   @override
   Future<List<RankingEntry>> getLeaderboard(
     RankingScope scope, {
-    LatLng? around,
     String? countryCode,
   }) async {
-    calls.add((scope, around, countryCode));
+    calls.add((scope, countryCode));
     if (failure case final f?) throw f;
     return byScope[scope] ?? const [];
   }

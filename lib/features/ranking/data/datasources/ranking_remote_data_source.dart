@@ -5,8 +5,6 @@ abstract interface class RankingRemoteDataSource {
   /// Rows of the `leaderboard` RPC.
   Future<List<Map<String, dynamic>>> leaderboard({
     required String scope,
-    double? latitude,
-    double? longitude,
     String? countryCode,
     required int limit,
   });
@@ -17,20 +15,12 @@ class const SupabaseRankingDataSource(final SupabaseClient _client)
   @override
   Future<List<Map<String, dynamic>>> leaderboard({
     required String scope,
-    double? latitude,
-    double? longitude,
     String? countryCode,
     required int limit,
   }) async {
     final rows = await _client.rpc<List<dynamic>>(
       'leaderboard',
-      params: {
-        'scope': scope,
-        'lat': ?latitude,
-        'lng': ?longitude,
-        'country_iso': ?countryCode,
-        'lim': limit,
-      },
+      params: {'scope': scope, 'country_iso': ?countryCode, 'lim': limit},
     );
     return rows.cast<Map<String, dynamic>>();
   }

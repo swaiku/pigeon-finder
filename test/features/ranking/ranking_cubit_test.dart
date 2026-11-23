@@ -69,9 +69,7 @@ void main() {
 
     expect(await cubit.load(), isTrue);
 
-    expect(ranking.calls, [
-      (RankingScope.nearby, FakeLocationDataSource.position, 'FR'),
-    ]);
+    expect(ranking.calls, [(RankingScope.nearby, 'FR')]);
     expect(cubit.state.status, RankingStatus.ready);
     expect(cubit.state.labels, {
       RankingScope.city: 'Paris',
@@ -94,7 +92,7 @@ void main() {
 
     expect(cubit.state.scope, RankingScope.nearby);
     expect(cubit.state.labels, isEmpty);
-    expect(ranking.calls, [(RankingScope.nearby, null, null)]);
+    expect(ranking.calls, [(RankingScope.nearby, null)]);
   });
 
   test('setScope loads the country by its ISO code', () async {
@@ -107,11 +105,7 @@ void main() {
 
     await cubit.setScope(RankingScope.country);
 
-    expect(ranking.calls.last, (
-      RankingScope.country,
-      FakeLocationDataSource.position,
-      'FR',
-    ));
+    expect(ranking.calls.last, (RankingScope.country, 'FR'));
     expect(cubit.state.entries.single.rank, 1);
   });
 

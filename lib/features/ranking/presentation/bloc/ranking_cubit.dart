@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:latlong2/latlong.dart';
 
 import '../../../../core/error/failures.dart';
 import '../../../../core/events/posts_changes.dart';
@@ -32,9 +31,8 @@ class RankingCubit extends Cubit<RankingState> {
   final RegionRepository _regions;
   StreamSubscription<void>? _changesSub;
 
-  /// Where the user was on first load, null when unknown: the server then
-  /// uses their latest post.
-  LatLng? _position;
+  /// The user's country on first load, null when unknown: the server then
+  /// uses their latest post's.
   String? _countryCode;
 
   /// Locates the user on first call, then loads the current scope; whether
@@ -63,7 +61,6 @@ class RankingCubit extends Cubit<RankingState> {
     try {
       final entries = await _ranking.getLeaderboard(
         scope,
-        around: _position,
         countryCode: _countryCode,
       );
       // The user switched scope while this one loaded.
@@ -81,10 +78,10 @@ class RankingCubit extends Cubit<RankingState> {
     }
   }
 
-  /// Reads the position and country code used to filter, and the city and
+  /// Reads the country code used to filter, and the city and
   /// country names shown on the scopes. Each one may be missing.
   Future<Map<RankingScope, String>> _locate() async {
-    final position = _position = await _orNull(_location.getUserPosition());
+    final position = await _orNull(_location.getUserPosition());
     if (position == null) return const {};
     final (code, city, country) = await (
       _orNull(_regions.getCountryCode(position)),
