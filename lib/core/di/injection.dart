@@ -22,6 +22,10 @@ import '../../features/post/data/datasources/post_remote_data_source.dart';
 import '../../features/post/data/repositories/post_repository_impl.dart';
 import '../../features/post/domain/repositories/post_repository.dart';
 import '../../features/post/presentation/bloc/post_cubit.dart';
+import '../../features/profile/data/datasources/profile_remote_data_source.dart';
+import '../../features/profile/data/repositories/supabase_profile_repository.dart';
+import '../../features/profile/domain/repositories/profile_repository.dart';
+import '../../features/profile/presentation/bloc/profile_cubit.dart';
 import '../events/posts_changes.dart';
 
 final sl = GetIt.instance;
@@ -80,12 +84,13 @@ Future<void> initDependencies() async {
   sl.registerFactory(() => PigeondexCubit(posts: sl(), changes: sl()));
 
   // --- profile ---
-  // sl.registerLazySingleton<ProfileRemoteDataSource>(
-  //   () => ProfileRemoteDataSourceImpl(sl()),
-  // );
-  // sl.registerLazySingleton<ProfileRepository>(
-  //   () => ProfileRepositoryImpl(sl()),
-  // );
-  // sl.registerLazySingleton(() => GetProfileUseCase(sl()));
-  // sl.registerFactory(() => ProfileCubit(sl()));
+  sl.registerLazySingleton<ProfileRemoteDataSource>(
+    () => SupabaseProfileDataSource(sl()),
+  );
+  sl.registerLazySingleton<ProfileRepository>(
+    () => SupabaseProfileRepository(sl()),
+  );
+  sl.registerFactory(
+    () => ProfileCubit(profile: sl(), posts: sl(), changes: sl()),
+  );
 }

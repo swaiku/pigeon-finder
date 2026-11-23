@@ -194,11 +194,125 @@ abstract class AppLocalizations {
   /// **'Ranking'**
   String get rankingTitle;
 
-  /// No description provided for @profileTitle.
+  /// No description provided for @profileLoadError.
   ///
   /// In en, this message translates to:
-  /// **'Profile'**
-  String get profileTitle;
+  /// **'Couldn\'t load your profile'**
+  String get profileLoadError;
+
+  /// No description provided for @profilePhotoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photo'**
+  String get profilePhotoLabel;
+
+  /// No description provided for @profileChangePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change profile pic'**
+  String get profileChangePhoto;
+
+  /// No description provided for @profileTakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get profileTakePhoto;
+
+  /// No description provided for @profilePickFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get profilePickFromGallery;
+
+  /// No description provided for @profileAvatarError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t change your photo, try again.'**
+  String get profileAvatarError;
+
+  /// No description provided for @profileLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · lvl {number}'**
+  String profileLevel(String name, int number);
+
+  /// No description provided for @profileNextLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next level: {name}'**
+  String profileNextLevel(String name);
+
+  /// No description provided for @profileMaxLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Top level reached!'**
+  String get profileMaxLevel;
+
+  /// No description provided for @profileLevelName.
+  ///
+  /// In en, this message translates to:
+  /// **'{level, select, fledgling{Squab} forager{Crumb Hunter} stroller{Stroller} lookout{Lookout} cooer{Cooer} rockDove{Rock Dove} grandRockDove{Grand Rock Dove} woodPigeon{Wood Pigeon} fancier{Pigeon Fancier} rooftopKing{Rooftop King} other{{level}}}'**
+  String profileLevelName(String level);
+
+  /// No description provided for @profilePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{photo} other{photos}}'**
+  String profilePhotos(int count);
+
+  /// No description provided for @profilePigeons.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{pigeon} other{pigeons}}'**
+  String profilePigeons(int count);
+
+  /// No description provided for @profileStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'streak'**
+  String get profileStreak;
+
+  /// No description provided for @profileStreakDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} d'**
+  String profileStreakDays(int count);
+
+  /// No description provided for @profileStreakExpires.
+  ///
+  /// In en, this message translates to:
+  /// **'Your streak ends in {hours} h {minutes} min. Post a photo to keep it going!'**
+  String profileStreakExpires(int hours, int minutes);
+
+  /// No description provided for @profileStreakNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Post a photo to start a streak!'**
+  String get profileStreakNone;
+
+  /// No description provided for @profileOnMapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'On the map right now'**
+  String get profileOnMapTitle;
+
+  /// No description provided for @profileExpiresIn.
+  ///
+  /// In en, this message translates to:
+  /// **'expires in {hours} h'**
+  String profileExpiresIn(int hours);
+
+  /// No description provided for @profileBadgesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Badges'**
+  String get profileBadgesTitle;
+
+  /// No description provided for @profileBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{badge, select, photographer{Photographer · 10 photos} fan{Fan · 25 coos given} star{Star · 25 coos received} flock{Flock · 10 pigeons} earlyBird{Early bird · before 7 am} other{{badge}}}'**
+  String profileBadge(String badge);
 
   /// No description provided for @cameraTitle.
   ///
