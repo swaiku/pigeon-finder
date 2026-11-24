@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0.0",
+  "version": "0.1.0",
+  "created_at": "2026-11-23T15:12:45.791105+00:00",
+  "min_app_version": "0.3.0",
+  "files": [
+    {
+      "name": "detector.tflite",
+      "role": "detector",
+      "format": "litert",
+      "url": "https://piaf.example.org/api/releases/0.1.0/detector.tflite",
+      "sha256": "00cec1c33494c60caf007a7c6aeceef6ec425fa5bdf3607c8beb811e7c77ccb3",
+      "size_bytes": 5126786
+    },
+    {
+      "name": "classifier.tflite",
+      "role": "classifier",
+      "format": "litert",
+      "url": "https://piaf.example.org/api/releases/0.1.0/classifier.tflite",
+      "sha256": "ee589557fdd3895e81af61df52cec3bb446018c63752a37f7a974297e9bdfc63",
+      "size_bytes": 6939472
+    }
+  ],
+  "classes": [
+    "feral pigeon",
+    "wood pigeon",
+    "collared dove",
+    "other"
+  ],
+  "input": {
+    "detector": {
+      "width_px": 512,
+      "height_px": 512,
+      "color_space": "RGB",
+      "normalization": {
+        "scale": 0.00392156862745098,
+        "mean": [
+          0,
+          0,
+          0
+        ],
+        "std": [
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    "classifier": {
+      "width_px": 224,
+      "height_px": 224,
+      "color_space": "RGB",
+      "normalization": {
+        "scale": 0.00392156862745098,
+        "mean": [
+          0,
+          0,
+          0
+        ],
+        "std": [
+          1,
+          1,
+          1
+        ]
+      }
+    }
+  },
+  "thresholds": {
+    "detection": 0.5,
+    "abstention": 0.5479,
+    "nms_iou": 0.7
+  }
+}

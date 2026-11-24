@@ -207,6 +207,16 @@ To get a local copy up and running, follow these steps.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+The on-device models (release 0.1.0 of piaf) are not in Git. Fetch them
+once into `assets/models/` (needs `uv`, and access to the piaf repository and
+its DVC storage on Google Cloud):
+
+```sh
+tool/fetch_models.sh
+```
+
+Without them the app builds, but the photo review shows an analysis error.
+
 Supabase credentials are injected at build time and never committed:
 
 ```sh
