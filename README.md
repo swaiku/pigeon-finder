@@ -215,14 +215,18 @@ its DVC storage on Google Cloud):
 tool/fetch_models.sh
 ```
 
-Without them the app builds, but the photo review shows an analysis error.
+They are only a fallback: with `PIAF_API_URL` set (see `.env.example`), the
+app downloads the latest release from pigeon-api at start (`GET
+/models/latest`), checks every SHA-256 and keeps it in its own storage.
+Without any release, the photo review shows an analysis error.
 
 Supabase credentials are injected at build time and never committed:
 
 ```sh
 flutter run \
   --dart-define=SUPABASE_URL=https://<project>.supabase.co \
-  --dart-define=SUPABASE_ANON_KEY=<anon-key>
+  --dart-define=SUPABASE_ANON_KEY=<anon-key> \
+  --dart-define=PIAF_API_URL=https://<host>/api
 ```
 
 Checks:

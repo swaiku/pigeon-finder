@@ -10,20 +10,21 @@ import 'package:flutter_litert/flutter_litert.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/detection_result.dart';
 import '../../domain/repositories/detection_repository.dart';
+import '../datasources/release_store.dart';
 import '../pipeline/pigeon_pipeline.dart';
 import '../pipeline/release_manifest.dart';
 
-/// Runs the release bundled in `assets/models/` with LiteRT, GPU first and
+/// Runs the release from pigeon-api ([ReleaseStore]), or the one bundled in
+/// `assets/models/` before the first download, with LiteRT: GPU first and
 /// CPU if the GPU cannot compile a model. One worker isolate owns both
 /// models and does the whole pipeline, so the UI thread only waits.
-// shortcut: models are app assets; switch to the OTA release (GET
-// /models/latest, SHA-256 checks) when the API serves it.
 class LiteRtDetectionRepository implements DetectionRepository {
-  LiteRtDetectionRepository({AssetBundle? bundle})
+  LiteRtDetectionRepository({this._releases, AssetBundle? bundle})
     : _bundle = bundle ?? rootBundle;
 
   static const _dir = 'assets/models';
 
+  final ReleaseStore? _releases;
   final AssetBundle _bundle;
   Future<SendPort>? _worker;
 
@@ -41,6 +42,28 @@ class LiteRtDetectionRepository implements DetectionRepository {
   }
 
   Future<SendPort> _spawn() async {
+    final release = await _releases?.resolve() ?? await _bundled();
+    final ready = ReceivePort();
+    await Isolate.spawn(
+      _workerMain,
+      (
+        ready.sendPort,
+        release.manifestJson,
+        release.detector,
+        release.classifier,
+      ),
+      debugName: 'detection',
+      onError: ready.sendPort,
+    );
+    final reply = await ready.first;
+    if (reply is! SendPort) throw ModelFailure('Loading the models: $reply');
+    debugPrint('Models loaded: ${release.origin}');
+    return reply;
+  }
+
+  /// The release in the app's assets (`tool/fetch_models.sh`); throws when
+  /// the APK was built without it.
+  Future<ReleaseFiles> _bundled() async {
     final json = await _bundle.loadString('$_dir/manifest.json');
     final manifest = ReleaseManifest.fromJson(
       jsonDecode(json) as Map<String, dynamic>,
@@ -48,22 +71,12 @@ class LiteRtDetectionRepository implements DetectionRepository {
     Future<Uint8List> bytes(String role) async =>
         (await _bundle.load('$_dir/${manifest.files[role]}')).buffer
             .asUint8List();
-    final ready = ReceivePort();
-    await Isolate.spawn(
-      _workerMain,
-      (
-        ready.sendPort,
-        json,
-        await bytes('detector'),
-        await bytes('classifier'),
-      ),
-      debugName: 'detection',
-      onError: ready.sendPort,
+    return ReleaseFiles(
+      manifestJson: json,
+      detector: await bytes('detector'),
+      classifier: await bytes('classifier'),
+      origin: 'release ${manifest.version}, bundled',
     );
-    final reply = await ready.first;
-    if (reply is! SendPort) throw ModelFailure('Loading the models: $reply');
-    debugPrint('Models ${manifest.version} loaded');
-    return reply;
   }
 
   @override
