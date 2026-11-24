@@ -92,5 +92,22 @@
   "postErrorNetwork": "Pas de connexion. Vérifie ton réseau et réessaie.",
   "postErrorRateLimited": "Tu as beaucoup publié cette dernière heure. Réessaie plus tard.",
   "postErrorTooLarge": "La photo est trop lourde (5 Mo max).",
-  "postErrorUnknown": "La publication a échoué, réessaie."
+  "postErrorUnknown": "La publication a échoué, réessaie.",
+  "analysisRunning": "L'IA inspecte ton oiseau…",
+  "analysisRunningHint": "Elle compte les pigeons, directement sur ton téléphone",
+  "analysisCount": "{count, plural, =1{1 pigeon dans le cadre} other{{count} pigeons dans le cadre}}",
+  "analysisConfidence": "{species} · {percent} %",
+  "analysisNone": "Aucun pigeon en vue.",
+  "analysisNoneChip": "0 pigeon",
+  "analysisNoneHint": "L'IA n'a trouvé aucun pigeon. Rapproche-toi ou cadre mieux, puis reprends la photo.",
+  "analysisFailed": "L'analyse a échoué.",
+  "analysisFailedHint": "Le modèle n'a pas pu tourner sur ce téléphone. Réessaie, ou reprends la photo.",
+  "analysisOnDevice": "Compté sur ton téléphone · rien ne part avant de publier",
+  "postRetakePhoto": "Reprendre la photo",
+  "speciesFeralPigeon": "Pigeon biset",
+  "speciesWoodPigeon": "Pigeon ramier",
+  "speciesCollaredDove": "Tourterelle turque",
+  "speciesOther": "Autre oiseau",
+  "speciesUncertain": "Incertain",
+  "speciesUncertainHint": "Incertain · espèce à confirmer"
 }

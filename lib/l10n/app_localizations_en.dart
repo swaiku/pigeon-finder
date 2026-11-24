@@ -333,4 +333,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get postErrorUnknown => 'Publishing failed, try again.';
+
+  @override
+  String get analysisRunning => 'The AI is inspecting your bird…';
+
+  @override
+  String get analysisRunningHint => 'Counting the pigeons, right on your phone';
+
+  @override
+  String analysisCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons in the frame',
+      one: '1 pigeon in the frame',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String analysisConfidence(String species, int percent) {
+    return '$species · $percent %';
+  }
+
+  @override
+  String get analysisNone => 'No pigeon in sight.';
+
+  @override
+  String get analysisNoneChip => '0 pigeons';
+
+  @override
+  String get analysisNoneHint =>
+      'The AI found no pigeon. Get closer or frame it better, then retake the photo.';
+
+  @override
+  String get analysisFailed => 'The analysis failed.';
+
+  @override
+  String get analysisFailedHint =>
+      'The model couldn\'t run on this phone. Try again, or retake the photo.';
+
+  @override
+  String get analysisOnDevice =>
+      'Counted on your phone · nothing leaves before you publish';
+
+  @override
+  String get postRetakePhoto => 'Retake the photo';
+
+  @override
+  String get speciesFeralPigeon => 'Feral pigeon';
+
+  @override
+  String get speciesWoodPigeon => 'Wood pigeon';
+
+  @override
+  String get speciesCollaredDove => 'Collared dove';
+
+  @override
+  String get speciesOther => 'Other bird';
+
+  @override
+  String get speciesUncertain => 'Uncertain';
+
+  @override
+  String get speciesUncertainHint => 'Uncertain · species to confirm';
 }

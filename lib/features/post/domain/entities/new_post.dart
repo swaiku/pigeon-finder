@@ -8,11 +8,14 @@ class const NewPost({
   required final LatLng position,
   final String? description,
 
-  /// Always 1 until the on-device AI counts the pigeons.
+  /// Birds the on-device models counted, between 1 and [maxPigeonCount].
   final int pigeonCount = 1,
 }) extends Equatable {
   /// Same limit as the `posts.description` check constraint.
   static const maxDescriptionLength = 280;
+
+  /// Same limit as the `posts.pigeon_count` check constraint.
+  static const maxPigeonCount = 10;
 
   @override
   List<Object?> get props => [photoPath, position, description, pigeonCount];

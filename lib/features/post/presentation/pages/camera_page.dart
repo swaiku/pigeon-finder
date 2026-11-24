@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,17 +9,22 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_spacing.dart';
 import '../../../../core/widgets/pf_back_button.dart';
 import '../../../../core/widgets/pf_button.dart';
+import '../../../../core/widgets/pf_card.dart';
+import '../../../../core/widgets/pf_chip.dart';
 import '../../../../core/widgets/pf_error_state.dart';
 import '../../../../core/widgets/pf_text_field.dart';
 import '../../../../l10n/app_localizations.dart';
+import '../../../detection/domain/entities/detection_result.dart';
+import '../../../detection/presentation/widgets/detection_photo.dart';
 import '../../domain/entities/new_post.dart';
 import '../bloc/post_cubit.dart';
 
 /// Why the viewfinder cannot be shown.
 enum _CameraIssue { denied, unavailable }
 
-/// New post: a full-screen viewfinder, then a review step with an optional
-/// description before publishing. Closes with `true` once published.
+/// New post: a full-screen viewfinder, then a review step where the phone
+/// counts and names the pigeons, with an optional description before
+/// publishing. Closes with `true` once published.
 class CameraPage extends StatefulWidget {
   const CameraPage({super.key});
 
@@ -167,7 +171,10 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
     try {
       // Kept as soon as it is taken: a failure afterwards must not lose it.
       final photo = await controller.takePicture();
-      if (mounted) setState(() => _photo = photo);
+      if (mounted) {
+        setState(() => _photo = photo);
+        unawaited(context.read<PostCubit>().analyse(photo.path));
+      }
       try {
         await controller.pausePreview();
       } on CameraException catch (e) {
@@ -219,6 +226,7 @@ class _CameraPageState extends State<CameraPage> with WidgetsBindingObserver {
         description: _description,
         onRetake: _retake,
         onPublish: _publish,
+        onReanalyse: () => context.read<PostCubit>().analyse(photo.path),
       );
     }
     final issue = _issue;
@@ -337,10 +345,12 @@ class const _ReviewView({
   required final TextEditingController description,
   required final VoidCallback onRetake,
   required final VoidCallback onPublish,
+  required final VoidCallback onReanalyse,
 }) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<PostCubit, PostState>(
@@ -349,6 +359,16 @@ class const _ReviewView({
                 state.isBusy ||
                 (state.status == PostStatus.locating && state.position == null);
             final error = state.error;
+            final result = state.detection;
+            final found = result != null && result.count > 0;
+            Widget title(String text) => Text(
+              text,
+              style: textTheme.headlineSmall?.copyWith(color: AppColors.night),
+            );
+            Widget hint(String text) => Text(
+              text,
+              style: textTheme.bodyMedium?.copyWith(color: AppColors.mist),
+            );
             return Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
@@ -357,23 +377,49 @@ class const _ReviewView({
                   Expanded(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(
-                        AppSpacing.radiusCard,
+                        AppSpacing.radiusPanel,
                       ),
-                      child: Image.file(File(photo.path), fit: BoxFit.cover),
+                      child: DetectionPhoto(path: photo.path, result: result),
                     ),
                   ),
                   const SizedBox(height: AppSpacing.lg),
-                  PfTextField(
-                    controller: description,
-                    hintText: l10n.postDescriptionHint,
-                    maxLength: NewPost.maxDescriptionLength,
-                  ),
+                  ...switch (state.analysis) {
+                    AnalysisStatus.none || AnalysisStatus.running => [
+                      const LinearProgressIndicator(),
+                      const SizedBox(height: AppSpacing.md),
+                      title(l10n.analysisRunning),
+                      hint(l10n.analysisRunningHint),
+                    ],
+                    AnalysisStatus.failed => [
+                      title(l10n.analysisFailed),
+                      hint(l10n.analysisFailedHint),
+                    ],
+                    AnalysisStatus.done when !found => [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: PfStatusChip(label: l10n.analysisNoneChip),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      title(l10n.analysisNone),
+                      hint(l10n.analysisNoneHint),
+                    ],
+                    AnalysisStatus.done => [
+                      _Summary(result: result!),
+                      const SizedBox(height: AppSpacing.md),
+                      PfTextField(
+                        controller: description,
+                        hintText: l10n.postDescriptionHint,
+                        maxLength: NewPost.maxDescriptionLength,
+                      ),
+                    ],
+                  },
                   if (error != null) ...[
                     const SizedBox(height: AppSpacing.sm),
                     Text(
                       _errorMessage(l10n, error),
-                      style: Theme.of(context).textTheme.bodyMedium
-                          ?.copyWith(color: AppColors.danger),
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: AppColors.danger,
+                      ),
                     ),
                   ],
                   const SizedBox(height: AppSpacing.md),
@@ -381,25 +427,55 @@ class const _ReviewView({
                     const LinearProgressIndicator(),
                     const SizedBox(height: AppSpacing.md),
                   ],
-                  Row(
-                    children: [
-                      Expanded(
-                        child: PfButton(
-                          label: l10n.postRetake,
-                          variant: PfButtonVariant.outline,
-                          onPressed: busy ? null : onRetake,
+                  if (state.analysis == AnalysisStatus.failed) ...[
+                    PfButton(
+                      label: l10n.retry,
+                      variant: PfButtonVariant.secondary,
+                      onPressed: onReanalyse,
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    PfButton(
+                      label: l10n.postRetakePhoto,
+                      variant: PfButtonVariant.outline,
+                      onPressed: onRetake,
+                    ),
+                  ] else if (state.analysis == AnalysisStatus.done && !found)
+                    PfButton(
+                      label: l10n.postRetakePhoto,
+                      variant: PfButtonVariant.secondary,
+                      onPressed: onRetake,
+                    )
+                  else ...[
+                    Row(
+                      children: [
+                        Expanded(
+                          child: PfButton(
+                            label: l10n.postRetake,
+                            variant: PfButtonVariant.outline,
+                            onPressed: busy ? null : onRetake,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: AppSpacing.md),
-                      Expanded(
-                        child: PfButton(
-                          label: l10n.postPublish,
-                          icon: Icons.send_rounded,
-                          onPressed: busy ? null : onPublish,
+                        const SizedBox(width: AppSpacing.md),
+                        Expanded(
+                          child: PfButton(
+                            label: l10n.postPublish,
+                            icon: Icons.send_rounded,
+                            onPressed: busy || !found ? null : onPublish,
+                          ),
+                        ),
+                      ],
+                    ),
+                    if (found) ...[
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        l10n.analysisOnDevice,
+                        textAlign: TextAlign.center,
+                        style: textTheme.labelMedium?.copyWith(
+                          color: AppColors.mist,
                         ),
                       ),
                     ],
-                  ),
+                  ],
                 ],
               ),
             );
@@ -418,4 +494,79 @@ class const _ReviewView({
         PostError.tooLarge => l10n.postErrorTooLarge,
         PostError.unknown => l10n.postErrorUnknown,
       };
+}
+
+/// The count, the most confident species, and how many birds of each.
+class const _Summary({required final DetectionResult result})
+    extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final textTheme = Theme.of(context).textTheme;
+    final named = result.birds.where((b) => !b.abstained).toList();
+    final counts = <String, int>{};
+    for (final b in result.birds) {
+      final name = b.abstained
+          ? l10n.speciesUncertainHint
+          : speciesName(l10n, b.species);
+      counts[name] = (counts[name] ?? 0) + 1;
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (named.isNotEmpty)
+          Align(
+            alignment: Alignment.centerLeft,
+            child: PfStatusChip(
+              tone: PfChipTone.success,
+              label: l10n.analysisConfidence(
+                speciesName(l10n, named.first.species),
+                (named.first.confidence * 100).round(),
+              ),
+            ),
+          ),
+        const SizedBox(height: AppSpacing.sm),
+        Text(
+          l10n.analysisCount(result.count),
+          style: textTheme.headlineSmall?.copyWith(color: AppColors.night),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        PfCard(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.cozy,
+            vertical: AppSpacing.sm,
+          ),
+          child: Column(
+            children: [
+              for (final MapEntry(key: name, value: n) in counts.entries)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          name,
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.night,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '×$n',
+                        style: textTheme.titleSmall?.copyWith(
+                          color: name == l10n.speciesUncertainHint
+                              ? AppColors.onWarningContainer
+                              : AppColors.iridescent,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }

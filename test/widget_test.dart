@@ -13,6 +13,7 @@ import 'package:pigeon_finder/features/post/presentation/pages/camera_page.dart'
 import 'package:pigeon_finder/l10n/app_localizations.dart';
 
 import 'support/fake_auth_repository.dart';
+import 'support/fake_detection_repository.dart';
 import 'support/fake_location_data_source.dart';
 import 'support/fake_post_repository.dart';
 import 'support/test_map_bloc.dart';
@@ -41,6 +42,7 @@ void main() {
       () => PostCubit(
         posts: FakePostRepository(),
         location: LocationRepositoryImpl(postLocation),
+        detection: FakeDetectionRepository(),
       ),
     );
   });

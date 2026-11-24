@@ -336,4 +336,69 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get postErrorUnknown => 'La publication a échoué, réessaie.';
+
+  @override
+  String get analysisRunning => 'L\'IA inspecte ton oiseau…';
+
+  @override
+  String get analysisRunningHint =>
+      'Elle compte les pigeons, directement sur ton téléphone';
+
+  @override
+  String analysisCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons dans le cadre',
+      one: '1 pigeon dans le cadre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String analysisConfidence(String species, int percent) {
+    return '$species · $percent %';
+  }
+
+  @override
+  String get analysisNone => 'Aucun pigeon en vue.';
+
+  @override
+  String get analysisNoneChip => '0 pigeon';
+
+  @override
+  String get analysisNoneHint =>
+      'L\'IA n\'a trouvé aucun pigeon. Rapproche-toi ou cadre mieux, puis reprends la photo.';
+
+  @override
+  String get analysisFailed => 'L\'analyse a échoué.';
+
+  @override
+  String get analysisFailedHint =>
+      'Le modèle n\'a pas pu tourner sur ce téléphone. Réessaie, ou reprends la photo.';
+
+  @override
+  String get analysisOnDevice =>
+      'Compté sur ton téléphone · rien ne part avant de publier';
+
+  @override
+  String get postRetakePhoto => 'Reprendre la photo';
+
+  @override
+  String get speciesFeralPigeon => 'Pigeon biset';
+
+  @override
+  String get speciesWoodPigeon => 'Pigeon ramier';
+
+  @override
+  String get speciesCollaredDove => 'Tourterelle turque';
+
+  @override
+  String get speciesOther => 'Autre oiseau';
+
+  @override
+  String get speciesUncertain => 'Incertain';
+
+  @override
+  String get speciesUncertainHint => 'Incertain · espèce à confirmer';
 }
