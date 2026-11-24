@@ -26,3 +26,6 @@ class const LocationFailure(super.message) extends Failure;
 
 /// The photo is above the storage limit.
 class const PhotoTooLargeFailure(super.message) extends Failure;
+
+/// The on-device models could not be loaded or run.
+class const ModelFailure(super.message) extends Failure;

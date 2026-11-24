@@ -5,6 +5,8 @@ import '../../features/auth/data/datasources/auth_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/presentation/bloc/onboarding_cubit.dart';
+import '../../features/detection/data/repositories/litert_detection_repository.dart';
+import '../../features/detection/domain/repositories/detection_repository.dart';
 import '../../features/map/data/datasources/geocoding_region_data_source.dart';
 import '../../features/map/data/datasources/geolocator_location_data_source.dart';
 import '../../features/map/data/datasources/location_data_source.dart';
@@ -63,7 +65,12 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<PostRepository>(
     () => PostRepositoryImpl(sl(), sl(), sl()),
   );
-  sl.registerFactory(() => PostCubit(posts: sl(), location: sl()));
+  sl.registerFactory(
+    () => PostCubit(posts: sl(), location: sl(), detection: sl()),
+  );
+
+  // --- detection ---
+  sl.registerLazySingleton<DetectionRepository>(LiteRtDetectionRepository.new);
 
   // --- post_detail ---
   // sl.registerLazySingleton<PostDetailRemoteDataSource>(
