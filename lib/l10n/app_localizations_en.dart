@@ -397,15 +397,4 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get speciesUncertainHint => 'Uncertain · species to confirm';
-
-  @override
-  String analysisModel(String version, String source) {
-    return 'Model $version · $source';
-  }
-
-  @override
-  String get analysisModelDownloaded => 'downloaded';
-
-  @override
-  String get analysisModelBundled => 'bundled';
 }

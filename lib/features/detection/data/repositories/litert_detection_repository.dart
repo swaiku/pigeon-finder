@@ -95,7 +95,6 @@ class LiteRtDetectionRepository implements DetectionRepository {
       birds: reply.birds,
       inferenceTime: reply.inferenceTime,
       modelVersion: _release?.version ?? '',
-      modelDownloaded: _release?.downloaded ?? false,
     );
   }
 }

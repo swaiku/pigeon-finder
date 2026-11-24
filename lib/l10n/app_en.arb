@@ -116,9 +116,5 @@
   "speciesCollaredDove": "Collared dove",
   "speciesOther": "Other bird",
   "speciesUncertain": "Uncertain",
-  "speciesUncertainHint": "Uncertain · species to confirm",
-  "analysisModel": "Model {version} · {source}",
-  "@analysisModel": {"placeholders": {"version": {"type": "String"}, "source": {"type": "String"}}},
-  "analysisModelDownloaded": "downloaded",
-  "analysisModelBundled": "bundled"
+  "speciesUncertainHint": "Uncertain · species to confirm"
 }

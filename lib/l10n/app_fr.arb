@@ -109,8 +109,5 @@
   "speciesCollaredDove": "Tourterelle turque",
   "speciesOther": "Autre oiseau",
   "speciesUncertain": "Incertain",
-  "speciesUncertainHint": "Incertain · espèce à confirmer",
-  "analysisModel": "Modèle {version} · {source}",
-  "analysisModelDownloaded": "téléchargé",
-  "analysisModelBundled": "intégré"
+  "speciesUncertainHint": "Incertain · espèce à confirmer"
 }

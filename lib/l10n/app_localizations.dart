@@ -727,24 +727,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Uncertain · species to confirm'**
   String get speciesUncertainHint;
-
-  /// No description provided for @analysisModel.
-  ///
-  /// In en, this message translates to:
-  /// **'Model {version} · {source}'**
-  String analysisModel(String version, String source);
-
-  /// No description provided for @analysisModelDownloaded.
-  ///
-  /// In en, this message translates to:
-  /// **'downloaded'**
-  String get analysisModelDownloaded;
-
-  /// No description provided for @analysisModelBundled.
-  ///
-  /// In en, this message translates to:
-  /// **'bundled'**
-  String get analysisModelBundled;
 }
 
 class _AppLocalizationsDelegate
