@@ -103,6 +103,117 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileTitle => 'Profile';
 
   @override
+  String get profileLoadError => 'Couldn\'t load your profile';
+
+  @override
+  String get profilePhotoLabel => 'Profile photo';
+
+  @override
+  String get profileChangePhoto => 'Change profile pic';
+
+  @override
+  String get profileTakePhoto => 'Take a photo';
+
+  @override
+  String get profilePickFromGallery => 'Choose from gallery';
+
+  @override
+  String get profileAvatarError => 'Couldn\'t change your photo, try again.';
+
+  @override
+  String profileLevel(String name, int number) {
+    return '$name · lvl $number';
+  }
+
+  @override
+  String profileNextLevel(String name) {
+    return 'Next level: $name';
+  }
+
+  @override
+  String get profileMaxLevel => 'Top level reached!';
+
+  @override
+  String profileLevelName(String level) {
+    String _temp0 = intl.Intl.selectLogic(level, {
+      'fledgling': 'Squab',
+      'forager': 'Crumb Hunter',
+      'stroller': 'Stroller',
+      'lookout': 'Lookout',
+      'cooer': 'Cooer',
+      'rockDove': 'Rock Dove',
+      'grandRockDove': 'Grand Rock Dove',
+      'woodPigeon': 'Wood Pigeon',
+      'fancier': 'Pigeon Fancier',
+      'rooftopKing': 'Rooftop King',
+      'other': '$level',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String profilePhotos(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'photos',
+      one: 'photo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String profilePigeons(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pigeons',
+      one: 'pigeon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profileStreak => 'streak';
+
+  @override
+  String profileStreakDays(int count) {
+    return '$count d';
+  }
+
+  @override
+  String profileStreakExpires(int hours, int minutes) {
+    return 'Your streak ends in $hours h $minutes min. Post a photo to keep it going!';
+  }
+
+  @override
+  String get profileStreakNone => 'Post a photo to start a streak!';
+
+  @override
+  String get profileOnMapTitle => 'On the map right now';
+
+  @override
+  String profileExpiresIn(int hours) {
+    return 'expires in $hours h';
+  }
+
+  @override
+  String get profileBadgesTitle => 'Badges';
+
+  @override
+  String profileBadge(String badge) {
+    String _temp0 = intl.Intl.selectLogic(badge, {
+      'photographer': 'Photographer · 10 photos',
+      'fan': 'Fan · 25 coos given',
+      'star': 'Star · 25 coos received',
+      'flock': 'Flock · 10 pigeons',
+      'earlyBird': 'Early bird · before 7 am',
+      'other': '$badge',
+    });
+    return '$_temp0';
+  }
+
+  @override
   String get cameraTitle => 'Camera';
 
   @override
