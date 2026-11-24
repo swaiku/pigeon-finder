@@ -1,3 +1,111 @@
+## v0.5.0 (24-11-2026)
+
+### ♻️ Refactoring
+
+- Rank by distance and ISO country code instead of place names
+
+Place names come from each phone's geocoder and change with its language
+("Genève" / "Geneva"), so posts of the same city did not match.
+
+- leaderboard RPC: 2 km / 20 km radius around the user, ISO country code,
+  or world; falls back on the user's latest post without a position
+- posts.country_code, filled from the geocoder's isoCountryCode
+- scopes Quartier / ville / pays / Monde, names only as labels ([0f09b75](https://github.com/swaiku/pigeon-finder/commit/0f09b7569cfdda9ecf1806a67848bac2cf201b88))
+
+### ✨ Features
+
+- Count and name the pigeons of a photo on the device
+
+Detector and classifier of piaf release 0.1.0 with LiteRT, GPU first and
+CPU when it cannot compile, in one worker isolate loaded at start. The
+pipeline is predict_photo.py step by step: letterbox bit-exact with
+OpenCV INTER_LINEAR, crop bit-exact with Pillow bicubic, NMS in the app.
+Same birds as predict_photo.py on pigeon1 (3) and pigeon2 (27), on the
+host CPU and on the phone's GPU. ([22feee7](https://github.com/swaiku/pigeon-finder/commit/22feee72016851af7b31714c344d33d92a135a66))
+- Show the count and species before publishing
+
+The review step analyses the photo: boxes and species per bird, uncertain
+birds in amber, no-pigeon and error states, as Penpot screens 16 to 18.
+The post carries the count, capped at the 10 of posts.pigeon_count. ([87c2fa2](https://github.com/swaiku/pigeon-finder/commit/87c2fa2b8b288a05a852832a933d891df4484215))
+- Download the piaf models from pigeon-api
+
+At start the app asks GET /models/latest with its version and the
+installed one, downloads a newer release, checks each size and SHA-256,
+then swaps it in atomically and keeps the previous one. Offline or on an
+API error it keeps the installed release; the bundled one is only a
+fallback. The API base URL comes from PIAF_API_URL. ([f5ad1a2](https://github.com/swaiku/pigeon-finder/commit/f5ad1a20dfee698872209c53ba0a506eea8f3082))
+- Add the ranking page backed by a Supabase leaderboard
+
+- leaderboard RPC: same score as my_score(), by city, country or world,
+  top 50 plus the caller's row and the gap to the player ahead
+- ranking feature: data/domain layers, RankingCubit, page from the
+  Penpot "14 · Classement" board (podium, list, pinned "You" row) ([16d45c1](https://github.com/swaiku/pigeon-finder/commit/16d45c1dd6beb5ff11e3b18e4fff25197c0474cd))
+- profile page ([feab09a](https://github.com/swaiku/pigeon-finder/commit/feab09ac80a6d31f57df7e27af48fafd15f61659))
+
+### 👷 CI
+
+- Pass PIAF_API_URL to the app builds ([13b7bb2](https://github.com/swaiku/pigeon-finder/commit/13b7bb2662e52b3afb750f4035add09747458713))
+
+### 💄 UI & Style
+
+- Show the model release under the count, small ([8af8f31](https://github.com/swaiku/pigeon-finder/commit/8af8f3176bec7f8b01e9ba85040a4825a622bcae))
+- Show only the model release, as v0.1.0 ([2e57aa4](https://github.com/swaiku/pigeon-finder/commit/2e57aa4cbf81b3bc30e751e298917016817022ca))
+- Align camera viewfinder with Penpot design ([18a149d](https://github.com/swaiku/pigeon-finder/commit/18a149dc17a3d17c37f450581deeb71a0c30192d))
+
+### 📦 Build & Dependencies
+
+- Bump gradle-wrapper in /android in the gradle group (#47)
+
+Bumps the gradle group in /android with 1 update: [gradle-wrapper](https://github.com/gradle/gradle).
+
+
+Updates `gradle-wrapper` from 9.9.0 to 9.9.1
+- [Release notes](https://github.com/gradle/gradle/releases)
+- [Commits](https://github.com/gradle/gradle/compare/v9.9.0...v9.9.1)
+
+---
+updated-dependencies:
+- dependency-name: gradle-wrapper
+  dependency-version: 9.9.1
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: gradle
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([5714e81](https://github.com/swaiku/pigeon-finder/commit/5714e81ce68753e37248af24c164a50081683c72))
+- Bump material_ui (#48)
+
+Bumps the pub-minor-patch group with 1 update: [material_ui](https://github.com/flutter/packages/tree/main/packages).
+
+
+Updates `material_ui` from 1.11.0 to 1.11.1
+- [Release notes](https://github.com/flutter/packages/releases)
+- [Commits](https://github.com/flutter/packages/commits/material_ui-v1.11.1/packages)
+
+---
+updated-dependencies:
+- dependency-name: material_ui
+  dependency-version: 1.11.1
+  dependency-type: direct:production
+  update-type: version-update:semver-patch
+  dependency-group: pub-minor-patch
+...
+
+Signed-off-by: dependabot[bot] <support@github.com>
+Co-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com> ([c5a1fc2](https://github.com/swaiku/pigeon-finder/commit/c5a1fc2d7e6eebfc74030e23796629bc7a17aec2))
+
+### 🔀 Other
+
+- Run the piaf models with flutter_litert, fetched from DVC ([2d8a716](https://github.com/swaiku/pigeon-finder/commit/2d8a7168a8c9ec6578ea093d2e9bda308c05019c))
+- Center the leaderboard on the caller's latest post
+
+The leaderboard RPC took any lat/lng, so a user could sweep a grid of
+points and find where another player had posted, past the 24 h the map
+shows. The nearby and city scopes now always use the caller's latest
+post, and the app no longer sends its position. ([8004b60](https://github.com/swaiku/pigeon-finder/commit/8004b603e0e796724a046d0c4c8e6fed1920dab7))
+- Remove camera flip button from viewfinder ([f2d03aa](https://github.com/swaiku/pigeon-finder/commit/f2d03aa7317bfcf6bb01e1ea031626cc4b908584))
+
 ## v0.4.2 (16-11-2026)
 
 ### 🐛 Bug Fixes
