@@ -12,10 +12,14 @@ class const ReleaseFiles({
   required final String manifestJson,
   required final Uint8List detector,
   required final Uint8List classifier,
+  required final String version,
 
-  /// Where it came from, for the logs.
-  required final String origin,
-});
+  /// Downloaded from pigeon-api, or bundled in the app.
+  required final bool downloaded,
+}) {
+  String get origin =>
+      'release $version, ${downloaded ? 'downloaded' : 'bundled'}';
+}
 
 /// Releases downloaded from pigeon-api (`GET /models/latest`, contract in
 /// `piaf/contracts/README.md`), kept in [directory]:
@@ -65,7 +69,8 @@ class ReleaseStore {
       manifestJson: json,
       detector: read('detector'),
       classifier: read('classifier'),
-      origin: 'release $version, downloaded',
+      version: version,
+      downloaded: true,
     );
   }
 

@@ -27,6 +27,7 @@ class LiteRtDetectionRepository implements DetectionRepository {
   final ReleaseStore? _releases;
   final AssetBundle _bundle;
   Future<SendPort>? _worker;
+  ReleaseFiles? _release;
 
   @override
   Future<void> load() => _ready();
@@ -58,6 +59,7 @@ class LiteRtDetectionRepository implements DetectionRepository {
     final reply = await ready.first;
     if (reply is! SendPort) throw ModelFailure('Loading the models: $reply');
     debugPrint('Models loaded: ${release.origin}');
+    _release = release;
     return reply;
   }
 
@@ -75,7 +77,8 @@ class LiteRtDetectionRepository implements DetectionRepository {
       manifestJson: json,
       detector: await bytes('detector'),
       classifier: await bytes('classifier'),
-      origin: 'release ${manifest.version}, bundled',
+      version: manifest.version,
+      downloaded: false,
     );
   }
 
@@ -85,8 +88,15 @@ class LiteRtDetectionRepository implements DetectionRepository {
     final port = ReceivePort();
     worker.send((photoPath, port.sendPort));
     final reply = await port.first;
-    if (reply is DetectionResult) return reply;
-    throw ModelFailure('Detection: $reply');
+    if (reply is! DetectionResult) throw ModelFailure('Detection: $reply');
+    return DetectionResult(
+      photoWidth: reply.photoWidth,
+      photoHeight: reply.photoHeight,
+      birds: reply.birds,
+      inferenceTime: reply.inferenceTime,
+      modelVersion: _release?.version ?? '',
+      modelDownloaded: _release?.downloaded ?? false,
+    );
   }
 }
 

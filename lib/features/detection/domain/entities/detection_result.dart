@@ -44,9 +44,22 @@ class const DetectionResult({
 
   /// Time of the pipeline itself, without decoding the file.
   final Duration inferenceTime = Duration.zero,
+
+  /// Release of the models that answered, such as `0.1.0`.
+  final String modelVersion = '',
+
+  /// Whether that release was downloaded from pigeon-api, not bundled.
+  final bool modelDownloaded = false,
 }) extends Equatable {
   int get count => birds.length;
 
   @override
-  List<Object?> get props => [photoWidth, photoHeight, birds, inferenceTime];
+  List<Object?> get props => [
+    photoWidth,
+    photoHeight,
+    birds,
+    inferenceTime,
+    modelVersion,
+    modelDownloaded,
+  ];
 }

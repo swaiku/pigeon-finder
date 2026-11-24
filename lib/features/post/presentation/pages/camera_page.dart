@@ -476,6 +476,21 @@ class const _ReviewView({
                       ),
                     ],
                   ],
+                  if (result != null && result.modelVersion.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      l10n.analysisModel(
+                        result.modelVersion,
+                        result.modelDownloaded
+                            ? l10n.analysisModelDownloaded
+                            : l10n.analysisModelBundled,
+                      ),
+                      textAlign: TextAlign.center,
+                      style: textTheme.labelSmall?.copyWith(
+                        color: AppColors.mutedText,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             );
