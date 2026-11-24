@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../features/auth/data/datasources/auth_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/presentation/bloc/onboarding_cubit.dart';
+import '../../features/detection/data/datasources/release_store.dart';
+import '../../features/detection/data/repositories/litert_detection_repository.dart';
+import '../../features/detection/domain/repositories/detection_repository.dart';
 import '../../features/map/data/datasources/geocoding_region_data_source.dart';
 import '../../features/map/data/datasources/geolocator_location_data_source.dart';
 import '../../features/map/data/datasources/location_data_source.dart';
@@ -30,6 +37,7 @@ import '../../features/ranking/data/datasources/ranking_remote_data_source.dart'
 import '../../features/ranking/data/repositories/supabase_ranking_repository.dart';
 import '../../features/ranking/domain/repositories/ranking_repository.dart';
 import '../../features/ranking/presentation/bloc/ranking_cubit.dart';
+import '../config/env.dart';
 import '../events/posts_changes.dart';
 
 final sl = GetIt.instance;
@@ -71,7 +79,22 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<PostRepository>(
     () => PostRepositoryImpl(sl(), sl(), sl()),
   );
-  sl.registerFactory(() => PostCubit(posts: sl(), location: sl()));
+  sl.registerFactory(
+    () => PostCubit(posts: sl(), location: sl(), detection: sl()),
+  );
+
+  // --- detection ---
+  sl.registerLazySingleton<DetectionRepository>(
+    () => LiteRtDetectionRepository(
+      releases: ReleaseStore(
+        apiUrl: Env.piafApiUrl,
+        appVersion: () async => (await PackageInfo.fromPlatform()).version,
+        directory: () async =>
+            Directory('${(await getApplicationSupportDirectory()).path}/models')
+              ..createSync(recursive: true),
+      ),
+    ),
+  );
 
   // --- post_detail ---
   // sl.registerLazySingleton<PostDetailRemoteDataSource>(

@@ -811,6 +811,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Publishing failed, try again.'**
   String get postErrorUnknown;
+
+  /// No description provided for @analysisRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'The AI is inspecting your bird…'**
+  String get analysisRunning;
+
+  /// No description provided for @analysisRunningHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Counting the pigeons, right on your phone'**
+  String get analysisRunningHint;
+
+  /// No description provided for @analysisCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 pigeon in the frame} other{{count} pigeons in the frame}}'**
+  String analysisCount(int count);
+
+  /// No description provided for @analysisConfidence.
+  ///
+  /// In en, this message translates to:
+  /// **'{species} · {percent} %'**
+  String analysisConfidence(String species, int percent);
+
+  /// No description provided for @analysisNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No pigeon in sight.'**
+  String get analysisNone;
+
+  /// No description provided for @analysisNoneChip.
+  ///
+  /// In en, this message translates to:
+  /// **'0 pigeons'**
+  String get analysisNoneChip;
+
+  /// No description provided for @analysisNoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The AI found no pigeon. Get closer or frame it better, then retake the photo.'**
+  String get analysisNoneHint;
+
+  /// No description provided for @analysisFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The analysis failed.'**
+  String get analysisFailed;
+
+  /// No description provided for @analysisFailedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The model couldn\'t run on this phone. Try again, or retake the photo.'**
+  String get analysisFailedHint;
+
+  /// No description provided for @analysisOnDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted on your phone · nothing leaves before you publish'**
+  String get analysisOnDevice;
+
+  /// No description provided for @postRetakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake the photo'**
+  String get postRetakePhoto;
+
+  /// No description provided for @speciesFeralPigeon.
+  ///
+  /// In en, this message translates to:
+  /// **'Feral pigeon'**
+  String get speciesFeralPigeon;
+
+  /// No description provided for @speciesWoodPigeon.
+  ///
+  /// In en, this message translates to:
+  /// **'Wood pigeon'**
+  String get speciesWoodPigeon;
+
+  /// No description provided for @speciesCollaredDove.
+  ///
+  /// In en, this message translates to:
+  /// **'Collared dove'**
+  String get speciesCollaredDove;
+
+  /// No description provided for @speciesOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other bird'**
+  String get speciesOther;
+
+  /// No description provided for @speciesUncertain.
+  ///
+  /// In en, this message translates to:
+  /// **'Uncertain'**
+  String get speciesUncertain;
+
+  /// No description provided for @speciesUncertainHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Uncertain · species to confirm'**
+  String get speciesUncertainHint;
 }
 
 class _AppLocalizationsDelegate

@@ -80,6 +80,7 @@ jobs:
           --target-platform android-arm64
           --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL || 'https://example.supabase.co' }}
           --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY || 'ci-placeholder' }}
+          --dart-define=PIAF_API_URL=${{ vars.PIAF_API_URL }}
 
       - uses: actions/upload-artifact@v7
         with:

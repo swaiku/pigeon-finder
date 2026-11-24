@@ -54,9 +54,17 @@ dependencies:
   flutter_map_marker_cluster: ^8.2.2
   flutter_map_heatmap_plus: ^0.1.0
   material_ui: ^1.11.1
+  flutter_litert: ^4.1.2
+  image: ^4.12.0
+  http: ^1.6.0
+  crypto: ^3.0.8
+  path_provider: ^2.1.6
+  package_info_plus: ^10.2.2
   image_picker: ^1.2.4
 dev_dependencies:
   flutter_test:
+    sdk: flutter
+  integration_test:
     sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -95,6 +103,8 @@ flutter:
 
   assets:
     - assets/icon/icon.png
+    # Release 0.1.0 of the piaf models, hardcoded until the app downloads releases.
+    - assets/models/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

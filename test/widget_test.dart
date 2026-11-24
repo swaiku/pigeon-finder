@@ -15,6 +15,7 @@ import 'package:pigeon_finder/features/ranking/presentation/bloc/ranking_cubit.d
 import 'package:pigeon_finder/l10n/app_localizations.dart';
 
 import 'support/fake_auth_repository.dart';
+import 'support/fake_detection_repository.dart';
 import 'support/fake_location_data_source.dart';
 import 'support/fake_post_repository.dart';
 import 'support/fake_ranking_repository.dart';
@@ -52,6 +53,7 @@ void main() {
       () => PostCubit(
         posts: FakePostRepository(),
         location: LocationRepositoryImpl(postLocation),
+        detection: FakeDetectionRepository(),
       ),
     );
   });

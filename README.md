@@ -207,12 +207,26 @@ To get a local copy up and running, follow these steps.
 <!-- USAGE EXAMPLES -->
 ## Usage
 
+The on-device models (release 0.1.0 of piaf) are not in Git. Fetch them
+once into `assets/models/` (needs `uv`, and access to the piaf repository and
+its DVC storage on Google Cloud):
+
+```sh
+tool/fetch_models.sh
+```
+
+They are only a fallback: with `PIAF_API_URL` set (see `.env.example`), the
+app downloads the latest release from pigeon-api at start (`GET
+/models/latest`), checks every SHA-256 and keeps it in its own storage.
+Without any release, the photo review shows an analysis error.
+
 Supabase credentials are injected at build time and never committed:
 
 ```sh
 flutter run \
   --dart-define=SUPABASE_URL=https://<project>.supabase.co \
-  --dart-define=SUPABASE_ANON_KEY=<anon-key>
+  --dart-define=SUPABASE_ANON_KEY=<anon-key> \
+  --dart-define=PIAF_API_URL=https://<host>/api
 ```
 
 Checks:
