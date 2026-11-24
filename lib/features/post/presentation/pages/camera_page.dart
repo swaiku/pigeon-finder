@@ -264,64 +264,131 @@ class const _ViewfinderView({
   required final bool capturing,
   required final VoidCallback onShutter,
 }) extends StatelessWidget {
-  static const _shutterSize = 76.0;
-  static const _shutterRing = 4.0;
+  static const _shutterSize = 82.0;
+  static const _shutterRing = 5.0;
+  static const _sideSize = 48.0;
+  static const _frameInset = 44.0;
+  static const _frameHeight = 374.0;
 
   @override
   Widget build(BuildContext context) {
     final controller = this.controller;
     final ready = controller != null && controller.value.isInitialized;
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
-      backgroundColor: AppColors.scrim,
+      backgroundColor: AppColors.viewfinder,
       body: Stack(
+        fit: StackFit.expand,
         children: [
-          Center(
-            child: ready
-                ? CameraPreview(controller)
-                : const CircularProgressIndicator(color: AppColors.paper),
+          if (ready)
+            // shortcut: assumes portrait, the app is locked to it.
+            ClipRect(
+              child: FittedBox(
+                fit: BoxFit.cover,
+                child: SizedBox(
+                  width: 100,
+                  height: 100 * controller.value.aspectRatio,
+                  child: CameraPreview(controller),
+                ),
+              ),
+            )
+          else
+            const Center(
+              child: CircularProgressIndicator(color: AppColors.paper),
+            ),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: _frameInset),
+              child: SizedBox(
+                height: _frameHeight,
+                width: double.infinity,
+                child: CustomPaint(painter: _FramePainter()),
+              ),
+            ),
           ),
-          const Positioned(
+          Positioned(
             top: 0,
             left: 0,
             child: SafeArea(
               child: Padding(
-                padding: EdgeInsets.all(AppSpacing.lg),
-                child: PfBackButton(),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.roomy,
+                  AppSpacing.md,
+                  0,
+                  0,
+                ),
+                child: _GlassButton(
+                  icon: Icons.close_rounded,
+                  tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
+                  size: 42,
+                  onPressed: context.pop,
+                ),
               ),
             ),
           ),
           Positioned(
             left: 0,
             right: 0,
-            bottom: AppSpacing.xxxl,
+            bottom: 0,
             child: SafeArea(
-              child: Center(
-                child: Semantics(
-                  button: true,
-                  label: AppLocalizations.of(context)!.cameraShutter,
-                  child: GestureDetector(
-                    onTap: ready && !capturing ? onShutter : null,
-                    child: Container(
-                      width: _shutterSize,
-                      height: _shutterSize,
-                      padding: const EdgeInsets.all(_shutterRing),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.paper,
-                          width: _shutterRing,
-                        ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.xxl,
+                  0,
+                  AppSpacing.xxl,
+                  AppSpacing.xxl,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.xxl,
                       ),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: capturing
-                              ? AppColors.mutedText
-                              : AppColors.paper,
-                        ),
+                      child: Text(
+                        l10n.cameraHint,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge
+                            ?.copyWith(color: AppColors.paper),
                       ),
                     ),
-                  ),
+                    const SizedBox(height: AppSpacing.xxxl),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Where the design shows the last photo taken.
+                        const SizedBox(width: _sideSize),
+                        Semantics(
+                          button: true,
+                          label: l10n.cameraShutter,
+                          child: GestureDetector(
+                            onTap: ready && !capturing ? onShutter : null,
+                            child: Container(
+                              width: _shutterSize,
+                              height: _shutterSize,
+                              padding: const EdgeInsets.all(AppSpacing.xs),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.paper,
+                                  width: _shutterRing,
+                                ),
+                              ),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: capturing
+                                      ? AppColors.mutedText
+                                      : AppColors.pin,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: _sideSize),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -330,6 +397,66 @@ class const _ViewfinderView({
       ),
     );
   }
+}
+
+/// Round button, [AppColors.paper] at 14 % over the viewfinder.
+class const _GlassButton({
+  required final IconData icon,
+  required final String tooltip,
+  required final double size,
+  required final VoidCallback? onPressed,
+}) extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.paper.withAlpha(0x24),
+      shape: const CircleBorder(),
+      child: IconButton(
+        tooltip: tooltip,
+        constraints: BoxConstraints.tightFor(width: size, height: size),
+        icon: Icon(icon, size: AppSpacing.xxl, color: AppColors.paper),
+        onPressed: onPressed,
+      ),
+    );
+  }
+}
+
+/// The four rounded corner brackets of the framing guide.
+class const _FramePainter() extends CustomPainter {
+  static const _arm = 34.0;
+  static const _radius = 14.0;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppColors.paper
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4
+      ..strokeCap = StrokeCap.round;
+    final w = size.width;
+    final h = size.height;
+    const r = _radius;
+    for (final (sx, sy) in const [
+      (1.0, 1.0),
+      (-1.0, 1.0),
+      (1.0, -1.0),
+      (-1.0, -1.0),
+    ]) {
+      final ox = sx > 0 ? 0.0 : w;
+      final oy = sy > 0 ? 0.0 : h;
+      canvas.drawPath(
+        Path()
+          ..moveTo(ox + sx * _arm, oy)
+          ..lineTo(ox + sx * r, oy)
+          ..quadraticBezierTo(ox, oy, ox, oy + sy * r)
+          ..lineTo(ox, oy + sy * _arm),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(_FramePainter oldDelegate) => false;
 }
 
 class const _ReviewView({

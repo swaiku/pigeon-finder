@@ -740,6 +740,12 @@ abstract class AppLocalizations {
   /// **'Take the photo'**
   String get cameraShutter;
 
+  /// No description provided for @cameraHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame your pigeon. The more of them in the photo, the more points you earn.'**
+  String get cameraHint;
+
   /// No description provided for @cameraCaptureFailed.
   ///
   /// In en, this message translates to:
