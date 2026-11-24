@@ -6,16 +6,20 @@ import 'package:pigeon_finder/core/di/injection.dart';
 import 'package:pigeon_finder/features/auth/domain/repositories/auth_repository.dart';
 import 'package:pigeon_finder/features/map/data/repositories/fake_posts_repository.dart';
 import 'package:pigeon_finder/features/map/data/repositories/location_repository_impl.dart';
+import 'package:pigeon_finder/features/map/data/repositories/region_repository_impl.dart';
 import 'package:pigeon_finder/features/map/presentation/bloc/map_bloc.dart';
 import 'package:pigeon_finder/features/pigeondex/presentation/bloc/pigeondex_cubit.dart';
 import 'package:pigeon_finder/features/post/presentation/bloc/post_cubit.dart';
 import 'package:pigeon_finder/features/post/presentation/pages/camera_page.dart';
+import 'package:pigeon_finder/features/ranking/presentation/bloc/ranking_cubit.dart';
 import 'package:pigeon_finder/l10n/app_localizations.dart';
 
 import 'support/fake_auth_repository.dart';
 import 'support/fake_detection_repository.dart';
 import 'support/fake_location_data_source.dart';
 import 'support/fake_post_repository.dart';
+import 'support/fake_ranking_repository.dart';
+import 'support/fake_region_data_source.dart';
 import 'support/test_map_bloc.dart';
 
 /// Counts the position lookups of the camera page.
@@ -38,6 +42,13 @@ void main() {
     sl.registerFactory<MapBloc>(testMapBloc);
     sl.registerSingleton<AuthRepository>(FakeAuthRepository());
     sl.registerFactory(() => PigeondexCubit(posts: FakePostsRepository()));
+    sl.registerFactory(
+      () => RankingCubit(
+        ranking: FakeRankingRepository(),
+        location: const LocationRepositoryImpl(FakeLocationDataSource()),
+        regions: const RegionRepositoryImpl(FakeRegionDataSource()),
+      ),
+    );
     sl.registerFactory(
       () => PostCubit(
         posts: FakePostRepository(),
@@ -74,7 +85,9 @@ void main() {
 
     await tester.tap(find.text('Ranking'));
     await tester.pumpAndSettle();
-    expect(find.text('Ranking'), findsNWidgets(3));
+    // Label in bar + page title.
+    expect(find.text('Ranking'), findsNWidgets(2));
+    expect(find.text('Nobody has scored here yet. Be the first!'), findsOne);
 
     // The fake repository holds none of the user's photos.
     await tester.tap(find.text('Pigeondex'));

@@ -35,6 +35,7 @@ class const SupabasePostDataSource(final SupabaseClient _client) {
     String? city,
     String? region,
     String? country,
+    String? countryCode,
   }) => _client.from('posts').insert({
     'photo_path': photoPath,
     'description': description,
@@ -44,5 +45,6 @@ class const SupabasePostDataSource(final SupabaseClient _client) {
     'city': city,
     'region': region,
     'country': country,
+    'country_code': countryCode,
   });
 }

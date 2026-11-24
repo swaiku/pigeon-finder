@@ -29,6 +29,14 @@ import '../../features/post/data/datasources/post_remote_data_source.dart';
 import '../../features/post/data/repositories/post_repository_impl.dart';
 import '../../features/post/domain/repositories/post_repository.dart';
 import '../../features/post/presentation/bloc/post_cubit.dart';
+import '../../features/profile/data/datasources/profile_remote_data_source.dart';
+import '../../features/profile/data/repositories/supabase_profile_repository.dart';
+import '../../features/profile/domain/repositories/profile_repository.dart';
+import '../../features/profile/presentation/bloc/profile_cubit.dart';
+import '../../features/ranking/data/datasources/ranking_remote_data_source.dart';
+import '../../features/ranking/data/repositories/supabase_ranking_repository.dart';
+import '../../features/ranking/domain/repositories/ranking_repository.dart';
+import '../../features/ranking/presentation/bloc/ranking_cubit.dart';
 import '../config/env.dart';
 import '../events/posts_changes.dart';
 
@@ -102,13 +110,30 @@ Future<void> initDependencies() async {
   // Reads through the map's PostsRepository to share its signed-URL cache.
   sl.registerFactory(() => PigeondexCubit(posts: sl(), changes: sl()));
 
+  // --- ranking ---
+  sl.registerLazySingleton<RankingRemoteDataSource>(
+    () => SupabaseRankingDataSource(sl()),
+  );
+  sl.registerLazySingleton<RankingRepository>(
+    () => SupabaseRankingRepository(sl()),
+  );
+  sl.registerFactory(
+    () => RankingCubit(
+      ranking: sl(),
+      location: sl(),
+      regions: sl(),
+      changes: sl(),
+    ),
+  );
+
   // --- profile ---
-  // sl.registerLazySingleton<ProfileRemoteDataSource>(
-  //   () => ProfileRemoteDataSourceImpl(sl()),
-  // );
-  // sl.registerLazySingleton<ProfileRepository>(
-  //   () => ProfileRepositoryImpl(sl()),
-  // );
-  // sl.registerLazySingleton(() => GetProfileUseCase(sl()));
-  // sl.registerFactory(() => ProfileCubit(sl()));
+  sl.registerLazySingleton<ProfileRemoteDataSource>(
+    () => SupabaseProfileDataSource(sl()),
+  );
+  sl.registerLazySingleton<ProfileRepository>(
+    () => SupabaseProfileRepository(sl()),
+  );
+  sl.registerFactory(
+    () => ProfileCubit(profile: sl(), posts: sl(), changes: sl()),
+  );
 }

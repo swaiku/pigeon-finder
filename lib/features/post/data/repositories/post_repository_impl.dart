@@ -32,10 +32,11 @@ class PostRepositoryImpl(
       if (await file.length() > maxPhotoBytes) {
         throw const PhotoTooLargeFailure('Photo above 5 MB');
       }
-      final (city, region, country) = await (
+      final (city, region, country, countryCode) = await (
         _regionName(post, RegionLevel.city),
         _regionName(post, RegionLevel.region),
         _regionName(post, RegionLevel.country),
+        _countryCode(post),
       ).wait;
       // The field counts graphemes but Postgres' char_length counts code
       // points (an emoji family is 1 vs 5), so cap on code points here.
@@ -59,6 +60,7 @@ class PostRepositoryImpl(
         city: city,
         region: region,
         country: country,
+        countryCode: countryCode,
       );
       _uploadedPaths.remove(post.photoPath);
     } on SocketException catch (e) {
@@ -93,6 +95,15 @@ class PostRepositoryImpl(
   Future<String?> _regionName(NewPost post, RegionLevel level) async {
     try {
       return await _regions.getRegionName(post.position, level);
+    } on Failure {
+      return null;
+    }
+  }
+
+  /// Ranks the post in its country's leaderboard; never blocks publishing.
+  Future<String?> _countryCode(NewPost post) async {
+    try {
+      return await _regions.getCountryCode(post.position);
     } on Failure {
       return null;
     }
