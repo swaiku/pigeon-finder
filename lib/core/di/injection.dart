@@ -22,6 +22,10 @@ import '../../features/post/data/datasources/post_remote_data_source.dart';
 import '../../features/post/data/repositories/post_repository_impl.dart';
 import '../../features/post/domain/repositories/post_repository.dart';
 import '../../features/post/presentation/bloc/post_cubit.dart';
+import '../../features/ranking/data/datasources/ranking_remote_data_source.dart';
+import '../../features/ranking/data/repositories/supabase_ranking_repository.dart';
+import '../../features/ranking/domain/repositories/ranking_repository.dart';
+import '../../features/ranking/presentation/bloc/ranking_cubit.dart';
 import '../events/posts_changes.dart';
 
 final sl = GetIt.instance;
@@ -78,6 +82,22 @@ Future<void> initDependencies() async {
   // --- pigeondex ---
   // Reads through the map's PostsRepository to share its signed-URL cache.
   sl.registerFactory(() => PigeondexCubit(posts: sl(), changes: sl()));
+
+  // --- ranking ---
+  sl.registerLazySingleton<RankingRemoteDataSource>(
+    () => SupabaseRankingDataSource(sl()),
+  );
+  sl.registerLazySingleton<RankingRepository>(
+    () => SupabaseRankingRepository(sl()),
+  );
+  sl.registerFactory(
+    () => RankingCubit(
+      ranking: sl(),
+      location: sl(),
+      regions: sl(),
+      changes: sl(),
+    ),
+  );
 
   // --- profile ---
   // sl.registerLazySingleton<ProfileRemoteDataSource>(

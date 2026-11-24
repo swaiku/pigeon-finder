@@ -41,4 +41,15 @@ class FakeRegionDataSource implements RegionDataSource {
       RegionLevel.country => country,
     };
   }
+
+  static const _countryCodes = {
+    'France': 'FR',
+    'Belgique': 'BE',
+    'Suisse': 'CH',
+    'Royaume-Uni': 'GB',
+  };
+
+  @override
+  Future<String> getCountryCode(LatLng position) async =>
+      _countryCodes[await getRegionName(position, RegionLevel.country)]!;
 }

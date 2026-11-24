@@ -31,6 +31,10 @@ class _FailingRegions implements RegionDataSource {
   @override
   Future<String> getRegionName(LatLng position, RegionLevel level) async =>
       throw const NetworkFailure('throttled');
+
+  @override
+  Future<String> getCountryCode(LatLng position) async =>
+      throw const NetworkFailure('throttled');
 }
 
 final _bounds = LatLngBounds(const LatLng(46.5, 6.6), const LatLng(46.6, 6.7));
