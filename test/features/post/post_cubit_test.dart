@@ -3,8 +3,10 @@ import 'package:latlong2/latlong.dart';
 import 'package:pigeon_finder/core/error/failures.dart';
 import 'package:pigeon_finder/features/map/data/datasources/location_data_source.dart';
 import 'package:pigeon_finder/features/map/data/repositories/location_repository_impl.dart';
+import 'package:pigeon_finder/features/post/domain/entities/new_post.dart';
 import 'package:pigeon_finder/features/post/presentation/bloc/post_cubit.dart';
 
+import '../../support/fake_detection_repository.dart';
 import '../../support/fake_location_data_source.dart';
 import '../../support/fake_post_repository.dart';
 
@@ -32,12 +34,20 @@ class _NoFixLocation extends _DeniedLocation {
 
 void main() {
   late FakePostRepository posts;
+  late FakeDetectionRepository detection;
 
   PostCubit build({
     LocationDataSource location = const FakeLocationDataSource(),
-  }) => PostCubit(posts: posts, location: LocationRepositoryImpl(location));
+  }) => PostCubit(
+    posts: posts,
+    location: LocationRepositoryImpl(location),
+    detection: detection,
+  );
 
-  setUp(() => posts = FakePostRepository());
+  setUp(() {
+    posts = FakePostRepository();
+    detection = FakeDetectionRepository();
+  });
 
   test('prepare stores the user position', () async {
     final cubit = build();
@@ -106,5 +116,39 @@ void main() {
     cubit.dismissError();
     expect(cubit.state.error, isNull);
     expect(cubit.state.status, PostStatus.idle);
+  });
+
+  test('analyse stores the count and publish sends it', () async {
+    detection.birds = 3;
+    final cubit = build();
+    await cubit.analyse('/tmp/p.jpg');
+    expect(cubit.state.analysis, AnalysisStatus.done);
+    expect(cubit.state.detection?.count, 3);
+    await cubit.publish(photoPath: '/tmp/p.jpg');
+    expect(posts.published.single.pigeonCount, 3);
+  });
+
+  test('a flock above the posts limit is published as the limit', () async {
+    detection.birds = 27;
+    final cubit = build();
+    await cubit.analyse('/tmp/p.jpg');
+    await cubit.publish(photoPath: '/tmp/p.jpg');
+    expect(posts.published.single.pigeonCount, NewPost.maxPigeonCount);
+  });
+
+  test('a model failure shows as a failed analysis', () async {
+    detection.failure = const ModelFailure('no GPU, no CPU');
+    final cubit = build();
+    await cubit.analyse('/tmp/p.jpg');
+    expect(cubit.state.analysis, AnalysisStatus.failed);
+    expect(cubit.state.detection, isNull);
+  });
+
+  test('retaking clears the count', () async {
+    final cubit = build();
+    await cubit.analyse('/tmp/p.jpg');
+    cubit.dismissError();
+    expect(cubit.state.analysis, AnalysisStatus.none);
+    expect(cubit.state.detection, isNull);
   });
 }

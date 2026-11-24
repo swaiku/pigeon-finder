@@ -84,12 +84,16 @@ jobs:
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          PIAF_API_URL: ${{ vars.PIAF_API_URL }}
         run: |
+          # The APK has no models: without the API it could never count pigeons.
+          : "${PIAF_API_URL:?Set the PIAF_API_URL repository variable}"
           flutter pub get
           flutter build apk --release \
             --build-number=${{ github.run_number }} \
             --dart-define=SUPABASE_URL=${{ secrets.SUPABASE_URL }} \
-            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+            --dart-define=SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }} \
+            --dart-define=PIAF_API_URL="$PIAF_API_URL"
           cp build/app/outputs/flutter-apk/app-release.apk \
             "pigeon_finder-${{ steps.version.outputs.tag }}.apk"
 

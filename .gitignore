@@ -62,3 +62,6 @@ GEMINI.md
 
 # Local Supabase credentials (flutter run --dart-define-from-file=.env)
 .env
+
+# piaf models: fetched by tool/fetch_models.sh, never committed
+/assets/models/*.tflite

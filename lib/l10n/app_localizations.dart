@@ -194,11 +194,191 @@ abstract class AppLocalizations {
   /// **'Ranking'**
   String get rankingTitle;
 
+  /// No description provided for @rankingScopeNearby.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearby'**
+  String get rankingScopeNearby;
+
+  /// No description provided for @rankingScopeCity.
+  ///
+  /// In en, this message translates to:
+  /// **'City'**
+  String get rankingScopeCity;
+
+  /// No description provided for @rankingScopeCountry.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get rankingScopeCountry;
+
+  /// No description provided for @rankingScopeWorld.
+  ///
+  /// In en, this message translates to:
+  /// **'World'**
+  String get rankingScopeWorld;
+
+  /// No description provided for @rankingPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String rankingPoints(int points);
+
+  /// No description provided for @rankingMe.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get rankingMe;
+
+  /// No description provided for @rankingToNext.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts to pass #{rank}'**
+  String rankingToNext(int points, int rank);
+
+  /// No description provided for @rankingLeader.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re in the lead!'**
+  String get rankingLeader;
+
+  /// No description provided for @rankingEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody has scored here yet. Be the first!'**
+  String get rankingEmpty;
+
+  /// No description provided for @rankingLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load the ranking'**
+  String get rankingLoadError;
+
   /// No description provided for @profileTitle.
   ///
   /// In en, this message translates to:
   /// **'Profile'**
   String get profileTitle;
+
+  /// No description provided for @profileLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your profile'**
+  String get profileLoadError;
+
+  /// No description provided for @profilePhotoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile photo'**
+  String get profilePhotoLabel;
+
+  /// No description provided for @profileChangePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Change profile pic'**
+  String get profileChangePhoto;
+
+  /// No description provided for @profileTakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo'**
+  String get profileTakePhoto;
+
+  /// No description provided for @profilePickFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get profilePickFromGallery;
+
+  /// No description provided for @profileAvatarError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t change your photo, try again.'**
+  String get profileAvatarError;
+
+  /// No description provided for @profileLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · lvl {number}'**
+  String profileLevel(String name, int number);
+
+  /// No description provided for @profileNextLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Next level: {name}'**
+  String profileNextLevel(String name);
+
+  /// No description provided for @profileMaxLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Top level reached!'**
+  String get profileMaxLevel;
+
+  /// No description provided for @profileLevelName.
+  ///
+  /// In en, this message translates to:
+  /// **'{level, select, fledgling{Squab} forager{Crumb Hunter} stroller{Stroller} lookout{Lookout} cooer{Cooer} rockDove{Rock Dove} grandRockDove{Grand Rock Dove} woodPigeon{Wood Pigeon} fancier{Pigeon Fancier} rooftopKing{Rooftop King} other{{level}}}'**
+  String profileLevelName(String level);
+
+  /// No description provided for @profilePhotos.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{photo} other{photos}}'**
+  String profilePhotos(int count);
+
+  /// No description provided for @profilePigeons.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{pigeon} other{pigeons}}'**
+  String profilePigeons(int count);
+
+  /// No description provided for @profileStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'streak'**
+  String get profileStreak;
+
+  /// No description provided for @profileStreakDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} d'**
+  String profileStreakDays(int count);
+
+  /// No description provided for @profileStreakExpires.
+  ///
+  /// In en, this message translates to:
+  /// **'Your streak ends in {hours} h {minutes} min. Post a photo to keep it going!'**
+  String profileStreakExpires(int hours, int minutes);
+
+  /// No description provided for @profileStreakNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Post a photo to start a streak!'**
+  String get profileStreakNone;
+
+  /// No description provided for @profileOnMapTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'On the map right now'**
+  String get profileOnMapTitle;
+
+  /// No description provided for @profileExpiresIn.
+  ///
+  /// In en, this message translates to:
+  /// **'expires in {hours} h'**
+  String profileExpiresIn(int hours);
+
+  /// No description provided for @profileBadgesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Badges'**
+  String get profileBadgesTitle;
+
+  /// No description provided for @profileBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'{badge, select, photographer{Photographer · 10 photos} fan{Fan · 25 coos given} star{Star · 25 coos received} flock{Flock · 10 pigeons} earlyBird{Early bird · before 7 am} other{{badge}}}'**
+  String profileBadge(String badge);
 
   /// No description provided for @cameraTitle.
   ///
@@ -560,6 +740,12 @@ abstract class AppLocalizations {
   /// **'Take the photo'**
   String get cameraShutter;
 
+  /// No description provided for @cameraHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame your pigeon. The more of them in the photo, the more points you earn.'**
+  String get cameraHint;
+
   /// No description provided for @cameraCaptureFailed.
   ///
   /// In en, this message translates to:
@@ -625,6 +811,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Publishing failed, try again.'**
   String get postErrorUnknown;
+
+  /// No description provided for @analysisRunning.
+  ///
+  /// In en, this message translates to:
+  /// **'The AI is inspecting your bird…'**
+  String get analysisRunning;
+
+  /// No description provided for @analysisRunningHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Counting the pigeons, right on your phone'**
+  String get analysisRunningHint;
+
+  /// No description provided for @analysisCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 pigeon in the frame} other{{count} pigeons in the frame}}'**
+  String analysisCount(int count);
+
+  /// No description provided for @analysisConfidence.
+  ///
+  /// In en, this message translates to:
+  /// **'{species} · {percent} %'**
+  String analysisConfidence(String species, int percent);
+
+  /// No description provided for @analysisNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No pigeon in sight.'**
+  String get analysisNone;
+
+  /// No description provided for @analysisNoneChip.
+  ///
+  /// In en, this message translates to:
+  /// **'0 pigeons'**
+  String get analysisNoneChip;
+
+  /// No description provided for @analysisNoneHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The AI found no pigeon. Get closer or frame it better, then retake the photo.'**
+  String get analysisNoneHint;
+
+  /// No description provided for @analysisFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The analysis failed.'**
+  String get analysisFailed;
+
+  /// No description provided for @analysisFailedHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The model couldn\'t run on this phone. Try again, or retake the photo.'**
+  String get analysisFailedHint;
+
+  /// No description provided for @analysisOnDevice.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted on your phone · nothing leaves before you publish'**
+  String get analysisOnDevice;
+
+  /// No description provided for @postRetakePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake the photo'**
+  String get postRetakePhoto;
+
+  /// No description provided for @speciesFeralPigeon.
+  ///
+  /// In en, this message translates to:
+  /// **'Feral pigeon'**
+  String get speciesFeralPigeon;
+
+  /// No description provided for @speciesWoodPigeon.
+  ///
+  /// In en, this message translates to:
+  /// **'Wood pigeon'**
+  String get speciesWoodPigeon;
+
+  /// No description provided for @speciesCollaredDove.
+  ///
+  /// In en, this message translates to:
+  /// **'Collared dove'**
+  String get speciesCollaredDove;
+
+  /// No description provided for @speciesOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other bird'**
+  String get speciesOther;
+
+  /// No description provided for @speciesUncertain.
+  ///
+  /// In en, this message translates to:
+  /// **'Uncertain'**
+  String get speciesUncertain;
+
+  /// No description provided for @speciesUncertainHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Uncertain · species to confirm'**
+  String get speciesUncertainHint;
 }
 
 class _AppLocalizationsDelegate

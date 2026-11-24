@@ -59,7 +59,161 @@ class AppLocalizationsFr extends AppLocalizations {
   String get rankingTitle => 'Classement';
 
   @override
+  String get rankingScopeNearby => 'Quartier';
+
+  @override
+  String get rankingScopeCity => 'Ville';
+
+  @override
+  String get rankingScopeCountry => 'Pays';
+
+  @override
+  String get rankingScopeWorld => 'Monde';
+
+  @override
+  String rankingPoints(int points) {
+    final intl.NumberFormat pointsNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String pointsString = pointsNumberFormat.format(points);
+
+    return '$pointsString pts';
+  }
+
+  @override
+  String get rankingMe => 'Toi';
+
+  @override
+  String rankingToNext(int points, int rank) {
+    final intl.NumberFormat pointsNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String pointsString = pointsNumberFormat.format(points);
+
+    return '$pointsString pts pour passer ${rank}e';
+  }
+
+  @override
+  String get rankingLeader => 'Tu es en tête !';
+
+  @override
+  String get rankingEmpty =>
+      'Personne n\'a encore marqué ici. Sois le premier !';
+
+  @override
+  String get rankingLoadError => 'Impossible de charger le classement';
+
+  @override
   String get profileTitle => 'Profil';
+
+  @override
+  String get profileLoadError => 'Impossible de charger ton profil';
+
+  @override
+  String get profilePhotoLabel => 'Photo de profil';
+
+  @override
+  String get profileChangePhoto => 'Changer la photo de profil';
+
+  @override
+  String get profileTakePhoto => 'Prendre une photo';
+
+  @override
+  String get profilePickFromGallery => 'Choisir dans la galerie';
+
+  @override
+  String get profileAvatarError => 'Impossible de changer ta photo, réessaie.';
+
+  @override
+  String profileLevel(String name, int number) {
+    return '$name · niv. $number';
+  }
+
+  @override
+  String profileNextLevel(String name) {
+    return 'Prochain niveau : $name';
+  }
+
+  @override
+  String get profileMaxLevel => 'Niveau maximum atteint !';
+
+  @override
+  String profileLevelName(String level) {
+    String _temp0 = intl.Intl.selectLogic(level, {
+      'fledgling': 'Pigeonneau',
+      'forager': 'Picoreur',
+      'stroller': 'Flâneur',
+      'lookout': 'Guetteur',
+      'cooer': 'Roucouleur',
+      'rockDove': 'Biset',
+      'grandRockDove': 'Grand Biset',
+      'woodPigeon': 'Ramier',
+      'fancier': 'Colombophile',
+      'rooftopKing': 'Roi des toits',
+      'other': '$level',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String profilePhotos(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'photos',
+      one: 'photo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String profilePigeons(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pigeons',
+      one: 'pigeon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profileStreak => 'série';
+
+  @override
+  String profileStreakDays(int count) {
+    return '$count j';
+  }
+
+  @override
+  String profileStreakExpires(int hours, int minutes) {
+    return 'Ta série expire dans $hours h $minutes min. Poste une photo pour la garder !';
+  }
+
+  @override
+  String get profileStreakNone => 'Poste une photo pour lancer ta série !';
+
+  @override
+  String get profileOnMapTitle => 'Sur la carte en ce moment';
+
+  @override
+  String profileExpiresIn(int hours) {
+    return 'expire dans $hours h';
+  }
+
+  @override
+  String get profileBadgesTitle => 'Badges';
+
+  @override
+  String profileBadge(String badge) {
+    String _temp0 = intl.Intl.selectLogic(badge, {
+      'photographer': 'Photographe · 10 photos',
+      'fan': 'Fan · 25 roucoulements donnés',
+      'star': 'Star · 25 roucoulements reçus',
+      'flock': 'Nuée · 10 pigeons',
+      'earlyBird': 'Lève-tôt · avant 7 h',
+      'other': '$badge',
+    });
+    return '$_temp0';
+  }
 
   @override
   String get cameraTitle => 'Caméra';
@@ -300,6 +454,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get cameraShutter => 'Prendre la photo';
 
   @override
+  String get cameraHint =>
+      'Cadre ton pigeon. Plus il y en a dans la photo, plus tu gagnes de points.';
+
+  @override
   String get cameraCaptureFailed => 'Impossible de prendre la photo, réessaie.';
 
   @override
@@ -336,4 +494,69 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get postErrorUnknown => 'La publication a échoué, réessaie.';
+
+  @override
+  String get analysisRunning => 'L\'IA inspecte ton oiseau…';
+
+  @override
+  String get analysisRunningHint =>
+      'Elle compte les pigeons, directement sur ton téléphone';
+
+  @override
+  String analysisCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons dans le cadre',
+      one: '1 pigeon dans le cadre',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String analysisConfidence(String species, int percent) {
+    return '$species · $percent %';
+  }
+
+  @override
+  String get analysisNone => 'Aucun pigeon en vue.';
+
+  @override
+  String get analysisNoneChip => '0 pigeon';
+
+  @override
+  String get analysisNoneHint =>
+      'L\'IA n\'a trouvé aucun pigeon. Rapproche-toi ou cadre mieux, puis reprends la photo.';
+
+  @override
+  String get analysisFailed => 'L\'analyse a échoué.';
+
+  @override
+  String get analysisFailedHint =>
+      'Le modèle n\'a pas pu tourner sur ce téléphone. Réessaie, ou reprends la photo.';
+
+  @override
+  String get analysisOnDevice =>
+      'Compté sur ton téléphone · rien ne part avant de publier';
+
+  @override
+  String get postRetakePhoto => 'Reprendre la photo';
+
+  @override
+  String get speciesFeralPigeon => 'Pigeon biset';
+
+  @override
+  String get speciesWoodPigeon => 'Pigeon ramier';
+
+  @override
+  String get speciesCollaredDove => 'Tourterelle turque';
+
+  @override
+  String get speciesOther => 'Autre oiseau';
+
+  @override
+  String get speciesUncertain => 'Incertain';
+
+  @override
+  String get speciesUncertainHint => 'Incertain · espèce à confirmer';
 }

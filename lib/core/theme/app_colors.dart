@@ -43,6 +43,9 @@ abstract final class AppColors {
   /// Scrim behind modal sheets / full-screen overlays.
   static const Color scrim = Color(0xFF0E1522);
 
+  /// Background of the camera viewfinder while the preview loads.
+  static const Color viewfinder = Color(0xFF1B2638);
+
   /// [scrim] dimming the map behind a bottom sheet.
   static final Color scrimModal = scrim.withAlpha(0x59);
 

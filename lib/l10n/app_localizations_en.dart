@@ -58,7 +58,160 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rankingTitle => 'Ranking';
 
   @override
+  String get rankingScopeNearby => 'Nearby';
+
+  @override
+  String get rankingScopeCity => 'City';
+
+  @override
+  String get rankingScopeCountry => 'Country';
+
+  @override
+  String get rankingScopeWorld => 'World';
+
+  @override
+  String rankingPoints(int points) {
+    final intl.NumberFormat pointsNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String pointsString = pointsNumberFormat.format(points);
+
+    return '$pointsString pts';
+  }
+
+  @override
+  String get rankingMe => 'You';
+
+  @override
+  String rankingToNext(int points, int rank) {
+    final intl.NumberFormat pointsNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String pointsString = pointsNumberFormat.format(points);
+
+    return '$pointsString pts to pass #$rank';
+  }
+
+  @override
+  String get rankingLeader => 'You\'re in the lead!';
+
+  @override
+  String get rankingEmpty => 'Nobody has scored here yet. Be the first!';
+
+  @override
+  String get rankingLoadError => 'Couldn\'t load the ranking';
+
+  @override
   String get profileTitle => 'Profile';
+
+  @override
+  String get profileLoadError => 'Couldn\'t load your profile';
+
+  @override
+  String get profilePhotoLabel => 'Profile photo';
+
+  @override
+  String get profileChangePhoto => 'Change profile pic';
+
+  @override
+  String get profileTakePhoto => 'Take a photo';
+
+  @override
+  String get profilePickFromGallery => 'Choose from gallery';
+
+  @override
+  String get profileAvatarError => 'Couldn\'t change your photo, try again.';
+
+  @override
+  String profileLevel(String name, int number) {
+    return '$name · lvl $number';
+  }
+
+  @override
+  String profileNextLevel(String name) {
+    return 'Next level: $name';
+  }
+
+  @override
+  String get profileMaxLevel => 'Top level reached!';
+
+  @override
+  String profileLevelName(String level) {
+    String _temp0 = intl.Intl.selectLogic(level, {
+      'fledgling': 'Squab',
+      'forager': 'Crumb Hunter',
+      'stroller': 'Stroller',
+      'lookout': 'Lookout',
+      'cooer': 'Cooer',
+      'rockDove': 'Rock Dove',
+      'grandRockDove': 'Grand Rock Dove',
+      'woodPigeon': 'Wood Pigeon',
+      'fancier': 'Pigeon Fancier',
+      'rooftopKing': 'Rooftop King',
+      'other': '$level',
+    });
+    return '$_temp0';
+  }
+
+  @override
+  String profilePhotos(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'photos',
+      one: 'photo',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String profilePigeons(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'pigeons',
+      one: 'pigeon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get profileStreak => 'streak';
+
+  @override
+  String profileStreakDays(int count) {
+    return '$count d';
+  }
+
+  @override
+  String profileStreakExpires(int hours, int minutes) {
+    return 'Your streak ends in $hours h $minutes min. Post a photo to keep it going!';
+  }
+
+  @override
+  String get profileStreakNone => 'Post a photo to start a streak!';
+
+  @override
+  String get profileOnMapTitle => 'On the map right now';
+
+  @override
+  String profileExpiresIn(int hours) {
+    return 'expires in $hours h';
+  }
+
+  @override
+  String get profileBadgesTitle => 'Badges';
+
+  @override
+  String profileBadge(String badge) {
+    String _temp0 = intl.Intl.selectLogic(badge, {
+      'photographer': 'Photographer · 10 photos',
+      'fan': 'Fan · 25 coos given',
+      'star': 'Star · 25 coos received',
+      'flock': 'Flock · 10 pigeons',
+      'earlyBird': 'Early bird · before 7 am',
+      'other': '$badge',
+    });
+    return '$_temp0';
+  }
 
   @override
   String get cameraTitle => 'Camera';
@@ -298,6 +451,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cameraShutter => 'Take the photo';
 
   @override
+  String get cameraHint =>
+      'Frame your pigeon. The more of them in the photo, the more points you earn.';
+
+  @override
   String get cameraCaptureFailed => 'Couldn\'t take the photo, try again.';
 
   @override
@@ -333,4 +490,68 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get postErrorUnknown => 'Publishing failed, try again.';
+
+  @override
+  String get analysisRunning => 'The AI is inspecting your bird…';
+
+  @override
+  String get analysisRunningHint => 'Counting the pigeons, right on your phone';
+
+  @override
+  String analysisCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pigeons in the frame',
+      one: '1 pigeon in the frame',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String analysisConfidence(String species, int percent) {
+    return '$species · $percent %';
+  }
+
+  @override
+  String get analysisNone => 'No pigeon in sight.';
+
+  @override
+  String get analysisNoneChip => '0 pigeons';
+
+  @override
+  String get analysisNoneHint =>
+      'The AI found no pigeon. Get closer or frame it better, then retake the photo.';
+
+  @override
+  String get analysisFailed => 'The analysis failed.';
+
+  @override
+  String get analysisFailedHint =>
+      'The model couldn\'t run on this phone. Try again, or retake the photo.';
+
+  @override
+  String get analysisOnDevice =>
+      'Counted on your phone · nothing leaves before you publish';
+
+  @override
+  String get postRetakePhoto => 'Retake the photo';
+
+  @override
+  String get speciesFeralPigeon => 'Feral pigeon';
+
+  @override
+  String get speciesWoodPigeon => 'Wood pigeon';
+
+  @override
+  String get speciesCollaredDove => 'Collared dove';
+
+  @override
+  String get speciesOther => 'Other bird';
+
+  @override
+  String get speciesUncertain => 'Uncertain';
+
+  @override
+  String get speciesUncertainHint => 'Uncertain · species to confirm';
 }

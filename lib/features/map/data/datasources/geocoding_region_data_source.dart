@@ -43,6 +43,15 @@ class GeocodingRegionDataSource implements RegionDataSource {
     throw const LocationFailure('No region name for this position');
   }
 
+  @override
+  Future<String> getCountryCode(LatLng position) async {
+    for (final p in await _placemarks(position)) {
+      final code = p.isoCountryCode?.toUpperCase();
+      if (code != null && RegExp(r'^[A-Z]{2}$').hasMatch(code)) return code;
+    }
+    throw const LocationFailure('No country code for this position');
+  }
+
   Future<List<Placemark>> _placemarks(LatLng position) async {
     final key = (
       (position.latitude / _cellDegrees).round(),

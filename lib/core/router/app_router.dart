@@ -16,7 +16,9 @@ import '../../features/pigeondex/presentation/bloc/pigeondex_cubit.dart';
 import '../../features/pigeondex/presentation/pages/pigeondex_page.dart';
 import '../../features/post/presentation/bloc/post_cubit.dart';
 import '../../features/post/presentation/pages/camera_page.dart';
+import '../../features/profile/presentation/bloc/profile_cubit.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
+import '../../features/ranking/presentation/bloc/ranking_cubit.dart';
 import '../../features/ranking/presentation/pages/ranking_page.dart';
 import '../di/injection.dart';
 import '../widgets/main_shell.dart';
@@ -99,7 +101,14 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.ranking,
-              builder: (_, _) => const RankingPage(),
+              builder: (_, _) => BlocProvider(
+                create: (_) {
+                  final cubit = sl<RankingCubit>();
+                  unawaited(cubit.load());
+                  return cubit;
+                },
+                child: const RankingPage(),
+              ),
             ),
           ],
         ),
@@ -107,7 +116,14 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: AppRoutes.profile,
-              builder: (_, _) => const ProfilePage(),
+              builder: (_, _) => BlocProvider(
+                create: (_) {
+                  final cubit = sl<ProfileCubit>();
+                  unawaited(cubit.load());
+                  return cubit;
+                },
+                child: const ProfilePage(),
+              ),
             ),
           ],
         ),

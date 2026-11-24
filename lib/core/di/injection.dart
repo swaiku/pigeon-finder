@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:get_it/get_it.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../features/auth/data/datasources/auth_data_source.dart';
 import '../../features/auth/data/repositories/auth_repository_impl.dart';
 import '../../features/auth/domain/repositories/auth_repository.dart';
 import '../../features/auth/presentation/bloc/onboarding_cubit.dart';
+import '../../features/detection/data/datasources/release_store.dart';
+import '../../features/detection/data/repositories/litert_detection_repository.dart';
+import '../../features/detection/domain/repositories/detection_repository.dart';
 import '../../features/map/data/datasources/geocoding_region_data_source.dart';
 import '../../features/map/data/datasources/geolocator_location_data_source.dart';
 import '../../features/map/data/datasources/location_data_source.dart';
@@ -22,6 +29,15 @@ import '../../features/post/data/datasources/post_remote_data_source.dart';
 import '../../features/post/data/repositories/post_repository_impl.dart';
 import '../../features/post/domain/repositories/post_repository.dart';
 import '../../features/post/presentation/bloc/post_cubit.dart';
+import '../../features/profile/data/datasources/profile_remote_data_source.dart';
+import '../../features/profile/data/repositories/supabase_profile_repository.dart';
+import '../../features/profile/domain/repositories/profile_repository.dart';
+import '../../features/profile/presentation/bloc/profile_cubit.dart';
+import '../../features/ranking/data/datasources/ranking_remote_data_source.dart';
+import '../../features/ranking/data/repositories/supabase_ranking_repository.dart';
+import '../../features/ranking/domain/repositories/ranking_repository.dart';
+import '../../features/ranking/presentation/bloc/ranking_cubit.dart';
+import '../config/env.dart';
 import '../events/posts_changes.dart';
 
 final sl = GetIt.instance;
@@ -63,7 +79,22 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<PostRepository>(
     () => PostRepositoryImpl(sl(), sl(), sl()),
   );
-  sl.registerFactory(() => PostCubit(posts: sl(), location: sl()));
+  sl.registerFactory(
+    () => PostCubit(posts: sl(), location: sl(), detection: sl()),
+  );
+
+  // --- detection ---
+  sl.registerLazySingleton<DetectionRepository>(
+    () => LiteRtDetectionRepository(
+      releases: ReleaseStore(
+        apiUrl: Env.piafApiUrl,
+        appVersion: () async => (await PackageInfo.fromPlatform()).version,
+        directory: () async =>
+            Directory('${(await getApplicationSupportDirectory()).path}/models')
+              ..createSync(recursive: true),
+      ),
+    ),
+  );
 
   // --- post_detail ---
   // sl.registerLazySingleton<PostDetailRemoteDataSource>(
@@ -79,13 +110,30 @@ Future<void> initDependencies() async {
   // Reads through the map's PostsRepository to share its signed-URL cache.
   sl.registerFactory(() => PigeondexCubit(posts: sl(), changes: sl()));
 
+  // --- ranking ---
+  sl.registerLazySingleton<RankingRemoteDataSource>(
+    () => SupabaseRankingDataSource(sl()),
+  );
+  sl.registerLazySingleton<RankingRepository>(
+    () => SupabaseRankingRepository(sl()),
+  );
+  sl.registerFactory(
+    () => RankingCubit(
+      ranking: sl(),
+      location: sl(),
+      regions: sl(),
+      changes: sl(),
+    ),
+  );
+
   // --- profile ---
-  // sl.registerLazySingleton<ProfileRemoteDataSource>(
-  //   () => ProfileRemoteDataSourceImpl(sl()),
-  // );
-  // sl.registerLazySingleton<ProfileRepository>(
-  //   () => ProfileRepositoryImpl(sl()),
-  // );
-  // sl.registerLazySingleton(() => GetProfileUseCase(sl()));
-  // sl.registerFactory(() => ProfileCubit(sl()));
+  sl.registerLazySingleton<ProfileRemoteDataSource>(
+    () => SupabaseProfileDataSource(sl()),
+  );
+  sl.registerLazySingleton<ProfileRepository>(
+    () => SupabaseProfileRepository(sl()),
+  );
+  sl.registerFactory(
+    () => ProfileCubit(profile: sl(), posts: sl(), changes: sl()),
+  );
 }

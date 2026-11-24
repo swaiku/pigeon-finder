@@ -9,4 +9,8 @@ class const RegionRepositoryImpl(final RegionDataSource _dataSource)
   @override
   Future<String> getRegionName(LatLng position, RegionLevel level) =>
       _dataSource.getRegionName(position, level);
+
+  @override
+  Future<String> getCountryCode(LatLng position) =>
+      _dataSource.getCountryCode(position);
 }
